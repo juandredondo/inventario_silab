@@ -9,7 +9,7 @@ $this->title = 'Inventario SILAB';
     <div class="jumbotron">
         <h1>Felicitaciones con Github Desktop!!</h1>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+        <p class="lead">Este aplicativo sera la genial :D</p>
 
         <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
     </div>
