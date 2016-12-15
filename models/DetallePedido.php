@@ -35,7 +35,7 @@ class DetallePedido extends \yii\db\ActiveRecord
             [['PEDI_ID', 'ITEM_ID'], 'required'],
             [['PEDI_ID', 'ITEM_ID'], 'integer'],
             [['PEDI_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Pedido::className(), 'targetAttribute' => ['PEDI_ID' => 'PEDI_ID']],
-            [['ITEM_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Item::className(), 'targetAttribute' => ['ITEM_ID' => 'ITEM_ID']],
+            [['ITEM_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Items::className(), 'targetAttribute' => ['ITEM_ID' => 'ITEM_ID']],
         ];
     }
 

@@ -32,7 +32,7 @@ class Equipo extends \yii\db\ActiveRecord
             [['EQUI_SERIAL', 'ITNC_ID'], 'required'],
             [['ITNC_ID'], 'integer'],
             [['EQUI_SERIAL'], 'string', 'max' => 100],
-            [['ITNC_ID'], 'exist', 'skipOnError' => true, 'targetClass' => ItemNoComsumible::className(), 'targetAttribute' => ['ITNC_ID' => 'ITNC_ID']],
+            [['ITNC_ID'], 'exist', 'skipOnError' => true, 'targetClass' => ItemNoConsumible::className(), 'targetAttribute' => ['ITNC_ID' => 'ITNC_ID']],
         ];
     }
 

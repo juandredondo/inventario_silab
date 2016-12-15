@@ -39,7 +39,7 @@ class Factura extends \yii\db\ActiveRecord
             [['PROV_ID', 'PEDI_ID'], 'integer'],
             [['FACT_CODIGO'], 'string', 'max' => 100],
             [['PEDI_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Pedido::className(), 'targetAttribute' => ['PEDI_ID' => 'PEDI_ID']],
-            [['PROV_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Provedores::className(), 'targetAttribute' => ['PROV_ID' => 'PROV_ID']],
+            [['PROV_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Provedor::className(), 'targetAttribute' => ['PROV_ID' => 'PROV_ID']],
         ];
     }
 

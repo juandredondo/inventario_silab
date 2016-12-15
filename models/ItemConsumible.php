@@ -35,7 +35,7 @@ class ItemConsumible extends \yii\db\ActiveRecord
             [['ITEM_ID', 'estadoConsumible_id'], 'required'],
             [['ITEM_ID', 'estadoConsumible_id'], 'integer'],
             [['estadoConsumible_id'], 'exist', 'skipOnError' => true, 'targetClass' => EstadoConsumible::className(), 'targetAttribute' => ['estadoConsumible_id' => 'ESCO_ID']],
-            [['ITEM_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Item::className(), 'targetAttribute' => ['ITEM_ID' => 'ITEM_ID']],
+            [['ITEM_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Items::className(), 'targetAttribute' => ['ITEM_ID' => 'ITEM_ID']],
         ];
     }
 

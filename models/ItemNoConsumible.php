@@ -38,7 +38,7 @@ class ItemNoConsumible extends \yii\db\ActiveRecord
             [['ITEM_ID', 'ESNC_ID', 'MODE_ID'], 'required'],
             [['ITEM_ID', 'ESNC_ID', 'MODE_ID'], 'integer'],
             [['ESNC_ID'], 'exist', 'skipOnError' => true, 'targetClass' => EstadoNoConsumible::className(), 'targetAttribute' => ['ESNC_ID' => 'ESNC_ID']],
-            [['ITEM_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Item::className(), 'targetAttribute' => ['ITEM_ID' => 'ITEM_ID']],
+            [['ITEM_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Items::className(), 'targetAttribute' => ['ITEM_ID' => 'ITEM_ID']],
             [['MODE_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Modelo::className(), 'targetAttribute' => ['MODE_ID' => 'MODE_ID']],
         ];
     }
