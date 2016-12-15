@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Funcionario;
+use app\models\Persona;
 use app\models\FuncionarioSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -63,13 +64,23 @@ class FuncionarioController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Funcionario();
+        $funcionario = new Funcionario();
+        $persona = new Persona();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->FUNC_ID]);
+        if ($persona->load(Yii::$app->request->post()) ) {
+
+             if($persona->save()){
+                $funcionario->PERS_ID = $persona->PERS_ID; 
+
+                if($funcionario->save())
+                     return $this->redirect(['view', 'id' => $funcionario->FUNC_ID]);
+            }
+           
+           
         } else {
             return $this->render('create', [
-                'model' => $model,
+                'funcionario' => $funcionario,
+                'persona' => $persona,
             ]);
         }
     }
@@ -82,13 +93,22 @@ class FuncionarioController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $funcionario = $this->findModel($id);
+        $persona     = Persona::findOne($funcionario->PERS_ID);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->FUNC_ID]);
+        if ($persona->load(Yii::$app->request->post()) ) {
+            if($persona->save()){
+                $funcionario->PERS_ID = $persona->PERS_ID; 
+
+                if($funcionario->save())
+                     return $this->redirect(['view', 'id' => $funcionario->FUNC_ID]);
+            }
+           
+           
         } else {
             return $this->render('update', [
-                'model' => $model,
+                'funcionario' => $funcionario,
+                'persona' => $persona,
             ]);
         }
     }
@@ -101,7 +121,8 @@ class FuncionarioController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        //$this->findModel($id)->delete();
+        Persona::findOne($id)->delete();
 
         return $this->redirect(['index']);
     }

@@ -27,7 +27,26 @@ $this->params['breadcrumbs'][] = $this->title;
             'FUNC_ID',
             'PERS_ID',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+                'template'=>'{view}{update}{eliminar}',
+
+
+                'buttons'=>[
+                            'eliminar'=>function ($model, $key,$url) {
+
+
+                        $url=Yii::$app->urlManager->createUrl(['funcionario/delete', 'id' => $key->PERS_ID ]);
+                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url ,[
+                                    'title' => \Yii::t('yii', 'Eliminar'),
+                                    'data-confirm' => \Yii::t('yii', 'Desea usted eliminar a: '.$key->persona->PERS_NOMBRE."?"),
+                                    'data-method' => 'post',
+                                    'data-pjax' => '0', ]);     
+                            },
+
+                ],
+
+
+            ],
         ],
     ]); ?>
 </div>

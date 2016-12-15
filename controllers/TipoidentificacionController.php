@@ -3,17 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Coordinador;
-use app\models\Persona;
-use app\models\CoordinadorSearch;
+use app\models\Tipoidentificacion;
+use app\models\TipoidentificacionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * CoordinadorController implements the CRUD actions for Coordinador model.
+ * TipoidentificacionController implements the CRUD actions for Tipoidentificacion model.
  */
-class CoordinadorController extends Controller
+class TipoidentificacionController extends Controller
 {
     /**
      * @inheritdoc
@@ -31,12 +30,12 @@ class CoordinadorController extends Controller
     }
 
     /**
-     * Lists all Coordinador models.
+     * Lists all Tipoidentificacion models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new CoordinadorSearch();
+        $searchModel = new TipoidentificacionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -46,7 +45,7 @@ class CoordinadorController extends Controller
     }
 
     /**
-     * Displays a single Coordinador model.
+     * Displays a single Tipoidentificacion model.
      * @param integer $id
      * @return mixed
      */
@@ -58,81 +57,65 @@ class CoordinadorController extends Controller
     }
 
     /**
-     * Creates a new Coordinador model.
+     * Creates a new Tipoidentificacion model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $coordinador = new Coordinador();
-        $persona     = new Persona();
+        $model = new Tipoidentificacion();
 
-        if ($persona->load(Yii::$app->request->post()) ) {
-            if($persona->save()){
-                $coordinador->PERS_ID = $persona->PERS_ID; 
-
-                if($coordinador->save())
-                     return $this->redirect(['view', 'id' => $coordinador->COOR_ID]);
-            }
-           
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->TIID_ID]);
         } else {
             return $this->render('create', [
-                'coordinador' => $coordinador,
-                'persona' => $persona,
+                'model' => $model,
             ]);
         }
     }
 
     /**
-     * Updates an existing Coordinador model.
+     * Updates an existing Tipoidentificacion model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      */
     public function actionUpdate($id)
     {
-        $coordinador = $this->findModel($id);
-        $persona = Persona::findOne($coordinador->PERS_ID);
-            if ($persona->load(Yii::$app->request->post()) ) {
-                        if($persona->save()){
-                            $coordinador->PERS_ID = $persona->PERS_ID; 
+        $model = $this->findModel($id);
 
-                            if($coordinador->save())
-                                 return $this->redirect(['view', 'id' => $coordinador->COOR_ID]);
-                        }
-                       
-                    } else {
-                        return $this->render('update', [
-                            'coordinador' => $coordinador,
-                            'persona' => $persona,
-                        ]);
-                    }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->TIID_ID]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
     }
 
     /**
-     * Deletes an existing Coordinador model.
+     * Deletes an existing Tipoidentificacion model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
      */
     public function actionDelete($id)
     {
-        //$this->findModel($id)->delete();
-        Persona::findOne($id)->delete();
+        $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the Coordinador model based on its primary key value.
+     * Finds the Tipoidentificacion model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Coordinador the loaded model
+     * @return Tipoidentificacion the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Coordinador::findOne($id)) !== null) {
+        if (($model = Tipoidentificacion::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
