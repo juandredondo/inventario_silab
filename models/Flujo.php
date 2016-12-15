@@ -56,27 +56,62 @@ class Flujo extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMOVI()
-    {
-        return $this->hasOne(TBLMOVIMIENTOS::className(), ['MOVI_ID' => 'MOVI_ID']);
+    public function getId() {
+        return $this->FLUJ_ID;
+    }
+    public function setId($value = '') {
+         $this->FLUJ_ID = $value;
+    }
+
+    public function getCantidad() {
+        return $this->FLUJ_CANTIDAD;
+    }
+    public function setCantidad($value = '') {
+         $this->FLUJ_CANTIDAD = $value;
+    }
+
+    public function getMovimientoId() {
+        return $this->MOVI_ID;
+    }
+    public function setMovimientoId($value = '') {
+         $this->MOVI_ID = $value;
+    }
+
+    public function getStockId() {
+        return $this->STOC_ID;
+    }
+    public function setStockId($value = '') {
+         $this->STOC_ID = $value;
+    }
+
+    public function getTipoFlujoId() {
+        return $this->TIFU_ID;
+    }
+    public function setTipoFlujoId($value = '') {
+         $this->TIFU_ID = $value;
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getSTOC()
+    public function getMovimiento()
     {
-        return $this->hasOne(TBLSTOCK::className(), ['STOC_ID' => 'STOC_ID']);
+        return $this->hasOne(Movimiento::className(), ['MOVI_ID' => 'MOVI_ID']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTIFU()
+    public function getStock()
     {
-        return $this->hasOne(TBLTIPOFLUJO::className(), ['TIFL_ID' => 'TIFU_ID']);
+        return $this->hasOne(Stock::className(), ['STOC_ID' => 'STOC_ID']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTipoFlujo()
+    {
+        return $this->hasOne(TipoFlujo::className(), ['TIFL_ID' => 'TIFU_ID']);
     }
 }
