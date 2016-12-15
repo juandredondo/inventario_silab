@@ -37,7 +37,7 @@ class Stock extends \yii\db\ActiveRecord
             [['STOC_CANTIDAD'], 'number'],
             [['INVE_ID', 'ITEM_ID'], 'unique', 'targetAttribute' => ['INVE_ID', 'ITEM_ID'], 'message' => 'The combination of Item  ID and Inve  ID has already been taken.'],
             [['INVE_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Inventario::className(), 'targetAttribute' => ['INVE_ID' => 'INVE_ID']],
-            [['ITEM_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Item::className(), 'targetAttribute' => ['ITEM_ID' => 'ITEM_ID']],
+            [['ITEM_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Items::className(), 'targetAttribute' => ['ITEM_ID' => 'ITEM_ID']],
         ];
     }
 
