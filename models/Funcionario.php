@@ -65,7 +65,7 @@ class Funcionario extends \yii\db\ActiveRecord
      */
     public function getLaboratoriosAsignados()
     {
-        return $this->hasMany(FuncionarioLaboratorio::className(), ['FUNC_ID' => 'FUNC_ID']);
+        return $this->hasMany(Laboratorio::className(), ['LABO_ID' => 'LABO_ID'])->viaTable('TBL_FUNCIONALABORATORIO', ['FUNC_ID' => 'FUNC_ID']);
     }
 
     /**
