@@ -35,10 +35,11 @@ class Items extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['ITEM_NOMBRE'], 'required'],
+            [['ITEM_NOMBRE',  'MARC_ID', 'TIIT_ID'], 'required'],
             [['ITEM_OBSERVACION'], 'string'],
-            [['MARC_ID'], 'integer'],
+            [['MARC_ID', 'TIIT_ID'], 'integer'],
             [['ITEM_NOMBRE'], 'string', 'max' => 200],
+            [['TIIT_ID'], 'exist', 'skipOnError' => true, 'targetClass' => TipoItem::className(), 'targetAttribute' => ['TIIT_ID' => 'TIIT_ID']],
             [['MARC_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Marca::className(), 'targetAttribute' => ['MARC_ID' => 'MARC_ID']],
         ];
     }
@@ -53,6 +54,7 @@ class Items extends \yii\db\ActiveRecord
             'ITEM_NOMBRE' => 'Item  Nombre',
             'ITEM_OBSERVACION' => 'Item  Observacion',
             'MARC_ID' => 'Marc  ID',
+            'TIIT_ID' => 'Tipo Item',
         ];
     }
 
@@ -84,6 +86,13 @@ class Items extends \yii\db\ActiveRecord
          $this->MARC_ID = $value;
     }
 
+    public function getTipoItemId() {
+        return $this->TIIT_ID;
+    }
+    public function setTipoItemId($value = '') {
+         $this->TIIT_ID = $value;
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -99,6 +108,15 @@ class Items extends \yii\db\ActiveRecord
     {
         return $this->hasOne(TBLMARCAS::className(), ['MARC_ID' => 'MARC_ID']);
     }
+
+    /**
+    * @return \yii\db\ActiveQuery
+    */
+    public function getTipoItem()
+    {
+        return $this->hasOne(TipoItem::className(), ['TIIT_ID' => 'TIIT_ID']);
+    }
+
 
     /**
      * @return \yii\db\ActiveQuery
