@@ -18,7 +18,7 @@ use Yii;
  * @property TBLPERSONAS $pERS
  * @property TBLROLES $rOL
  */
-class Usuario extends \yii\db\ActiveRecord
+class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     /**
      * @inheritdoc
@@ -79,5 +79,149 @@ class Usuario extends \yii\db\ActiveRecord
     public function getRol()
     {
         return $this->hasOne(Rol::className(), ['ROL_ID' => 'ROL_ID']);
+    }
+    
+    public function getUsername()
+    {
+        return $this->USUA_USUARIO;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentity($id)
+    {
+        return static::findOne(['login_id' => $id]);
+    }
+
+    /*
+        - - - - - - - - - - - - - - - - - - - - - - - - 
+        Login and user Identity interface implementatio
+        - - - - - - - - - - - - - - - - - - - - - - - - 
+    */
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        return static::findOne(['login_key' => $token]);
+    }
+
+    /**
+     * Finds user by username
+     *
+     * @param string $username
+     * @return static|null
+     */
+    public static function findByUsername($username)
+    {
+        return static::findOne(['login_username' => $username]);
+    }
+
+    /**
+     * Finds user by username and password
+     *
+     * @param string $username
+     * @return static|null
+     */
+    public static function findByUsernameAndPassword($username, $password)
+    {
+        return static::findOne(['login_username' => $username, 'login_password' => $password]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getId()
+    {
+        return $this->login_id;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAuthKey()
+    {
+        return $this->login_key;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function validateAuthKey($authKey)
+    {
+        return $this->login_key === $authKey;
+    }
+
+    /**
+     * Validates password
+     *
+     * @param string $password password to validate
+     * @return bool if password provided is valid for current user
+     */
+    public function validatePassword($password)
+    {
+        return $this->login_password === $password;
+    }
+
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->login_password   = md5( $this->login_password );
+                $this->login_key        = \Yii::$app->security->generateRandomString();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    // Get permissions for the user and from the database
+    public static function getUserPermissions($params = null)
+    {
+        if(isset($params))
+        {
+            $id     = $params[ "id" ];
+            $role   = $params[ "role" ];
+
+            if(!isset($role) && isset($id))
+                return \app\models\Permission::find(['login_id' => $id])
+                ->innerJoinWith("groups g")
+                ->innerJoinWith("groups.userRole u")
+                ->innerJoinWith("groups.userRole.loginAccounts la")
+                ->where(['la.login_id' => $id])->all();
+            else
+                return \app\models\Permission::find()
+                ->innerJoinWith("groups g")
+                ->innerJoinWith("groups.userRole u")
+                ->where(['u.userRole_name' => $role])->all();
+        }
+
+        return null;
+    }
+
+    // Get permissions for the user and from the database
+    public static function userCan($params = null)
+    {
+        if(isset($params))
+        {
+            $id     = $params[ "id" ];
+            $roleId = $params[ "role-id" ];
+            $action = $params[ "action" ];
+
+            if(!isset($role) && isset($id))
+                return \app\models\Permission::find()
+                //->innerJoinWith("groups.userRole u")
+                ->innerJoinWith("groups.userRole.loginAccounts")
+                ->where(['login_id' => $id, 'permission_name' => $action])->one();
+        }
+
+        return null;
+    }
+
+    public function can($role)
+    {
+        return strtolower($this->userRole->userRole_name) === strtolower($role);
     }
 }
