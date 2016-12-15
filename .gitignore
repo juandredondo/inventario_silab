@@ -15,6 +15,9 @@ Thumbs.db
 # composer vendor dir
 /vendor
 
+#database
+SILABv3.mwb.bak
+
 # composer itself is not needed
 composer.phar
 
@@ -28,3 +31,4 @@ phpunit.phar
 
 tests/_output/*
 tests/_support/_generated
+*.bak
