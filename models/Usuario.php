@@ -189,15 +189,15 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
             if(!isset($role) && isset($id))
                 return \app\models\Permiso::find(['USUA_ID' => $id])
-                ->innerJoinWith("perfilRole g")
-                ->innerJoinWith("perfilRole.userRole u")
-                ->innerJoinWith("perfilRole.userRole.loginAccounts la")
-                ->where(['la.login_id' => $id])->all();
+                ->innerJoinWith("perfilRole pr")
+                ->innerJoinWith("perfilRole.rol r")
+                ->innerJoinWith("perfilRole.rol.usuarios us")
+                ->where(['us.USUAR_ID' => $id])->all();
             else
-                return \app\models\Permission::find()
-                ->innerJoinWith("groups g")
-                ->innerJoinWith("groups.userRole u")
-                ->where(['u.userRole_name' => $role])->all();
+                return \app\models\Permiso::find()
+                ->innerJoinWith("perfilRole pr")
+                ->innerJoinWith("perfilRole.rol r")
+                ->where(['r.ROL_NOMBRE' => $role])->all();
         }
 
         return null;
@@ -215,8 +215,8 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             if(!isset($role) && isset($id))
                 return \app\models\Permission::find()
                 //->innerJoinWith("groups.userRole u")
-                ->innerJoinWith("groups.userRole.loginAccounts")
-                ->where(['login_id' => $id, 'permission_name' => $action])->one();
+                ->innerJoinWith("perfilRole.rol.usuarios")
+                ->where(['USUA_ID' => $id, 'PERM_ACCION' => $action])->one();
         }
 
         return null;
