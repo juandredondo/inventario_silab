@@ -60,6 +60,10 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::$app->user->isGuest) {
+            return $this->actionLogin();
+        }
+
         return $this->render('index');
     }
 
@@ -71,18 +75,29 @@ class SiteController extends Controller
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            return $this->render('index');
         }
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        }
+        $model = new \app\models\LoginForm();
+        
         return $this->render('login', [
             'model' => $model,
         ]);
     }
 
+    public function actionAuthenticate($url = 'dashboard')
+    {
+        $model = new \app\models\LoginForm();
+        
+        if ($model->load(Yii::$app->request->post())) 
+        {
+            $login = $model->login();
+            if($login[ "logged" ])
+                return $this->render('index');
+        } 
+
+        return $this->actionLogin();
+    }
     /**
      * Logout action.
      *
@@ -91,8 +106,7 @@ class SiteController extends Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
-        return $this->goHome();
+        return $this->redirect('login');
     }
 
     /**
@@ -121,5 +135,10 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    public function actionGetSession()
+    {
+        return json_encode(Yii::$app->user->isGuest);
     }
 }

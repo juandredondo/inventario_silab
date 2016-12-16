@@ -17,6 +17,37 @@ use Yii;
  */
 class TipoItem extends \yii\db\ActiveRecord
 {
+    const Consumible    = 1;
+    const NoConsumible  = 2;
+    const Reactivo      = 3;
+    const Material      = 4;
+    const Equipo        = 5;
+    const Accesorio     = 6;
+    const Herramienta   = 7;     
+
+    public static $types = [ 
+        "consumible"    => self::Consumible, 
+        "noConsumible"  => self::NoConsumible,
+        "Reactivo"      => self::Reactivo,
+        "Material"      => self::Material,
+        "Equipo"        => self::Equipo,
+        "Accesorio"     => self::Accesorio,
+        "Herramienta"   => self::Herramienta
+    ];
+
+    public static function getTypes()
+    {
+        return [
+            [ "id" => self::Consumible,     'name' => "CONSUMIBLE" ],
+            [ "id" => self::NoConsumible,   'name' => "NOCONSUMIBLE" ],
+            [ "id" => self::Reactivo,       'name' => "REACTIVO" ],
+            [ "id" => self::Material,       'name' => "MATERIAL" ],
+            [ "id" => self::Equipo,         'name' => "EQUIPO" ],
+            [ "id" => self::Accesorio,      'name' => "ACCESORIO" ],
+            [ "id" => self::Herramienta,    'name' => "HERRAMIENTA" ],
+        ];
+    }
+
     /**
      * @inheritdoc
      */
@@ -72,5 +103,15 @@ class TipoItem extends \yii\db\ActiveRecord
     public function getHijos()
     {
         return $this->hasMany(TipoItem::className(), ['TIIT_PADRE' => 'TIIT_ID']);
+    }
+
+    public function getPadreTable()
+    {
+        if( $this->padre->id == TipoItem::Consumible )
+        {
+            return ItemConsumible::className();
+        }
+        else
+            return ItemNoConsumible::className();
     }
 }

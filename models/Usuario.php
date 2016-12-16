@@ -37,6 +37,7 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             [['USUA_USUARIO', 'USUA_PASSWORD', 'PERS_ID', 'ROL_ID'], 'required'],
             [['USUA_ES_ACTIVO', 'PERS_ID', 'ROL_ID'], 'integer'],
             [['USUA_USUARIO', 'USUA_PASSWORD'], 'string', 'max' => 45],
+            ['USUA_TOKEN', 'string', 'max' => 250],
             [['PERS_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Persona::className(), 'targetAttribute' => ['PERS_ID' => 'PERS_ID']],
             [['ROL_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Rol::className(), 'targetAttribute' => ['ROL_ID' => 'ROL_ID']],
         ];
@@ -52,6 +53,7 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'USUA_USUARIO' => 'Usua  Usuario',
             'USUA_PASSWORD' => 'Usua  Password',
             'USUA_ES_ACTIVO' => 'Usua  Es  Activo',
+            'USUA_TOKEN' => 'Usua  Es  Activo',
             'PERS_ID' => 'Pers  ID',
             'ROL_ID' => 'Rol  ID',
         ];
@@ -91,7 +93,7 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['login_id' => $id]);
+        return static::findOne(['USUA_ID' => $id]);
     }
 
     /*
@@ -104,7 +106,7 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return static::findOne(['login_key' => $token]);
+        return static::findOne(['USUA_TOKEN' => $token]);
     }
 
     /**
@@ -115,7 +117,7 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['login_username' => $username]);
+        return static::findOne(['USUA_USUARIO' => $username]);
     }
 
     /**
@@ -126,7 +128,7 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public static function findByUsernameAndPassword($username, $password)
     {
-        return static::findOne(['login_username' => $username, 'login_password' => $password]);
+        return static::findOne(['USUA_USUARIO' => $username, 'USUA_PASSWORD' => $password]);
     }
 
     /**
@@ -134,7 +136,7 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public function getId()
     {
-        return $this->login_id;
+        return $this->USUA_ID;
     }
 
     /**
@@ -142,7 +144,7 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public function getAuthKey()
     {
-        return $this->login_key;
+        return $this->USUA_TOKEN;
     }
 
     /**
@@ -150,7 +152,7 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public function validateAuthKey($authKey)
     {
-        return $this->login_key === $authKey;
+        return $this->USUA_TOKEN === $authKey;
     }
 
     /**
@@ -161,7 +163,7 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public function validatePassword($password)
     {
-        return $this->login_password === $password;
+        return $this->USUA_PASSWORD === $password;
     }
 
 
@@ -169,8 +171,8 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         if (parent::beforeSave($insert)) {
             if ($this->isNewRecord) {
-                $this->login_password   = md5( $this->login_password );
-                $this->login_key        = \Yii::$app->security->generateRandomString();
+                $this->USUA_PASSWORD   = md5( $this->USUA_PASSWORD );
+                $this->USUA_TOKEN      = \Yii::$app->security->generateRandomString();
             }
             return true;
         }
@@ -186,10 +188,10 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             $role   = $params[ "role" ];
 
             if(!isset($role) && isset($id))
-                return \app\models\Permission::find(['login_id' => $id])
-                ->innerJoinWith("groups g")
-                ->innerJoinWith("groups.userRole u")
-                ->innerJoinWith("groups.userRole.loginAccounts la")
+                return \app\models\Permiso::find(['USUA_ID' => $id])
+                ->innerJoinWith("perfilRole g")
+                ->innerJoinWith("perfilRole.userRole u")
+                ->innerJoinWith("perfilRole.userRole.loginAccounts la")
                 ->where(['la.login_id' => $id])->all();
             else
                 return \app\models\Permission::find()

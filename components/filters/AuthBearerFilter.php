@@ -6,7 +6,7 @@ use yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
 use yii\web\UnauthorizedHttpException;
 
-class AuthFilter extends AccessControl  
+class AuthBearerFilter extends AccessControl  
 {
     
     public $ruleConfig = ['class' => 'app\components\filters\AuthAccessRule'];

@@ -18,6 +18,29 @@ use Yii;
  */
 class ItemConsumible extends \yii\db\ActiveRecord
 {
+
+    const Agotado       = 1;
+    const Reponer       = 2;
+    const Minimas       = 3;
+    const Suficiente    = 4;
+
+    public static $types = [
+        "Agotado"       => self::Agotado,
+        "Reponer"       => self::Reponer,
+        "Minimas"       => self::Minimas,
+        "Suficiente"    => self::Suficiente
+    ];
+    
+    public static function getTypes()
+    {
+        return [
+            [ 'id' => self::Agotado,        'name' => 'Agotado' ],
+            [ 'id' => self::Reponer,   	    'name' => 'Reponer' ],
+            [ 'id' => self::Minimas,        'name' => 'Minimas' ],
+            [ 'id' => self::Suficientes,    'name' => 'Suficientes' ]
+        ];
+    }
+
     /**
      * @inheritdoc
      */
