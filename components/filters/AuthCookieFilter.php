@@ -6,7 +6,7 @@ use yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
 use yii\web\UnauthorizedHttpException;
 
-class AuthFilter extends AccessControl  
+class AuthCookieFilter extends AccessControl  
 {
     
     public $ruleConfig = ['class' => 'app\components\filters\AuthAccessRule'];
@@ -18,6 +18,7 @@ class AuthFilter extends AccessControl
      */
     public $rules = [];
 
+    /*
     public function behaviors()
     {
         return [
@@ -26,6 +27,7 @@ class AuthFilter extends AccessControl
             ]
         ];
     }
+    */
 
     /**
      * This method is invoked right before an action is to be executed (after all possible filters.)
@@ -38,7 +40,7 @@ class AuthFilter extends AccessControl
         $user               = $this->user;
         $request            = Yii::$app->getRequest();
         $response           = Yii::$app->getResponse();
-        $user->identity     = $this->authenticate($user, $request, $response);
+        //$user->identity     = $this->authenticate($user, $request, $response);
 
          /* @var $rule AccessRule */
         foreach ($this->rules as $rule) 
@@ -87,11 +89,10 @@ class AuthFilter extends AccessControl
      */
     protected function denyAccess($user)
     {
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         if ($user->getIsGuest()) {
             $user->loginRequired();
         } else {
-            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+            throw new ForbiddenHttpException(Yii::t('yii', 'No estas autorizado para acceder a esta seccion.'));
         }
     }
 }

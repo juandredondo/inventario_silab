@@ -23,7 +23,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AuthCookieFilter::className(),
-                'only' => ['logout'],
+                'only' => ['logout', 'hola'],
                 'rules' => [
                     [
                         'actions' => ['logout'],
@@ -31,7 +31,7 @@ class SiteController extends Controller
                         'roles' => ['@'],
                     ],
                     [
-                        'action' => [ "hola" ],
+                        'actions' => [ "hola" ],
                         'allow' => true,
                         'roles' => [ Rol::Coordinador ]
                     ]
@@ -153,6 +153,8 @@ class SiteController extends Controller
 
     public function actionHola()
     {
-        echo "<h1>Hola bienvenido a la seccion privada</h1>";
+        
     }
+
+
 }

@@ -17,6 +17,11 @@ use Yii;
  */
 class Rol extends \yii\db\ActiveRecord
 {
+    const Coordinador   = "Coordinador";
+    const Admin         = "Administrador";
+    const Funcionario   = "Funcionario";
+    const Docente       = "Docente";
+    
     /**
      * @inheritdoc
      */
