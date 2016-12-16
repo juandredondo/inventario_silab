@@ -90,7 +90,7 @@ class LoginForm extends Model
     {
         if ($this->_user === false) {
             $this->password = md5($this->password);
-            $this->_user = LoginUser::findByUsernameAndPassword($this->username, $this->password);
+            $this->_user = Usuario::findByUsernameAndPassword($this->username, $this->password);
         }
 
         return $this->_user;

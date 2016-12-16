@@ -21,8 +21,8 @@ use Yii;
 class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     /**
-     * @inheritdoc
-     */
+    * @inheritdoc
+    */
     public static function tableName()
     {
         return 'TBL_USUARIOS';
@@ -224,6 +224,6 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
     public function can($role)
     {
-        return strtolower($this->userRole->userRole_name) === strtolower($role);
+        return strtolower($this->rol->ROL_NOMBRE) === strtolower($role);
     }
 }

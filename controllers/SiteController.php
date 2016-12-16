@@ -6,8 +6,12 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
+
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\components\JsonHelper;
+use app\components\filters\AuthCookieFilter;
+use app\models\Rol;
 
 class SiteController extends Controller
 {
@@ -18,7 +22,7 @@ class SiteController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AuthCookieFilter::className(),
                 'only' => ['logout'],
                 'rules' => [
                     [
@@ -26,6 +30,11 @@ class SiteController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+                    [
+                        'action' => [ "hola" ],
+                        'allow' => true,
+                        'roles' => [ Rol::Coordinador ]
+                    ]
                 ],
             ],
             'verbs' => [
@@ -61,7 +70,7 @@ class SiteController extends Controller
     public function actionIndex()
     {
         if (Yii::$app->user->isGuest) {
-            return $this->actionLogin();
+            return $this->redirect('login');
         }
 
         return $this->render('index');
@@ -75,7 +84,7 @@ class SiteController extends Controller
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
-            return $this->render('index');
+            return $this->redirect('index');
         }
 
         $model = new \app\models\LoginForm();
@@ -93,10 +102,10 @@ class SiteController extends Controller
         {
             $login = $model->login();
             if($login[ "logged" ])
-                return $this->render('index');
+                return $this->redirect('index');
         } 
 
-        return $this->actionLogin();
+        return $this->redirect('login');
     }
     /**
      * Logout action.
@@ -140,5 +149,10 @@ class SiteController extends Controller
     public function actionGetSession()
     {
         return json_encode(Yii::$app->user->isGuest);
+    }
+
+    public function actionHola()
+    {
+        echo "<h1>Hola bienvenido a la seccion privada</h1>";
     }
 }
