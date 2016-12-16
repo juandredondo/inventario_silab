@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="tipoidentificacion-form">
+<div class="tipo-identificacion-form">
 
     <?php $form = ActiveForm::begin(); ?>
 

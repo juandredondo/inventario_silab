@@ -2,15 +2,15 @@
 
 use yii\helpers\Html;
 
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Tipoidentificacion */
 
-$this->title = 'Update Tipoidentificacion: ' . $model->TIID_ID;
+$this->title = 'Create Tipoidentificacion';
 $this->params['breadcrumbs'][] = ['label' => 'Tipoidentificacions', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->TIID_ID, 'url' => ['view', 'id' => $model->TIID_ID]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="tipoidentificacion-update">
+<div class="tipo-identificacion-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

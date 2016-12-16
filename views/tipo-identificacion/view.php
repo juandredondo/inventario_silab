@@ -10,7 +10,7 @@ $this->title = $model->TIID_ID;
 $this->params['breadcrumbs'][] = ['label' => 'Tipoidentificacions', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="tipoidentificacion-view">
+<div class="tipo-identificacion-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
