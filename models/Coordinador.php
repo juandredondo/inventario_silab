@@ -41,13 +41,21 @@ class Coordinador extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'COOR_ID' => 'Coor  ID',
-            'PERS_ID' => 'Pers  ID',
+            'COOR_ID' => 'ID COORDINADOR',
+            'PERS_ID' => 'ID PERSONA',
+            'Nombre' => Yii::t('app', 'Nombre'),
+            'Identificacion' => Yii::t('app', 'Identificacion'),
         ];
     }
 
     public function getId() {
         return $this->COOR_ID;
+    }
+    public function getNombre() {
+        return $this->persona->PERS_NOMBRE;
+    }
+        public function getIdentificacion() {
+        return $this->persona->PERS_IDENTIFICACION;
     }
     public function setId($value = '') {
          $this->COOR_ID = $value;

@@ -15,10 +15,13 @@ class FuncionarioSearch extends Funcionario
     /**
      * @inheritdoc
      */
+    public $Nombre;
+    public $Identificacion;
     public function rules()
     {
         return [
-            [['FUNC_ID', 'PERS_ID'], 'integer'],
+            [['FUNC_ID', 'PERS_ID','Identificacion'], 'integer'],
+            [['Nombre'], 'safe'],
         ];
     }
 
@@ -51,6 +54,7 @@ class FuncionarioSearch extends Funcionario
         $this->load($params);
 
         if (!$this->validate()) {
+            $query->joinWith("persona");
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
             return $dataProvider;
@@ -61,6 +65,12 @@ class FuncionarioSearch extends Funcionario
             'FUNC_ID' => $this->FUNC_ID,
             'PERS_ID' => $this->PERS_ID,
         ]);
+        $query->joinWith(['persona' => function ($q) {
+            $q->where('PERS_NOMBRE LIKE "%' . $this->Nombre . '%"');
+        }]);
+        $query->joinWith(['persona' => function ($q) {
+            $q->where('PERS_IDENTIFICACION LIKE "%' . $this->Identificacion . '%"');
+        }]);
 
         return $dataProvider;
     }

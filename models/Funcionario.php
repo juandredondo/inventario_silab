@@ -43,9 +43,16 @@ class Funcionario extends \yii\db\ActiveRecord
         return [
             'FUNC_ID' => 'Func  ID',
             'PERS_ID' => 'Pers  ID',
+            'Nombre' => Yii::t('app', 'Nombre'),
+            'Identificacion' => Yii::t('app', 'Identificacion'),
         ];
     }
-
+    public function getNombre() {
+        return $this->persona->PERS_NOMBRE;
+    }
+        public function getIdentificacion() {
+        return $this->persona->PERS_IDENTIFICACION;
+    }
     public function getId() {
         return $this->FUNC_ID;
     }

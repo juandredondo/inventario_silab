@@ -26,6 +26,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'FUNC_ID',
             'PERS_ID',
+            'Nombre',
+            'Identificacion',
+            'persona.genero.GENE_NOMBRE',
 
             ['class' => 'yii\grid\ActionColumn',
                 'template'=>'{view}{update}{eliminar}',

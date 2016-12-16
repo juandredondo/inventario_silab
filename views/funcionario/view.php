@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Funcionario */
 
-$this->title = $model->FUNC_ID;
+$this->title = $model->persona->PERS_NOMBRE;
 $this->params['breadcrumbs'][] = ['label' => 'Funcionarios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -30,6 +30,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'FUNC_ID',
             'PERS_ID',
+            'persona.PERS_NOMBRE',
+            'persona.tipoIdentificacion.TIID_NOMBRE',
+            'persona.PERS_IDENTIFICACION',
+            'persona.genero.GENE_NOMBRE',
         ],
     ]) ?>
 

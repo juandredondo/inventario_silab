@@ -6,11 +6,11 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Coordinador */
 
-$this->title = $model->COOR_ID;
+$this->title = $model->persona->PERS_NOMBRE;
 $this->params['breadcrumbs'][] = ['label' => 'Coordinadors', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="coordinador-view">
+<div class="coordinador-view"> 
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -30,6 +30,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'COOR_ID',
             'PERS_ID',
+            'persona.PERS_NOMBRE',
+            'persona.tipoIdentificacion.TIID_NOMBRE',
+            'persona.PERS_IDENTIFICACION',
+            'persona.genero.GENE_NOMBRE',
         ],
     ]) ?>
 
