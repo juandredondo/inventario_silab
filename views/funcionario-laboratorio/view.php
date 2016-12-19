@@ -10,7 +10,7 @@ $this->title = $model->FULA_ID;
 $this->params['breadcrumbs'][] = ['label' => 'Funcionario Laboratorios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="funcionario-laboratorio-view">
+<div class="funcionario-laboratorio-view col-md-6">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

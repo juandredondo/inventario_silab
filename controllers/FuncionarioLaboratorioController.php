@@ -63,13 +63,28 @@ class FuncionarioLaboratorioController extends Controller
      */
     public function actionCreate()
     {
-        $model = new FuncionarioLaboratorio();
+        //1. delcaracion de los objetos de las diferentes clases de los modelos 
+        $modelFuncioLab = new FuncionarioLaboratorio();
+        $searchModel = new FuncionarioLaboratorioSearch();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->FULA_ID]);
+        //1.1 se captura el idLaboratorio que viene por get
+        $idLaboratorio=Yii::$app->request->get('idLaboratorio');
+
+        // manda a buscar todos los funconarios que pertenezcan a un laboratorio en especifico
+        $dataProvider = $searchModel->search2($idLaboratorio);
+
+        //2. se valida de que los datos del modelo se hallan cargado
+        if ($modelFuncioLab->load(Yii::$app->request->post())){
+            //2.1 se le asigna el laboratorio que viene por get
+             $modelFuncioLab->LABO_ID=$idLaboratorio;   
+             //2.2 se guardan los datos 
+             $modelFuncioLab->save();    
+            return $this->redirect(['create', 'idLaboratorio' => $idLaboratorio]);
         } else {
             return $this->render('create', [
-                'model' => $model,
+                'model' => $modelFuncioLab,
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
             ]);
         }
     }
@@ -103,7 +118,9 @@ class FuncionarioLaboratorioController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        
+
+       // return $this->redirect(['index']);
     }
 
     /**

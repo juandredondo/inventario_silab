@@ -50,11 +50,11 @@ class Persona extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'PERS_ID' => 'Pers  ID',
-            'PERS_NOMBRE' => 'Pers  Nombre',
-            'PERS_IDENTIFICACION' => 'Pers  Identificacion',
-            'GENE_ID' => 'Gene  ID',
-            'TIID_ID' => 'Tiid  ID',
+            'PERS_ID' => 'Id Persona',
+            'TIID_ID' => 'Tipo Identificacion',
+            'PERS_IDENTIFICACION' => 'Identificacion',
+            'PERS_NOMBRE' => 'Nombre',
+            'GENE_ID' => 'Genero',
         ];
     }
 

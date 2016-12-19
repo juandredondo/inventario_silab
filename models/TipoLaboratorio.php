@@ -39,8 +39,8 @@ class TipoLaboratorio extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'TILA_ID' => 'Tila  ID',
-            'TILA_NOMBRE' => 'Tila  Nombre',
+            'TILA_ID' => 'Id Tipo Laboratorio',
+            'TILA_NOMBRE' => 'Tipo Laboratorio',
         ];
     }
 

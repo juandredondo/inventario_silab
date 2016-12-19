@@ -36,7 +36,7 @@ class Laboratorio extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['LABO_NOMBRE', 'EDIF_ID', 'COOR_ID', 'TILA_ID'], 'required'],
+            [['LABO_NOMBRE', 'EDIF_ID', 'COOR_ID', 'TILA_ID','LABO_NIVEL'], 'required'],
             [['LABO_NIVEL', 'EDIF_ID', 'COOR_ID', 'TILA_ID'], 'integer'],
             [['LABO_NOMBRE'], 'string', 'max' => 100],
             [['TILA_ID'], 'exist', 'skipOnError' => true, 'targetClass' => TipoLaboratorio::className(), 'targetAttribute' => ['TILA_ID' => 'TILA_ID']],
@@ -51,12 +51,12 @@ class Laboratorio extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'LABO_ID' => 'Labo  ID',
-            'LABO_NOMBRE' => 'Labo  Nombre',
-            'LABO_NIVEL' => 'Labo  Nivel',
-            'EDIF_ID' => 'Edif  ID',
-            'COOR_ID' => 'Coor  ID',
-            'TILA_ID' => 'Tila  ID',
+            'LABO_ID' => 'Id Laboratorio',
+            'LABO_NOMBRE' => 'Nombre Laboratorio',
+            'LABO_NIVEL' => 'Nivel Laboratorio',
+            'TILA_ID' => 'Tipo Laboratorio',
+            'COOR_ID' => 'Coordinador',
+            'EDIF_ID' => 'Edificio',
         ];
     }
 
@@ -79,7 +79,7 @@ class Laboratorio extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTipoLaboratorio()
+    public function getTipolaboratorio()
     {
         return $this->hasOne(TipoLaboratorio::className(), ['TILA_ID' => 'TILA_ID']);
     }

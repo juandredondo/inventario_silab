@@ -41,9 +41,9 @@ class Edificio extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'EDIF_ID' => 'Edif  ID',
-            'EDIF_NOMBRE' => 'Edif  Nombre',
-            'EDIF_CODIGO' => 'Edif  Codigo',
+            'EDIF_ID' => ' Id Edificio',
+            'EDIF_NOMBRE' => 'Nombre Edificio',
+            'EDIF_CODIGO' => 'Codigo Edificio',
         ];
     }
 

@@ -30,6 +30,7 @@ class FuncionarioLaboratorio extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['FUNC_ID'], 'required'],
             [['FUNC_ID', 'LABO_ID'], 'integer'],
             [['FUNC_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Funcionario::className(), 'targetAttribute' => ['FUNC_ID' => 'FUNC_ID']],
             [['LABO_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Laboratorio::className(), 'targetAttribute' => ['LABO_ID' => 'LABO_ID']],

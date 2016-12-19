@@ -5,6 +5,8 @@ namespace app\controllers;
 use Yii;
 use app\models\Laboratorio;
 use app\models\LaboratorioSearch;
+use app\models\FuncionarioLaboratorio;
+use app\models\FuncionarioLaboratorioSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -51,8 +53,14 @@ class LaboratorioController extends Controller
      */
     public function actionView($id)
     {
+
+        $searchModel = new FuncionarioLaboratorioSearch();
+        // manda a buscar todos los funconarios que pertenezcan a un laboratorio en especifico
+        $dataProvider = $searchModel->search2($id);
         return $this->render('view', [
             'model' => $this->findModel($id),
+             'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -63,13 +71,21 @@ class LaboratorioController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Laboratorio();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->LABO_ID]);
+        //1. delclaran objetos de cada uno de los modelos 
+        $modelLaboratorio = new Laboratorio();
+        $modelLabFuncionario= new FuncionarioLaboratorio;
+
+        //2.se  valida de que si e modelo del laboratorio esta cargado
+        if ($modelLaboratorio->load(Yii::$app->request->post())) 
+        {
+            //2.1 guarda los  datos del laboratorio en la base de datos    
+            $modelLaboratorio->save();
+
+            return $this->redirect(['funcionario-laboratorio/create', 'idLaboratorio' => $modelLaboratorio->LABO_ID]);
         } else {
             return $this->render('create', [
-                'model' => $model,
+                'model' => $modelLaboratorio,
             ]);
         }
     }

@@ -2,12 +2,13 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use app\models\Edificio;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\LaboratorioSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Laboratorios';
+$this->title = 'LABORATORIOS';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="laboratorio-index">
@@ -16,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Laboratorio', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Nuevo Laboratorio', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -27,9 +28,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'LABO_ID',
             'LABO_NOMBRE',
             'LABO_NIVEL',
-            'EDIF_ID',
-            'COOR_ID',
-            // 'TILA_ID',
+            'edificio.EDIF_NOMBRE',
+            'coordinador.persona.PERS_NOMBRE',
+            'tipolaboratorio.TILA_NOMBRE',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

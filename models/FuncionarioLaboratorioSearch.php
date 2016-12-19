@@ -65,4 +65,19 @@ class FuncionarioLaboratorioSearch extends FuncionarioLaboratorio
 
         return $dataProvider;
     }
+
+
+    public function search2($params)
+    {    
+       $consulta='select * FROM TBL_FUNCIONALABORATORIO  WHERE LABO_ID ='.$params;
+        $query = FuncionarioLaboratorio::findBySql($consulta);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        if (!$this->validate()) {
+            return $dataProvider;
+        }
+        return $dataProvider;
+    }
 }
