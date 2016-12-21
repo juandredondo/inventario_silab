@@ -49,6 +49,12 @@ $config = [
         
     ],
     'params' => $params,
+    'modules' => [
+        'admin' => [
+            'class'     => 'app\modules\admin\Admin',
+            'basePath'  => '@app/modules/admin'
+        ],
+    ],
 ];
 
 if (YII_ENV_DEV) {

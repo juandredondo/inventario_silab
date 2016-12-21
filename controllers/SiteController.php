@@ -70,7 +70,7 @@ class SiteController extends Controller
     public function actionIndex()
     {
         if (Yii::$app->user->isGuest) {
-            return $this->redirect('login');
+            return $this->redirect(['site/login']);
         }
 
         return $this->render('index');
@@ -84,7 +84,7 @@ class SiteController extends Controller
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
-            return $this->redirect('index');
+            return $this->redirect(['site/index']);
         }
 
         $model = new \app\models\LoginForm();
@@ -102,10 +102,10 @@ class SiteController extends Controller
         {
             $login = $model->login();
             if($login[ "logged" ])
-                return $this->redirect('index');
+                return $this->redirect(['site/index']);
         } 
 
-        return $this->redirect('login');
+        return $this->redirect(['site/login']);
     }
     /**
      * Logout action.
