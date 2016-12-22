@@ -7,11 +7,12 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 
-use app\models\LoginForm;
 use app\models\ContactForm;
 use app\components\JsonHelper;
 use app\components\filters\AuthCookieFilter;
-use app\models\Rol;
+// Admin module models
+use app\modules\admin\models\LoginForm;
+use app\modules\admin\models\Rol;
 
 class SiteController extends Controller
 {
@@ -23,7 +24,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AuthCookieFilter::className(),
-                'only' => ['logout', 'hola'],
+                'only'  => ['logout', 'hola'],
                 'rules' => [
                     [
                         'actions' => ['logout'],
@@ -87,7 +88,7 @@ class SiteController extends Controller
             return $this->redirect(['site/index']);
         }
 
-        $model = new \app\models\LoginForm();
+        $model = new LoginForm();
         
         return $this->render('login', [
             'model' => $model,
@@ -96,7 +97,7 @@ class SiteController extends Controller
 
     public function actionAuthenticate($url = 'dashboard')
     {
-        $model = new \app\models\LoginForm();
+        $model = new LoginForm();
         
         if ($model->load(Yii::$app->request->post())) 
         {
@@ -153,7 +154,7 @@ class SiteController extends Controller
 
     public function actionHola()
     {
-        
+        return "Hola";
     }
 
 

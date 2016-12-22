@@ -15,7 +15,7 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\Usuario',
+            'identityClass' => 'app\modules\admin\models\Usuario',
             'enableAutoLogin' => true,
             'enableSession'   => true
         ],
@@ -54,10 +54,16 @@ $config = [
             'class'     => 'app\modules\admin\Admin',
             'basePath'  => '@app/modules/admin'
         ],
+        'inventario' => [
+            'class' => 'app\modules\inventario\Inventario',
+            'basePath'  => '@app/modules/inventario'            
+        ],
+        'gridview' => [ 'class' => '\kartik\grid\Module' ]
     ],
 ];
 
-if (YII_ENV_DEV) {
+if (YII_ENV_DEV) 
+{
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [

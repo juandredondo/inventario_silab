@@ -1,9 +1,10 @@
 <?php
 
-namespace app\models;
+namespace app\modules\admin\models;
 
 use Yii;
-
+use app\models\Persona;
+use app\models\AuditLog;
 /**
  * This is the model class for table "TBL_USUARIOS".
  *

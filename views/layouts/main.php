@@ -40,11 +40,13 @@ if (Yii::$app->controller->action->id === 'login') {
     <?php $this->beginBody() ?>
     <div class="wrapper">
 
-        <?= $this->render(
-            'header.php',
-            ['directoryAsset' => $directoryAsset]
-        ) ?>
-
+        <?= 
+            $this->render(
+                'header.php',
+                ['directoryAsset' => $directoryAsset]
+            ) 
+        ?>
+        
         <?= $this->render(
             'left.php',
             ['directoryAsset' => $directoryAsset]
@@ -53,7 +55,7 @@ if (Yii::$app->controller->action->id === 'login') {
 
         <?= $this->render(
             'content.php',
-            ['content' => $content, 'directoryAsset' => $directoryAsset]
+            ['content' => $content, 'module' => Yii::$app->controller->module->id, 'directoryAsset' => $directoryAsset]
         ) ?>
 
     </div>

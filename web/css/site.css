@@ -113,3 +113,60 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+.header-link a
+{
+    margin: 0;
+    padding: 0 !important;
+    border: none !important;
+}
+.header-link a:hover
+{
+    margin: 0;
+    padding: 0 !important;
+    border: none !important;
+}
+
+.card
+{
+
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -o-border-radius: 2px;
+    border-radius: 2px;
+    border: 0;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
+    position: relative;
+    display: block;
+    background-color: #fff;
+    margin-bottom: .75rem;
+}
+
+[data-next-form-wrapper]
+{
+    transition: all ease;
+    height: 0px;
+    overflow-y: hidden;
+}
+[data-next-form-wrapper].height-auto
+{
+    transition: all ease;
+    height: auto;
+}
+
+.silab-hide
+{
+    transition: all;
+    opacity:0;
+    min-height: auto !important;
+    height: 0px !important;
+}
+
+.silab-show
+{
+    transition: all;
+    opacity:1;
+    min-height: inherit !important;
+    height: auto;
+}

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace app\modules\admin\models;
 
 use Yii;
 
@@ -52,6 +52,14 @@ class Permiso extends \yii\db\ActiveRecord
             'PERM_MODULO' => 'Perm  Modulo',
             'PERM_PADRE' => 'Perm  Padre',
         ];
+    }
+
+
+    public function getAlias() {
+        $modulo         = ($this->PERM_MODULO !== null )        ? ($this->PERM_MODULO . "/")        : "";
+        $controlador    = ($this->PERM_CONTROLADOR !== null )   ? ($this->PERM_CONTROLADOR . "/")   : "";
+
+        return  $modulo . $controlador . $this->PERM_ACCION;
     }
 
     /**

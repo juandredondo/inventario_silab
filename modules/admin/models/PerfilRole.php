@@ -1,9 +1,9 @@
 <?php
 
-namespace app\models;
+namespace app\modules\admin\models;
 
 use Yii;
-
+//use app\modules\admin\models;
 /**
  * This is the model class for table "TBL_PERFILESROLES".
  *
@@ -38,7 +38,7 @@ class PerfilRole extends \yii\db\ActiveRecord
             [['ROL_ID', 'PERM_ID'], 'unique', 'targetAttribute' => ['ROL_ID', 'PERM_ID'], 'message' => 'Ya se ha creado un enlace entre el rol y el permiso.'],
             [['PERM_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Permiso::className(), 'targetAttribute' => ['PERM_ID' => 'PERM_ID']],
             [['PERO_PADRE'], 'exist', 'skipOnError' => true, 'targetClass' => PerfilRole::className(), 'targetAttribute' => ['PERO_PADRE' => 'PERO_ID']],
-            [['ROL_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Role::className(), 'targetAttribute' => ['ROL_ID' => 'ROL_ID']],
+            [['ROL_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Rol::className(), 'targetAttribute' => ['ROL_ID' => 'ROL_ID']],
         ];
     }
 

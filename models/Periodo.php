@@ -15,6 +15,10 @@ use Yii;
  */
 class Periodo extends \yii\db\ActiveRecord
 {
+    public static $Semestres = [
+        1 => "PRIMER SEMESTRE",
+        2 => "SEGUNDO SEMESTRE",
+    ];
     /**
      * @inheritdoc
      */
@@ -47,11 +51,56 @@ class Periodo extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getId() {
+        return $this->PERI_ID;
+    }
+    public function setId($value = '') {
+         $this->PERI_ID = $value;
+    }
+
+    public function getSemestre() {
+        return $this->PERI_SEMESTRE;
+    }
+    public function setSemestre($value = '') {
+         $this->PERI_SEMESTRE = $value;
+    }
+
+    public function getFecha() {
+        return $this->PERI_FECHA;
+    }
+    public function setFecha($value = '') {
+         $this->PERI_FECHA = $value;
+    }
+
+    public function getAlias() {
+        return self::$Semestres[ $this->Semestre ] . " - " . (new \DateTime($this->Fecha))->format("Y") ;
+    }
+
+    public function esVigente()
+    {
+        $monthsBySemester = [
+            1 => [ 1, 2, 3, 4, 5, 6 ],
+            2 => [ 7, 8, 9, 10, 11, 12 ]
+        ];
+
+        $currentDate        = new \DateTime("today");
+        $modelDate          = new \DateTime($this->Fecha);
+        $currentSemester    = $this->semestre;
+        $_esVigente         = in_array( $currentDate->format("m"), $monthsBySemester[ $currentSemester ] ) 
+                                && $modelDate->format("Y") == $currentDate->format("Y");
+        return $_esVigente;
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getInventarios()
     {
         return $this->hasMany(Inventario::className(), ['PERI_ID' => 'PERI_ID']);
+    }
+
+    public function getStocks()
+    {
+        return $this->hasMany(Stock::className(), ['PERI_ID' => 'PERI_ID']);
     }
 }

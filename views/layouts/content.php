@@ -4,6 +4,27 @@ use dmstr\widgets\Alert;
 
 ?>
 <div class="content-wrapper">
+    <?php 
+        if($module === "inventario"):
+    ?>
+    <div class="">
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active">
+                <a data-toggle="tab" href="#home">Inventarios</a>
+            </li>
+            <li role="presentation">
+                <a data-toggle="tab" href="#profile">Items</a>
+            </li>
+            <li role="presentation">
+                <a data-toggle="tab" href="#messages">Laboratorios</a>
+            </li>
+            <li role="presentation">
+                <a data-toggle="tab" href="#settings">Movimientos</a>
+            </li>
+        </ul>
+    </div>
+    <?php endIf; ?>
+
     <section class="content-header">
         <?php if (isset($this->blocks['content-header'])) { ?>
             <h1><?= $this->blocks['content-header'] ?></h1>
@@ -12,11 +33,12 @@ use dmstr\widgets\Alert;
                 <?php
                 if ($this->title !== null) {
                     echo \yii\helpers\Html::encode($this->title);
-                } else {
+                } else 
+                {
                     echo \yii\helpers\Inflector::camel2words(
                         \yii\helpers\Inflector::id2camel($this->context->module->id)
                     );
-                    echo ($this->context->module->id !== \Yii::$app->id) ? '<small>Module</small>' : '';
+                    echo ($this->context->module->id !== \Yii::$app->id) ? '<small>Modulo</small>' : '';
                 } ?>
             </h1>
         <?php } ?>
@@ -27,8 +49,7 @@ use dmstr\widgets\Alert;
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             ]
         ) ?>
-    </section>
-
+    </section>    
     <section class="content">
         <?= Alert::widget() ?>
         <?= $content ?>
@@ -37,9 +58,9 @@ use dmstr\widgets\Alert;
 
 <footer class="main-footer">
     <div class="pull-right hidden-xs">
-        <b>Version</b> 2.0
+        <b>Version</b> 1.0
     </div>
-    <strong>Copyright &copy; 2014-2015 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights
+    <strong>Copyright &copy; 2014-2015 SILAB IONIC - <a href="http://www.uniguajira.edu.co">UNIGUAJIRA</a>, Gracias a <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights
     reserved.
 </footer>
 

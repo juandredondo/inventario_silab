@@ -28,10 +28,18 @@ $this->params['breadcrumbs'][] = $this->title;
             'LABO_ID',
             'LABO_NOMBRE',
             'LABO_NIVEL',
-            'edificio.EDIF_NOMBRE',
-            'coordinador.persona.PERS_NOMBRE',
-            'tipolaboratorio.TILA_NOMBRE',
-
+            [
+                'attribute' => 'Edificio',
+                'value'     => '$data->edificio->EDIF_NOMBRE',
+            ],
+            [
+                'attribute' => 'Coordinador',
+                'value'     => '$data->coordinador->persona->PERS_NOMBRE',
+            ],
+            [
+                'attribute' => 'Tipo',
+                'value'     => '$data->tipolaboratorio->TILA_NOMBRE',
+            ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

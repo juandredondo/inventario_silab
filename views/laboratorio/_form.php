@@ -8,7 +8,7 @@ use app\models\Edificio;
 use app\models\Coodinador;
 use app\models\TipoLaboratorio;
 
-
+use app\components\widgets\DropDownWidget;
 /* @var $this yii\web\View */
 /* @var $model app\models\Laboratorio */
 /* @var $form yii\widgets\ActiveForm */

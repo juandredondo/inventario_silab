@@ -60,6 +60,47 @@ class Laboratorio extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getId() {
+        return $this->LABO_ID;
+    }
+    public function setId($value = '') {
+         $this->LABO_ID = $value;
+    }
+
+    public function getNombre() {
+        return $this->LABO_NOMBRE;
+    }
+    public function setNombre($value = '') {
+         $this->LABO_NOMBRE = $value;
+    }
+
+    public function getNivel() {
+        return $this->LABO_NIVEL;
+    }
+    public function setNivel($value = '') {
+         $this->LABO_NIVEL = $value;
+    }
+
+    public function getTipoLaboratorioId() {
+        return $this->TILA_ID;
+    }
+    public function setTipoLaboratorioId($value = '') {
+         $this->TILA_ID = $value;
+    }
+
+    public function getCoordinadorId() {
+        return $this->COOR_ID;
+    }
+    public function setCoordinadorId($value = '') {
+         $this->COOR_ID = $value;
+    }
+
+    public function getEdificioId() {
+        return $this->EDIF_ID;
+    }
+    public function setEdificioId($value = '') {
+         $this->EDIF_ID = $value;
+    }
     /**
      * @return \yii\db\ActiveQuery
      */
