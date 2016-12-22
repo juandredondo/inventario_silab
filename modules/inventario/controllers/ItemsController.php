@@ -132,41 +132,57 @@ class ItemsController extends Controller
     public function actionLoadForm()
     {
         $model  = null;
-        $typeID = Yii::$app->request->get("tipoItemId");
+        $typeId = Yii::$app->request->get("tipoItemId");
+        $itemId = Yii::$app->request->get("itemId");
+        $formId = Yii::$app->request->get("formId");
+        
+        $formView   = "/_form";
 
-        $formView   = "/create";
-
-        switch($typeID)
+        switch($typeId)
         {
             case TipoItem::Material:
                 $formView   = "/material" . $formView;
-                $model      = new Material();
+                $model      = $this->loadModel(Material::className(), $itemId);;
             break;
 
             case TipoItem::Equipo:
                 $formView   = "/equipo" . $formView;
-                $model      = new Equipo();
+                $model      = $this->loadModel(Equipo::className(), $itemId);;
             break;
 
             case TipoItem::Accesorio:
                 $formView   = "/accesorio" . $formView;
-                $model      = new Accesorio();
+                $model      = $this->loadModel(Accesorio::className(), $itemId);;
             break;
 
-            case TipoItem::Herramienta:
+
+            /*case TipoItem::Herramienta:
                 $formView = "/herramienta" . $formView;
                 $model      = new Herramienta();                
-            break;
+            break;*/
 
             case TipoItem::Reactivo:
                 $formView   = "/reactivo" . $formView;
-                $model      = new Reactivo();  
+                $model      = $this->loadModel(Reactivo::className(), $itemId);;  
             break;
         }
-
-        return $this->renderPartial( $formView,[
-                'model' => $model,
-            ]
-        );
+        
+        return $this->renderAjax( $formView, [
+                'model'         => $model,
+                'submitButton'  => false,
+                'formId'        => $formId,
+            ]);
     }
+
+    protected function loadModel($class, $id)
+    {
+        $model = null;
+
+        if($id !== null && $id !== "")
+            $model = $class::findOne($id);
+        else
+            $model = new $class;
+
+        return $model;
+    } 
 }

@@ -18,29 +18,7 @@ use Yii;
  */
 class ItemConsumible extends \yii\db\ActiveRecord
 {
-
-    const Agotado       = 1;
-    const Reponer       = 2;
-    const Minimas       = 3;
-    const Suficiente    = 4;
-
-    public static $types = [
-        "Agotado"       => self::Agotado,
-        "Reponer"       => self::Reponer,
-        "Minimas"       => self::Minimas,
-        "Suficiente"    => self::Suficiente
-    ];
     
-    public static function getTypes()
-    {
-        return [
-            [ 'id' => self::Agotado,        'name' => 'Agotado' ],
-            [ 'id' => self::Reponer,   	    'name' => 'Reponer' ],
-            [ 'id' => self::Minimas,        'name' => 'Minimas' ],
-            [ 'id' => self::Suficientes,    'name' => 'Suficientes' ]
-        ];
-    }
-
     /**
      * @inheritdoc
      */
@@ -55,9 +33,9 @@ class ItemConsumible extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['ITEM_ID', 'estadoConsumible_id'], 'required'],
-            [['ITEM_ID', 'estadoConsumible_id'], 'integer'],
-            [['estadoConsumible_id'], 'exist', 'skipOnError' => true, 'targetClass' => EstadoConsumible::className(), 'targetAttribute' => ['estadoConsumible_id' => 'ESCO_ID']],
+            [['ITEM_ID', 'ESCO_ID'], 'required'],
+            [['ITEM_ID', 'ESCO_ID'], 'integer'],
+            [['ESCO_ID'], 'exist', 'skipOnError' => true, 'targetClass' => EstadoConsumible::className(), 'targetAttribute' => ['ESCO_ID' => 'ESCO_ID']],
             [['ITEM_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Items::className(), 'targetAttribute' => ['ITEM_ID' => 'ITEM_ID']],
         ];
     }
@@ -87,7 +65,7 @@ class ItemConsumible extends \yii\db\ActiveRecord
      */
     public function getItem()
     {
-        return $this->hasOne(Item::className(), ['ITEM_ID' => 'ITEM_ID']);
+        return $this->hasOne(Items::className(), ['ITEM_ID' => 'ITEM_ID']);
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 use app\components\widgets\DropDownWidget;
@@ -14,11 +15,18 @@ use app\assets\InventarioAsset;
 
 // Registrar Asset para modulo inventario
 InventarioAsset::register($this);
+
+$formID = "items-form";
 ?>
 
 <div class="items-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        "id"        => $formID,
+        "action"    => Url::toRoute("items/" . Yii::$app->action)
+    ]); ?>
+
+    <input type="hidden" name="Item[HIDDEN_ID]" value="<?= $itemId ?>">
 
     <?= $form->field($model, 'ITEM_NOMBRE')->textInput(['maxlength' => true]) ?>
 
@@ -49,7 +57,8 @@ InventarioAsset::register($this);
                 "columns"   => [
                     "id"    =>  "TIIT_ID",
                     "text"  =>  "TIIT_NOMBRE"
-                ]
+                ],
+                "options" => [ "disabled" => ($itemId !== null && $itemId !== "") ? true : false ]
             ]
         ); 
     ?>
@@ -75,12 +84,31 @@ InventarioAsset::register($this);
 <?php 
     $this->registerJs("
             $(function(){
+                var item        = new silab.items();
+                    item.form   = $('#items-form');
+
+                if($('select[name*=\"TIIT_ID\"]').val() != '')
+                {
+                    var typeId = $('select[name*=\"TIIT_ID\"]').val();
+
+                    // Cambiar accion del formulario
+                        item.cambiarAccion(typeId);
+                    // Load Form    
+                        item.loadForm({
+                            itemType    :   typeId,
+                            itemId      :   $('[name*=\"HIDDEN_ID\"]').val()
+                        });
+                }
 
                 $('select[name*=\"TIIT_ID\"]').on('change', function(){
                     var typeId  = $(this).val();
-                    var item    = new silab.items();
-                    // -- Load Form    
-                    item.loadForm(typeId);
+
+                    // Cambiar accion del formulario
+                        item.cambiarAccion(typeId);
+                    // Load Form    
+                        item.loadForm({
+                            itemType: typeId
+                        });
                 });
             });"
         );

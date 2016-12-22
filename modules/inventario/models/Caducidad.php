@@ -16,6 +16,26 @@ use Yii;
  */
 class Caducidad extends \yii\db\ActiveRecord
 {
+    const Vigente       = 1;
+    const ProximoVencer = 2;
+    const Vencido       = 3;
+
+    public static $types = [ 
+        "vigente"       => self::Vigente, 
+        "proximoVencer" => self::ProximoVencer,
+        "vencido"       => self::Vencido,
+    ];
+
+    public static function getTypes()
+    {
+        return [
+            [ "id" => self::Vigente,        'name' => "VIGENTE" ],
+            [ "id" => self::ProximoVencer,  'name' => "PROXIMO A VENCER" ],
+            [ "id" => self::Vencido,        'name' => "VENCIDO" ],
+        ];
+    }
+
+
     /**
      * @inheritdoc
      */
@@ -77,6 +97,26 @@ class Caducidad extends \yii\db\ActiveRecord
          $this->CADU_MAX = $value;
     }
 
+    public static function getCaducado($date)
+    {
+        $today = new \DateTime("today");
+        $date  = new \DateTime("2016-12-22");
+        $diff  = $today->diff( $date );
+
+        $rest = $diff->format('%R');
+        $days = $diff->days;
+
+        if($days <= 0)
+        {
+            return self::findOne(self::Vencido);
+        }
+        else if($days >= 1 && $days <= 50)
+        {
+            return self::findOne(self::ProximoVencer);
+        }
+
+        return self::findOne(self::Vigente);
+    }
 
     /**
      * @return \yii\db\ActiveQuery

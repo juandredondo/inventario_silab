@@ -12,10 +12,15 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="reactivo-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <?php if($submitButton == false): ?>
+        <h1><?= Html::encode($this->title) ?></h1>
+    <?php endIf; ?> 
 
     <?= $this->render('_form', [
-        'model' => $model,
+        'model'         => $model,
+        'submitButton'  => $submitButton,
+        'formId'        => $formId,
+        'itemId'        => $itemId
     ]) ?>
 
 </div>

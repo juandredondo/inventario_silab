@@ -12,10 +12,13 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="accesorios-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <?php if($submitButton == false): ?>
+        <h1><?= Html::encode($this->title) ?></h1>
+    <?php endIf; ?> 
 
     <?= $this->render('_form', [
         'model' => $model,
+        'submitButton' => $submitButton
     ]) ?>
 
 </div>

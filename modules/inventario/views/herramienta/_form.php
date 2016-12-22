@@ -7,7 +7,10 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\Herramienta */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
+<?php 
+    // variable para imprimir el boton tambien
+    $submitButton = (isset($submitButton)) ? $submitButton : true;
+?>
 <div class="herramienta-form">
 
     <?php $form = ActiveForm::begin(); ?>
@@ -16,9 +19,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'ITNC_ID')->textInput() ?>
 
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
+    <?php if($submitButton): ?>
+        <div class="form-group">
+            <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        </div>
+    <?php endIf; ?>
 
     <?php ActiveForm::end(); ?>
 

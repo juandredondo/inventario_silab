@@ -66,6 +66,12 @@ class Reactivo extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getId() {
+        return $this->REAC_ID;
+    }
+    public function setId($value = '') {
+         $this->REAC_ID = $value;
+    }
     /**
      * @return \yii\db\ActiveQuery
      */

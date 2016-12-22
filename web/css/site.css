@@ -152,7 +152,7 @@ a.desc:after {
 [data-next-form-wrapper].height-auto
 {
     transition: all ease;
-    height: auto;
+    height: auto !important;
 }
 
 .silab-hide

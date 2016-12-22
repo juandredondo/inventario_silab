@@ -1,10 +1,10 @@
 <?php
 
-namespace app\controllers;
+namespace app\modules\inventario\controllers;
 
 use Yii;
-use app\models\Caducidad;
-use app\models\CaducidadSearch;
+use app\modules\inventario\models\Caducidad;
+use app\modules\inventario\models\CaducidadSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

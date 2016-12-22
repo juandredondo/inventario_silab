@@ -11,11 +11,14 @@ $this->params['breadcrumbs'][] = ['label' => 'Materials', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="material-create">
-
-    <h1><?= Html::encode($this->title) ?></h1>
+    <?php if($submitButton == true): ?>
+        <h1><?= Html::encode($this->title) ?></h1>
+    <?php endIf; ?> 
 
     <?= $this->render('_form', [
-        'model' => $model,
+        'model'         => $model,
+        'submitButton'  => $submitButton,
+        'formId'        => $formId
     ]) ?>
 
 </div>

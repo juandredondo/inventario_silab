@@ -3,6 +3,11 @@
 namespace app\modules\inventario\controllers;
 
 use Yii;
+use app\modules\inventario\models\Items;
+use app\modules\inventario\models\TipoItem;
+use app\modules\inventario\models\ItemConsumible;
+use app\modules\inventario\models\Caducidad;
+use app\modules\inventario\models\EstadoConsumible;
 use app\modules\inventario\models\Reactivo;
 use app\modules\inventario\models\ReactivoSearch;
 use yii\web\Controller;
@@ -63,15 +68,36 @@ class ReactivoController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Reactivo();
+        $reactivo       = new Reactivo();
+        $itemConsumible = new ItemConsumible();
+        $item           = new Items();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->REAC_ID]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
+        if ($item->load(Yii::$app->request->post(), 'Items') && $item->save()) {
+            
+            if($reactivo->load(Yii::$app->request->post(), 'Reactivo'))
+            {
+                $itemConsumible->ITEM_ID = $item->id;
+                $itemConsumible->ESCO_ID = EstadoConsumible::Agotado;
+
+                if($itemConsumible->save())
+                {   
+                    $reactivo->ITCO_ID = $itemConsumible->ITCO_ID;
+                    $reactivo->CADU_ID = Caducidad::getCaducado( $reactivo->REAC_FECHA_VENCIMIENTO )->CADU_ID;
+                    
+                    if($reactivo->save())
+                    {
+                        return $this->redirect(['view', 'id' => $reactivo->id]);
+                    }
+                }
+            }
+        } 
+        
+        $item->TIIT_ID = TipoItem::Reactivo;
+
+        return $this->render('/items/create', [
+            'model' => $item
+        ]);
+        
     }
 
     /**
@@ -82,15 +108,36 @@ class ReactivoController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $reactivo       = $this->findModel($id);
+        $itemConsumible = $reactivo->itemConsumible;
+        $item           = $itemConsumible->item;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->REAC_ID]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
+        if ($item->load(Yii::$app->request->post(), 'Items') && $item->save()) {
+            
+            if($reactivo->load(Yii::$app->request->post(), 'Reactivo'))
+            {
+                $itemConsumible->ITEM_ID = $item->id;
+                $itemConsumible->ESCO_ID = EstadoConsumible::Agotado;
+
+                if($itemConsumible->save())
+                {   
+                    $reactivo->ITCO_ID = $itemConsumible->ITCO_ID;
+                    $reactivo->CADU_ID = Caducidad::getCaducado( $reactivo->REAC_FECHA_VENCIMIENTO )->CADU_ID;
+                    
+                    if($reactivo->save())
+                    {
+                        return $this->redirect(['view', 'id' => $reactivo->id]);
+                    }
+                }
+            }
+        } 
+        
+        $item->TIIT_ID = TipoItem::Reactivo;
+
+        return $this->render('/items/update', [
+            'model'     => $item,
+            'itemId'    => $id
+        ]);
     }
 
     /**

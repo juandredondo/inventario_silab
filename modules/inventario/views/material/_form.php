@@ -7,18 +7,23 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\Material */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
+<?php 
+    // variable para imprimir el boton tambien
+    $submitButton = (isset($submitButton)) ? $submitButton : true;
+?>
 <div class="material-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'MATE_MEDIDA')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'ITCO_ID')->textInput() ?>
-
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
+    <?// $form->field($model, 'ITCO_ID')->textInput() ?>
+    
+    <?php if($submitButton): ?>
+        <div class="form-group">
+            <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        </div>
+    <?php endIf; ?>
 
     <?php ActiveForm::end(); ?>
 

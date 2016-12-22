@@ -1,10 +1,10 @@
 <?php
 
-namespace app\controllers;
+namespace app\modules\inventario\controllers;
 
 use Yii;
-use app\models\Ubicacion;
-use app\models\UbicacionSearch;
+use app\modules\inventario\models\Ubicacion;
+use app\modules\inventario\models\UbicacionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
