@@ -4,6 +4,8 @@ namespace app\modules\inventario\controllers;
 
 use Yii;
 use app\modules\inventario\models\Stock;
+use app\models\Flujo;
+use app\models\TipoFlujo;
 use app\modules\inventario\models\StockSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -63,13 +65,24 @@ class StockController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Stock();
+        $stock = new Stock();
+        $flujo = new Flujo();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->STOC_ID]);
+        if ($stock->load(Yii::$app->request->post()) ) {
+
+            if($stock->save()){
+                $flujo->STOC_ID =  $stock->STOC_ID;
+                $flujo->FLUJ_CANTIDAD =  $stock->STOC_CANTIDAD;
+                $flujo->TIFU_ID =  TipoFlujo::Entrada;
+
+                if($flujo->save())
+              return $this->redirect(['inventario/view', 'id' => $stock->INVE_ID]);  
+            }
+            
         } else {
             return $this->render('create', [
-                'model' => $model,
+                'stock' => $stock,
+                'flujo' => $flujo,
             ]);
         }
     }
