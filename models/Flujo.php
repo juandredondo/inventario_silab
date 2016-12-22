@@ -1,6 +1,7 @@
 <?php
 
 namespace app\models;
+use app\modules\inventario\models\Stock;
 
 use Yii;
 

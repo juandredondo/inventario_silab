@@ -18,6 +18,8 @@ class TipoFlujo extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    const Entrada = 1;
+    const Salida =  2;
     public static function tableName()
     {
         return 'TBL_TIPOFLUJO';

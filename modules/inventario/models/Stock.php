@@ -1,7 +1,7 @@
 <?php
 
 namespace app\modules\inventario\models;
-
+use app\models\Periodo;
 use Yii;
 
 /**
@@ -37,7 +37,7 @@ class Stock extends \yii\db\ActiveRecord
             [['STOC_CANTIDAD'], 'number'],
             [['INVE_ID', 'ITEM_ID', 'PERI_ID'], 'unique', 'targetAttribute' => ['INVE_ID', 'ITEM_ID', 'PERI_ID'], 'message' => 'La combinacion ya existe.'],
             [['INVE_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Inventario::className(), 'targetAttribute' => ['INVE_ID' => 'INVE_ID']],
-            [['ITEM_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Item::className(), 'targetAttribute' => ['ITEM_ID' => 'ITEM_ID']],
+            [['ITEM_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Items::className(), 'targetAttribute' => ['ITEM_ID' => 'ITEM_ID']],
             [['PERI_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Periodo::className(), 'targetAttribute' => ['PERI_ID' => 'PERI_ID']],
         ];
     }
@@ -76,7 +76,7 @@ class Stock extends \yii\db\ActiveRecord
      */
     public function getItem()
     {
-        return $this->hasOne(Item::className(), ['ITEM_ID' => 'ITEM_ID']);
+        return $this->hasOne(Items::className(), ['ITEM_ID' => 'ITEM_ID']);
     }
 
     /**
@@ -84,6 +84,6 @@ class Stock extends \yii\db\ActiveRecord
     */
    public function getPeriodo()
    {
-       return $this->hasOne(Periodos::className(), ['PERI_ID' => 'PERI_ID']);
+       return $this->hasOne(Periodo::className(), ['PERI_ID' => 'PERI_ID']);
    }
 }

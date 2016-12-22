@@ -2,6 +2,9 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
+use app\modules\inventario\models\Items;
+use app\models\Periodo;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Stock */
@@ -12,14 +15,27 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'ITEM_ID')->textInput() ?>
+    <?= $form->field($stock, 'ITEM_ID')->dropDownList(
+		     
+            ArrayHelper::map(Items::find()->asArray()->all(), 'ITEM_ID', 'ITEM_NOMBRE'),
+            ['prompt'=>'-Seleccione un item-'])
+            
+		?>
+ 	<?= $form->field($stock, 'INVE_ID')->textInput(
+ 		['type'=>'hidden','readonly' => false, 'value' => Yii::$app->request->get('id')])->label(false) ?>
 
-    <?= $form->field($model, 'INVE_ID')->textInput() ?>
+  
+    <?= $form->field($stock, 'STOC_CANTIDAD')->textInput(['type' => 'number']) ?>
 
-    <?= $form->field($model, 'STOC_CANTIDAD')->textInput() ?>
+    <?= $form->field($stock, 'PERI_ID')->dropDownList(
+		     
+            ArrayHelper::map(Periodo::find()->asArray()->all(), 'PERI_ID', 'PERI_FECHA'),
+            ['prompt'=>'-Seleccione un periodo-'])
+            
+		?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($stock->isNewRecord ? 'Create' : 'Update', ['class' => $stock->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

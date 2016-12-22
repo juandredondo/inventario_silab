@@ -106,7 +106,7 @@ class Items extends \yii\db\ActiveRecord
      */
     public function getMarca()
     {
-        return $this->hasOne(TBLMARCAS::className(), ['MARC_ID' => 'MARC_ID']);
+        return $this->hasOne(Marca::className(), ['MARC_ID' => 'MARC_ID']);
     }
 
     /**
