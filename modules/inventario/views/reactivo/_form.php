@@ -14,8 +14,10 @@ DatePickerAsset::register($this);
 ?>
 <?php 
     // variable para imprimir el boton tambien
-    $submitButton = (isset($submitButton)) ? $submitButton : true;  
-    $isJustLoad   = (isset($isJustLoad)) ? $isJustLoad : false;
+    $submitButton   = (isset($submitButton)) ? $submitButton : true;  
+    $isJustLoad     = (isset($isJustLoad)) ? $isJustLoad : false;
+    $item           = $model->item;
+    $itemConsumible = $model->parent;
 ?>
 <div class="reactivo-form">
 

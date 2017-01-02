@@ -92,7 +92,10 @@ class Reactivo extends \app\modules\inventario\models\core\ItemBase
      */
     public function getItemConsumible()
     {
-        return $this->parent;
+        $relation       = static::getItemRelation(); 
+        $aux            = $this->hasOne($relation["class"], [static::$parentIdProperty => static::$parentIdProperty]);
+                
+        return $aux;
     }
 
     /**

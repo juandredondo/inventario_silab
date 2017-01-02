@@ -4,6 +4,7 @@ namespace app\modules\inventario\models\core;
 
 use Yii;
 use app\components\core\IdentificableInterface;
+use app\components\core\LoadableActiveRecord;
 /**
  * This is the model class for table "TBL_ITEMSNOCONSUMIBLES".
  *
@@ -19,7 +20,7 @@ use app\components\core\IdentificableInterface;
  * @property TBLITEMS $iTEM
  * @property TBLMODELO $mODE
  */
-class ItemNoConsumible extends \yii\db\ActiveRecord implements IdentificableInterface
+class ItemNoConsumible extends LoadableActiveRecord implements IdentificableInterface
 {
     /**
      * @inheritdoc

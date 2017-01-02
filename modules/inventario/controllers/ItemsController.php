@@ -100,15 +100,15 @@ class ItemsController extends Controller
     {
         $model = $this->findModel($id);
 
-
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->ITEM_ID]);
         } 
         else 
         {
             return $this->render('update', [
-                'item' => $model,
+                'item'           => $reac->item,
+                'itemConsumible' => $reac->parent,
+                'model'          => $reac
             ]);
         }
     }

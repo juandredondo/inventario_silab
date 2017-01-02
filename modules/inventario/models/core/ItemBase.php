@@ -37,13 +37,23 @@ abstract class ItemBase extends \yii\db\ActiveRecord implements IdentificableInt
 
     public function getParent() 
     {
-        if($this->id != 0)
+        if(!isset($this->_parent))
         {
-            $relation       = static::getItemRelation(); 
-            $this->_parent  = $this->hasOne($relation["class"], [static::$parentIdProperty => static::$parentIdProperty]);
+            $baseClass      = static::getItemRelation()[ "class" ];
+            $this->_parent  = new $baseClass;
         }
-        
+
         return $this->_parent;
+    }
+
+    public function fillParents() 
+    {
+        if(!$this->isNewRecord)
+        {
+            $relatedFunc  = static::getItemRelation()["relation"];
+            $this->parent = $this->$relatedFunc;
+            $this->item   = $this->parent->item;
+        }
     }
 
     public function setParent(IdentificableInterface $value) 
@@ -114,11 +124,7 @@ abstract class ItemBase extends \yii\db\ActiveRecord implements IdentificableInt
             $this->item             = new $baseClass;
             $this->item->tipoItemId = static::getType();
         }
-        if( $this->parent == null )
-        {
-            $baseClass      = static::getItemRelation()[ "class" ];
-            $this->parent   = new $baseClass;
-        }
+        
         parent::init();
     }
 
@@ -230,6 +236,7 @@ abstract class ItemBase extends \yii\db\ActiveRecord implements IdentificableInt
         
     }
 
+
     private function prepareParams()
     {
         $params = $this->_params;
@@ -241,6 +248,22 @@ abstract class ItemBase extends \yii\db\ActiveRecord implements IdentificableInt
     {
         $this->_params = $params;
         return $this;
+    }
+
+    public static function findOne($condition)
+    {
+        $result = parent::findOne($condition);
+        if($result != null)
+        {
+            $result->fillParents();
+        }
+
+        return $result;
+    }
+
+    public function delete()
+    {
+        return $this->item->delete();
     }
 }
 
