@@ -1,16 +1,16 @@
 <?php
 
-namespace app\modules\inventario\models;
+namespace app\modules\inventario\models\core;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\inventario\models\ItemNoConsumible;
+use app\modules\inventario\models\core\ItemConsumible;
 
 /**
- * ItemNoConsumibleSearch represents the model behind the search form about `app\models\ItemNoConsumible`.
+ * ItemConsumibleSearch represents the model behind the search form about `app\models\ItemConsumible`.
  */
-class ItemNoConsumibleSearch extends ItemNoConsumible
+class ItemConsumibleSearch extends ItemConsumible
 {
     /**
      * @inheritdoc
@@ -18,7 +18,7 @@ class ItemNoConsumibleSearch extends ItemNoConsumible
     public function rules()
     {
         return [
-            [['ITNC_ID', 'ITEM_ID', 'ESNC_ID', 'MODE_ID'], 'integer'],
+            [['ITCO_ID', 'ITEM_ID', 'estadoConsumible_id'], 'integer'],
         ];
     }
 
@@ -40,7 +40,7 @@ class ItemNoConsumibleSearch extends ItemNoConsumible
      */
     public function search($params)
     {
-        $query = ItemNoConsumible::find();
+        $query = ItemConsumible::find();
 
         // add conditions that should always apply here
 
@@ -58,10 +58,9 @@ class ItemNoConsumibleSearch extends ItemNoConsumible
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'ITNC_ID' => $this->ITNC_ID,
+            'ITCO_ID' => $this->ITCO_ID,
             'ITEM_ID' => $this->ITEM_ID,
-            'ESNC_ID' => $this->ESNC_ID,
-            'MODE_ID' => $this->MODE_ID,
+            'estadoConsumible_id' => $this->estadoConsumible_id,
         ]);
 
         return $dataProvider;

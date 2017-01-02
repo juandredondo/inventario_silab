@@ -3,7 +3,7 @@
 namespace app\modules\inventario\models;
 
 use Yii;
-
+use app\modules\inventario\models\core\NoItemConsumible;
 /**
  * This is the model class for table "TBL_ACCESORIOS".
  *
@@ -14,8 +14,13 @@ use Yii;
  *
  * @property TBLITEMSNOCONSUMIBLES $iTNC
  */
-class Accesorios extends \yii\db\ActiveRecord
+class Accesorios extends \app\modules\inventario\models\core\ItemBase
 {
+    public static function getType()
+    {
+        return \app\modules\inventario\models\core\TipoItem::Accesorio;
+    }
+
     /**
      * @inheritdoc
      */

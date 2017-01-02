@@ -1,9 +1,9 @@
 <?php
 
-namespace app\modules\inventario\models;
+namespace app\modules\inventario\models\core;
 
 use Yii;
-
+use app\components\core\IdentificableInterface;
 /**
  * This is the model class for table "TBL_ITEMSNOCONSUMIBLES".
  *
@@ -19,7 +19,7 @@ use Yii;
  * @property TBLITEMS $iTEM
  * @property TBLMODELO $mODE
  */
-class ItemNoConsumible extends \yii\db\ActiveRecord
+class ItemNoConsumible extends \yii\db\ActiveRecord implements IdentificableInterface
 {
     /**
      * @inheritdoc
@@ -54,6 +54,15 @@ class ItemNoConsumible extends \yii\db\ActiveRecord
             'ESNC_ID' => 'Esnc  ID',
             'MODE_ID' => 'Mode  ID',
         ];
+    }
+
+    public function getId() 
+    {
+        return $this->ITNC_ID;
+    }
+    public function setId($value = 0) 
+    {
+         $this->ITNC_ID = $value;
     }
 
     /**

@@ -10,10 +10,15 @@ use yii\widgets\ActiveForm;
 <?php 
     // variable para imprimir el boton tambien
     $submitButton = (isset($submitButton)) ? $submitButton : true;
+    $isJustLoad   = (isset($isJustLoad)) ? $isJustLoad : false;
 ?>
 <div class="material-form">
 
     <?php $form = ActiveForm::begin(); ?>
+
+    <?php 
+        require Yii::getAlias("@inventarioViews").'/item-consumible/_form-fields.php';
+    ?>
 
     <?= $form->field($model, 'MATE_MEDIDA')->textInput(['maxlength' => true]) ?>
 

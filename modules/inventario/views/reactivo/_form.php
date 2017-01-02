@@ -15,11 +15,16 @@ DatePickerAsset::register($this);
 <?php 
     // variable para imprimir el boton tambien
     $submitButton = (isset($submitButton)) ? $submitButton : true;  
+    $isJustLoad   = (isset($isJustLoad)) ? $isJustLoad : false;
 ?>
 <div class="reactivo-form">
 
     <?php 
         $form = ($formId === null) ? ActiveForm::begin() : ActiveForm::begin([ "id" => $formId]); 
+    ?>
+
+    <?php 
+        require Yii::getAlias("@inventarioViews").'/item-consumible/_form-fields.php';
     ?>
 
     <?= $form->field($model, 'REAC_CODIGO')->textInput(['maxlength' => true]) ?>

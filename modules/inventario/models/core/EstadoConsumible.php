@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\inventario\models;
+namespace app\modules\inventario\models\core;
 
 use Yii;
 

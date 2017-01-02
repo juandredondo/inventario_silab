@@ -3,14 +3,16 @@
 namespace app\modules\inventario\controllers;
 
 use Yii;
-use app\modules\inventario\models\Items;
+use app\modules\inventario\models\core\Items;
+use app\modules\inventario\models\core\ItemConsumible;
+use app\modules\inventario\models\core\ItemsSearch;
+use app\modules\inventario\models\core\TipoItem;
+
 use app\modules\inventario\models\Reactivo;
 use app\modules\inventario\models\Material;
 use app\modules\inventario\models\Equipo;
 use app\modules\inventario\models\Accesorios;
 use app\modules\inventario\models\Herramienta;
-use app\modules\inventario\models\TipoItem;
-use app\modules\inventario\models\ItemsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -59,7 +61,7 @@ class ItemsController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'item' => $this->findModel($id),
         ]);
     }
 
@@ -70,15 +72,22 @@ class ItemsController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Items();
+        $reactivo       = new Reactivo();
+        $itemConsumible = new ItemConsumible();
+        $item           = new Items();
+        $data           = Yii::$app->request->post();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->ITEM_ID]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
+        if ($item->load($data, 'Items') && $item->save()) {
+            
+            $this->saveItem($item,  $data);
+        } 
+        
+        $item->TIIT_ID = TipoItem::Reactivo;
+
+        return $this->render('/items/create', [
+            'item'  => $item,
+            'model' => $reactivo
+        ]);
     }
 
     /**
@@ -91,11 +100,15 @@ class ItemsController extends Controller
     {
         $model = $this->findModel($id);
 
+
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->ITEM_ID]);
-        } else {
+        } 
+        else 
+        {
             return $this->render('update', [
-                'model' => $model,
+                'item' => $model,
             ]);
         }
     }
@@ -131,47 +144,82 @@ class ItemsController extends Controller
 
     public function actionLoadForm()
     {
-        $model  = null;
-        $typeId = Yii::$app->request->get("tipoItemId");
-        $itemId = Yii::$app->request->get("itemId");
-        $formId = Yii::$app->request->get("formId");
-        
+        $model      = null;
+        $typeId     = Yii::$app->request->get("tipoItemId");
+        $itemId     = Yii::$app->request->get("itemId");
+        $formId     = Yii::$app->request->get("formId");
+        $consumible = "";
         $formView   = "/_form";
 
         switch($typeId)
         {
             case TipoItem::Material:
                 $formView   = "/material" . $formView;
-                $model      = $this->loadModel(Material::className(), $itemId);;
+                $model      = $this->loadModel(Material::className(), $itemId);
             break;
 
             case TipoItem::Equipo:
                 $formView   = "/equipo" . $formView;
-                $model      = $this->loadModel(Equipo::className(), $itemId);;
+                $model      = $this->loadModel(Equipo::className(), $itemId);
             break;
 
             case TipoItem::Accesorio:
                 $formView   = "/accesorio" . $formView;
-                $model      = $this->loadModel(Accesorio::className(), $itemId);;
+                $model      = $this->loadModel(Accesorio::className(), $itemId);
             break;
 
 
-            /*case TipoItem::Herramienta:
-                $formView = "/herramienta" . $formView;
-                $model      = new Herramienta();                
-            break;*/
+            case TipoItem::Herramienta:
+                $formView   = "/herramienta" . $formView;
+                $model      = new Herramienta();   
+            break;
 
             case TipoItem::Reactivo:
                 $formView   = "/reactivo" . $formView;
-                $model      = $this->loadModel(Reactivo::className(), $itemId);;  
+                $model      = $this->loadModel(Reactivo::className(), $itemId);
+            break;
+        }
+
+        $consumible = $model::getItemRelation();
+        
+        return $this->renderAjax( $formView, [
+                'model'                     => $model,
+                $consumible[ "relation" ]   => new $consumible[ "class" ],
+                'submitButton'              => false,
+                'formId'                    => $formId,
+                'isJustLoad'                => true
+            ]);
+    }
+
+    private function loadTypeMode($itemId, $type)
+    {
+        $model  = null;
+
+        switch($type)
+        {
+            case TipoItem::Material:
+                $model      = \app\modules\inventario\models\Material::getByItemId( $itemId );
+            break;
+
+            case TipoItem::Equipo:
+                $model      = \app\modules\inventario\models\Equipo::getByItemId( $itemId );
+            break;
+
+            case TipoItem::Accesorio:
+                $model      = \app\modules\inventario\models\Accesorio::getByItemId( $itemId );
+            break;
+
+
+            case TipoItem::Herramienta:
+                $model      = \app\modules\inventario\models\Herramienta::getByItemId( $itemId );              
+            break;
+
+            case TipoItem::Reactivo:
+                $model      = \app\modules\inventario\models\Reactivo::getByItemId( $itemId );
             break;
         }
         
-        return $this->renderAjax( $formView, [
-                'model'         => $model,
-                'submitButton'  => false,
-                'formId'        => $formId,
-            ]);
+        return $model;
     }
 
     protected function loadModel($class, $id)
@@ -185,4 +233,39 @@ class ItemsController extends Controller
 
         return $model;
     } 
+
+    /**
+    * @param $item El item (instancia de Items) que servira de base para guardar los subitems
+    * @param $data La informacion cargada, ya sea por un array asociativo con el nombre del modelo
+    */
+    private function saveItem($item, $data)
+    {
+        $model  = null;
+
+        switch($item->tipoItemId)
+        {
+            case TipoItem::Material:
+                $model      = \app\modules\inventario\models\Material::getByItemId( $itemId );
+            break;
+
+            case TipoItem::Equipo:
+                $model      = \app\modules\inventario\models\Equipo::getByItemId( $itemId );
+            break;
+
+            case TipoItem::Accesorio:
+                $model      = \app\modules\inventario\models\Accesorio::getByItemId( $itemId );
+            break;
+
+
+            case TipoItem::Herramienta:
+                $model      = \app\modules\inventario\models\Herramienta::getByItemId( $itemId );              
+            break;
+
+            case TipoItem::Reactivo:
+                $model      = \app\modules\inventario\models\Reactivo::getByItemId( $itemId );
+            break;
+        }
+        
+        return $model;
+    }
 }

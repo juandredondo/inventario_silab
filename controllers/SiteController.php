@@ -13,7 +13,7 @@ use app\components\filters\AuthCookieFilter;
 // Admin module models
 use app\modules\admin\models\LoginForm;
 use app\modules\admin\models\Rol;
-
+use app\models\Test;
 class SiteController extends Controller
 {
     /**
@@ -42,6 +42,7 @@ class SiteController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'logout' => ['post'],
+                    //'test'   => ['post']
                 ],
             ],
         ];
@@ -158,4 +159,26 @@ class SiteController extends Controller
     }
 
 
+    public function actionTest()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        /*
+        $test  = new TestA;
+        $test->load(Yii::$app->request->post(), '');
+        $test->save();
+        
+        return $test;
+        
+        return [
+            \app\modules\inventario\models\Reactivo::getByItemId( 3 ),
+            \app\modules\inventario\models\Equipo::getByItemId( 1 ),
+        ];*/
+
+    }
+
+    public function beforeAction($action)
+    {
+        $this->enableCsrfValidation = false;
+        return parent::beforeAction($action);
+    }
 }

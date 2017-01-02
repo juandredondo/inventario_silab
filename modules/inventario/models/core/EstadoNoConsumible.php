@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\inventario\models;
+namespace app\modules\inventario\models\core;
 
 use Yii;
 
@@ -15,6 +15,25 @@ use Yii;
  */
 class EstadoNoConsumible extends \yii\db\ActiveRecord
 {
+    const Bueno     = 1;
+    const Dañado    = 2;
+    const Agotado   = 3;
+
+    public static $types = [
+        "Bueno"       => self::Bueno,
+        "Dañado"      => self::Dañado,
+        "Agotado"     => self::Agotado,
+    ];
+    
+    public static function getTypes()
+    {
+        return [
+            [ 'id' => self::Bueno,        'name' => 'Bueno'  ],
+            [ 'id' => self::Dañado,   	  'name' => 'Dañado' ],
+            [ 'id' => self::Agotado,      'name' => 'Agotado']
+        ];
+    }
+
     /**
      * @inheritdoc
      */

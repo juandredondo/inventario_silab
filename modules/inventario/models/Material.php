@@ -3,7 +3,8 @@
 namespace app\modules\inventario\models;
 
 use Yii;
-
+use app\modules\inventario\model\core\Items;
+use app\modules\inventario\model\core\ItemConsumible;
 /**
  * This is the model class for table "TBL_MATERIALES".
  *
@@ -13,8 +14,13 @@ use Yii;
  *
  * @property TBLITEMSCONSUMIBLES $iTCO
  */
-class Material extends \yii\db\ActiveRecord
+class Material extends \app\modules\inventario\models\core\ItemBase
 {
+    public static function getType()
+    {
+        return \app\modules\inventario\models\core\TipoItem::Material;
+    }
+
     /**
      * @inheritdoc
      */
@@ -23,6 +29,19 @@ class Material extends \yii\db\ActiveRecord
         return 'TBL_MATERIALES';
     }
 
+    public static function getHierarchy()
+    {
+        return [
+            "parent" => [
+                "class"     => ItemComsumible::className(),
+                "parent"    => [
+                    "class" => Items::className(),
+                ]
+            ]
+        ];
+    }
+
+    
     /**
      * @inheritdoc
      */

@@ -1,9 +1,10 @@
 <?php
 
-namespace app\modules\inventario\models;
+namespace app\modules\inventario\models\core;
 
 use Yii;
-
+use app\components\core\IdentificableInterface;
+use app\modules\inventario\models\Marca;
 /**
  * This is the model class for table "TBL_ITEMS".
  *
@@ -19,8 +20,9 @@ use Yii;
  * @property TBLSTOCK[] $tBLSTOCKs
  * @property TBLINVENTARIOS[] $iNVEs
  */
-class Items extends \yii\db\ActiveRecord
+class Items extends \yii\db\ActiveRecord implements IdentificableInterface
 {
+    public $isAmazing = false; 
     /**
      * @inheritdoc
      */
@@ -41,6 +43,7 @@ class Items extends \yii\db\ActiveRecord
             [['ITEM_NOMBRE'], 'string', 'max' => 200],
             [['TIIT_ID'], 'exist', 'skipOnError' => true, 'targetClass' => TipoItem::className(), 'targetAttribute' => ['TIIT_ID' => 'TIIT_ID']],
             [['MARC_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Marca::className(), 'targetAttribute' => ['MARC_ID' => 'MARC_ID']],
+            [['nombre', 'observacion'], 'safe']
         ];
     }
 
@@ -50,18 +53,20 @@ class Items extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'ITEM_ID' => 'Item  ID',
-            'ITEM_NOMBRE' => 'Item  Nombre',
-            'ITEM_OBSERVACION' => 'Item  Observacion',
-            'MARC_ID' => 'Marc  ID',
-            'TIIT_ID' => 'Tipo Item',
+            'ITEM_ID'           => 'Item  ID',
+            'ITEM_NOMBRE'       => 'Item  Nombre',
+            'ITEM_OBSERVACION'  => 'Item  Observacion',
+            'MARC_ID'           => 'Marc  ID',
+            'TIIT_ID'           => 'Tipo Item',
         ];
     }
 
-    public function getId() {
+    public function getId() 
+    {
         return $this->ITEM_ID;
     }
-    public function setId($value = '') {
+    public function setId($value = 0) 
+    {
          $this->ITEM_ID = $value;
     }
 
@@ -148,5 +153,36 @@ class Items extends \yii\db\ActiveRecord
     public function getInventarios()
     {
         return $this->hasMany(Inventario::className(), ['INVE_ID' => 'INVE_ID'])->viaTable('TBL_STOCK', ['ITEM_ID' => 'ITEM_ID']);
+    }
+
+    public function getRealItemId()
+    {
+        $realId = 0;
+
+        switch($this->TipoItemId)
+        {
+            case TipoItem::Material:
+                $realId = Material::getByItemId($this->id)->id;
+            break;
+
+            case TipoItem::Equipo:
+                $realId = Equipo::getByItemId($this->id)->id;
+            break;
+
+            case TipoItem::Accesorio:
+                $realId = Accesorio::getByItemId($this->id)->id;
+            break;
+
+
+            case TipoItem::Herramienta:
+                $realId = Herramienta::getByItemId($this->id)->id;
+            break;
+
+            case TipoItem::Reactivo:
+                $realId = Reactivo::getByItemId($this->id)->id;
+            break;
+        }
+
+        return $this;
     }
 }

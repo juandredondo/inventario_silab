@@ -12,12 +12,12 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'ITEM_ID')->textInput() ?>
-
-    <?= $form->field($model, 'estadoConsumible_id')->textInput() ?>
+    <?php 
+        require Yii::getAlias('@inventarioViews').'/item-consumible/_form-fields.php';
+    ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($itemConsumible->isNewRecord ? 'Create' : 'Update', ['class' => $itemConsumible->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

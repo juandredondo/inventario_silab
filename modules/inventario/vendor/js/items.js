@@ -99,6 +99,5 @@ silab.items.prototype.getFormContent = function(data)
 silab.reactivo = function() 
 {
     var item = silab.items;
-    
 }
 

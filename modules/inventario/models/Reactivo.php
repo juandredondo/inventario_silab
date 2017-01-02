@@ -3,7 +3,7 @@
 namespace app\modules\inventario\models;
 
 use Yii;
-
+use app\modules\inventario\models\core\ItemConsumible;
 /**
  * This is the model class for table "TBL_REACTIVOS".
  *
@@ -21,8 +21,15 @@ use Yii;
  * @property TBLSIMBOLOS $sIMB
  * @property TBLUBICACIONES $uBIC
  */
-class Reactivo extends \yii\db\ActiveRecord
+class Reactivo extends \app\modules\inventario\models\core\ItemBase
 {
+    protected static $parentIdProperty   = "ITCO_ID";
+
+    public static function getType()
+    {
+        return \app\modules\inventario\models\core\TipoItem::Reactivo;
+    }
+
     /**
      * @inheritdoc
      */
@@ -85,7 +92,7 @@ class Reactivo extends \yii\db\ActiveRecord
      */
     public function getItemConsumible()
     {
-        return $this->hasOne(ItemConsumible::className(), ['ITCO_ID' => 'ITCO_ID']);
+        return $this->parent;
     }
 
     /**

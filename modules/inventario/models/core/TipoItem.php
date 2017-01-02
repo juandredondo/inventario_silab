@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\inventario\models;
+namespace app\modules\inventario\models\core;
 
 use Yii;
 
@@ -48,6 +48,41 @@ class TipoItem extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function getTypesById()
+    {
+        $types = [
+            self::Consumible => [
+                'name'      => "CONSUMIBLE",
+                'parent'    => null
+            ],      
+            self::NoConsumible => [
+                'name'      => "NOCONSUMIBLE",
+                'parent'    => null
+            ], 
+            self::Reactivo => [
+                'name'      => "REACTIVO",
+                'parent'    => self::Consumible
+            ], 
+            self::Material => [
+                'name'      => "MATERIAL",
+                'parent'    => self::Consumible
+            ], 
+            self::Equipo => [
+                'name'      => "EQUIPO",
+                'parent'    => self::NoConsumible
+            ], 
+            self::Accesorio => [
+                'name'      => "ACCESORIO",
+                'parent'    => self::NoConsumible
+            ], 
+            self::Herramienta => [
+                'name'      => "HERRAMIENTA",
+                'parent'    => self::NoConsumible
+            ], 
+        ];
+
+        return $types;
+    }
     /**
      * @inheritdoc
      */
@@ -95,6 +130,11 @@ class TipoItem extends \yii\db\ActiveRecord
     public function getPadre()
     {
         return $this->hasOne(TipoItem::className(), ['TIIT_ID' => 'TIIT_PADRE']);
+    }
+
+    public static function getPadreById($id)
+    {
+        return self::getTypesById()[ $id ];
     }
 
     /**

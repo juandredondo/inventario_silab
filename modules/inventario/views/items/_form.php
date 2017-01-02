@@ -4,9 +4,9 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
-use app\components\widgets\DropDownWidget;
+/*use app\components\widgets\DropDownWidget;
 use app\modules\inventario\models\Marca;
-use app\modules\inventario\models\TipoItem;
+use app\modules\inventario\models\TipoItem;*/
 
 use app\assets\InventarioAsset;
 /* @var $this yii\web\View */
@@ -22,63 +22,31 @@ $formID = "items-form";
 <div class="items-form">
 
     <?php $form = ActiveForm::begin([
-        "id"        => $formID,
-        "action"    => Url::toRoute("items/" . Yii::$app->action)
-    ]); ?>
-
-    <input type="hidden" name="Item[HIDDEN_ID]" value="<?= $itemId ?>">
-
-    <?= $form->field($model, 'ITEM_NOMBRE')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'ITEM_OBSERVACION')->textarea(['rows' => 6]) ?>
-
-    <?= DropDownWidget::widget(
-            [
-                "form"  =>  $form,
-                "model" =>  [
-                    "main"  => $model,
-                    "ref"   => Marca::className()
-                ],
-                "columns"   => [
-                    "id"    =>  "MARC_ID",
-                    "text"  =>  "MARC_NOMBRE"
-                ]
-            ]
-        ); 
-    ?>
-    
-    <?= DropDownWidget::widget(
-            [
-                "form"  =>  $form,
-                "model" =>  [
-                    "main"  => $model,
-                ],
-                "refData"   => TipoItem::find()->where(['not', ['TIIT_PADRE' => null]])->all(),
-                "columns"   => [
-                    "id"    =>  "TIIT_ID",
-                    "text"  =>  "TIIT_NOMBRE"
-                ],
-                "options" => [ "disabled" => ($itemId !== null && $itemId !== "") ? true : false ]
-            ]
-        ); 
+            "id"                        => $formID,
+            "enableClientValidation"    => true,
+            "action"                    => Url::toRoute("items/" . Yii::$app->controller->action->id)
+        ]); 
     ?>
 
-    <div data-next-form-wrapper>
+    <input type="hidden" name="Items[HIDDEN_ID]" value="<?= $itemId ?>">
+
+    <?php 
+        require Yii::getAlias('@inventarioViews').'/items/_form-fields.php';
+    ?>
+
+    <div data-next-form-wrapper >
         <div class="content box card" id="items-next-form" >
             <div class="row">
-                <div data-next-form class="col-md-12">
-        
+                <div data-next-form class="col-md-12">   
                 </div>
             </div>
         </div>
     </div>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($item->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
-
     <?php ActiveForm::end(); ?>
-
 </div>
 
 <?php 

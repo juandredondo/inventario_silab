@@ -16,7 +16,7 @@ use Yii;
  * @property TBLMATERIALES[] $tBLMATERIALESs
  * @property TBLREACTIVOS[] $tBLREACTIVOSs
  */
-class ItemConsumible extends \yii\db\ActiveRecord
+class Consumible extends Items
 {
     
     /**
@@ -32,12 +32,13 @@ class ItemConsumible extends \yii\db\ActiveRecord
      */
     public function rules()
     {
-        return [
+        $rules = parent::rules();
+        return array_merge($rules, [
             [['ITEM_ID', 'ESCO_ID'], 'required'],
             [['ITEM_ID', 'ESCO_ID'], 'integer'],
             [['ESCO_ID'], 'exist', 'skipOnError' => true, 'targetClass' => EstadoConsumible::className(), 'targetAttribute' => ['ESCO_ID' => 'ESCO_ID']],
             [['ITEM_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Items::className(), 'targetAttribute' => ['ITEM_ID' => 'ITEM_ID']],
-        ];
+        ]);
     }
 
     /**

@@ -15,11 +15,9 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'ACCE_SERIAL')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'ACCE_MODELO')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'ITNC_ID')->textInput() ?>
+    <?php 
+        require Yii::getAlias("@inventarioViews").'/item-no-consumible/_form-fields.php';
+    ?> 
 
     <?php if($submitButton): ?>
         <div class="form-group">

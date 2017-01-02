@@ -3,7 +3,7 @@
 namespace app\modules\inventario\models;
 
 use Yii;
-
+use app\modules\inventario\models\core\ItemNoConsumible;
 /**
  * This is the model class for table "TBL_EQUIPOS".
  *
@@ -13,8 +13,12 @@ use Yii;
  *
  * @property TBLITEMSNOCONSUMIBLES $iTNC
  */
-class Equipo extends \yii\db\ActiveRecord
+class Equipo extends \app\modules\inventario\models\core\ItemBase
 {
+    public static function getType()
+    {
+        return \app\modules\inventario\models\core\TipoItem::Equipo;
+    }
     /**
      * @inheritdoc
      */
@@ -75,6 +79,6 @@ class Equipo extends \yii\db\ActiveRecord
      */
     public function getItemNoConsumible()
     {
-        return $this->hasOne(ItemNoComsumible::className(), ['ITNC_ID' => 'ITNC_ID']);
+        return $this->hasOne(ItemNoConsumible::className(), ['ITNC_ID' => 'ITNC_ID']);
     }
 }

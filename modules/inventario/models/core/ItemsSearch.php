@@ -1,16 +1,16 @@
 <?php
 
-namespace app\models;
+namespace app\modules\inventario\models\core;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\inventario\models\ItemConsumible;
+use app\modules\inventario\models\core\Items;
 
 /**
- * ItemConsumibleSearch represents the model behind the search form about `app\models\ItemConsumible`.
+ * ItemsSearch represents the model behind the search form about `app\models\Items`.
  */
-class ItemConsumibleSearch extends ItemConsumible
+class ItemsSearch extends Items
 {
     /**
      * @inheritdoc
@@ -18,7 +18,8 @@ class ItemConsumibleSearch extends ItemConsumible
     public function rules()
     {
         return [
-            [['ITCO_ID', 'ITEM_ID', 'estadoConsumible_id'], 'integer'],
+            [['ITEM_ID', 'MARC_ID'], 'integer'],
+            [['ITEM_NOMBRE', 'ITEM_OBSERVACION'], 'safe'],
         ];
     }
 
@@ -40,7 +41,7 @@ class ItemConsumibleSearch extends ItemConsumible
      */
     public function search($params)
     {
-        $query = ItemConsumible::find();
+        $query = Items::find();
 
         // add conditions that should always apply here
 
@@ -58,10 +59,12 @@ class ItemConsumibleSearch extends ItemConsumible
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'ITCO_ID' => $this->ITCO_ID,
             'ITEM_ID' => $this->ITEM_ID,
-            'estadoConsumible_id' => $this->estadoConsumible_id,
+            'MARC_ID' => $this->MARC_ID,
         ]);
+
+        $query->andFilterWhere(['like', 'ITEM_NOMBRE', $this->ITEM_NOMBRE])
+            ->andFilterWhere(['like', 'ITEM_OBSERVACION', $this->ITEM_OBSERVACION]);
 
         return $dataProvider;
     }

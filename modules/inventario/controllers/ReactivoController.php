@@ -3,11 +3,12 @@
 namespace app\modules\inventario\controllers;
 
 use Yii;
-use app\modules\inventario\models\Items;
-use app\modules\inventario\models\TipoItem;
-use app\modules\inventario\models\ItemConsumible;
+use app\modules\inventario\models\core\Items;
+use app\modules\inventario\models\core\ItemConsumible;
+use app\modules\inventario\models\core\TipoItem;
+use app\modules\inventario\models\core\EstadoConsumible;
+
 use app\modules\inventario\models\Caducidad;
-use app\modules\inventario\models\EstadoConsumible;
 use app\modules\inventario\models\Reactivo;
 use app\modules\inventario\models\ReactivoSearch;
 use yii\web\Controller;
@@ -29,6 +30,8 @@ class ReactivoController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'create-by-ajax' => ['POST'],
+                    'update-by-ajax' => ['POST'],
                 ],
             ],
         ];
@@ -67,10 +70,42 @@ class ReactivoController extends Controller
      * @return mixed
      */
     public function actionCreate()
+    {        
+        $reac = new \app\modules\inventario\models\Reactivo();
+        $data = Yii::$app->request->post();
+
+        if($data != null && 
+                $reac->item->load($data, 'Items') &&
+                    $reac->parent->load($data, 'ItemConsumible') &&
+                        $reac->load($data, 'Reactivo')
+          )
+        {            
+            // calculamos el Caducado
+            $reac->CADU_ID  = Caducidad::getCaducado( $reac->REAC_FECHA_VENCIMIENTO )->CADU_ID;
+            
+            if($reac->item->validate() && $reac->parent->validate() && $reac->validate())
+            {              
+                $reac->save();
+                return $this->redirect(['view', 'id' => $reac->item->id]);
+            }
+        }
+        
+        return $this->render('/items/create', [
+                'item'           => $reac->item,
+                'itemConsumible' => $reac->parent,
+                'model'          => $reac
+            ]);
+    }
+
+    public function actionCreateByAjax()
     {
+        Yii::$app->response->format = \yii\web\response::FORMAT_JSON;
+
         $reactivo       = new Reactivo();
         $itemConsumible = new ItemConsumible();
         $item           = new Items();
+
+        $return         = [];
 
         if ($item->load(Yii::$app->request->post(), 'Items') && $item->save()) {
             
@@ -86,7 +121,9 @@ class ReactivoController extends Controller
                     
                     if($reactivo->save())
                     {
-                        return $this->redirect(['view', 'id' => $reactivo->id]);
+                        $return["location"] = Url::toRoute(['view', 'id' => $reactivo->id]);
+                        $return["message"]  = "Item registrado correctamente";
+                        $return["status"]   = "OK";
                     }
                 }
             }
@@ -94,12 +131,11 @@ class ReactivoController extends Controller
         
         $item->TIIT_ID = TipoItem::Reactivo;
 
-        return $this->render('/items/create', [
-            'model' => $item
-        ]);
-        
-    }
+        $return["model"] = $reactivo;
+        $return["item"]  = $item;
 
+        return $return;
+    }
     /**
      * Updates an existing Reactivo model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -134,8 +170,9 @@ class ReactivoController extends Controller
         
         $item->TIIT_ID = TipoItem::Reactivo;
 
-        return $this->render('/items/update', [
-            'model'     => $item,
+        return $this->render('/reactivo/update', [
+            'model'     => $reactivo,
+            'item'      => $item,
             'itemId'    => $id
         ]);
     }

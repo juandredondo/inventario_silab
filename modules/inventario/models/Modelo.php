@@ -15,6 +15,8 @@ use Yii;
  */
 class Modelo extends \yii\db\ActiveRecord
 {
+    const SinModelo    = 1;
+
     /**
      * @inheritdoc
      */

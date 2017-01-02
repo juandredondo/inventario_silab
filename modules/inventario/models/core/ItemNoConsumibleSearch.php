@@ -1,16 +1,16 @@
 <?php
 
-namespace app\modules\inventario\models;
+namespace app\modules\inventario\models\core;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\inventario\models\EstadoConsumible;
+use app\modules\inventario\models\core\ItemNoConsumible;
 
 /**
- * EstadoConsumibleSearch represents the model behind the search form about `app\models\EstadoConsumible`.
+ * ItemNoConsumibleSearch represents the model behind the search form about `app\models\ItemNoConsumible`.
  */
-class EstadoConsumibleSearch extends EstadoConsumible
+class ItemNoConsumibleSearch extends ItemNoConsumible
 {
     /**
      * @inheritdoc
@@ -18,8 +18,7 @@ class EstadoConsumibleSearch extends EstadoConsumible
     public function rules()
     {
         return [
-            [['ESCO_ID', 'ESCO_MIN', 'ESCO_MAX'], 'integer'],
-            [['ESCO_NOMBRE'], 'safe'],
+            [['ITNC_ID', 'ITEM_ID', 'ESNC_ID', 'MODE_ID'], 'integer'],
         ];
     }
 
@@ -41,7 +40,7 @@ class EstadoConsumibleSearch extends EstadoConsumible
      */
     public function search($params)
     {
-        $query = EstadoConsumible::find();
+        $query = ItemNoConsumible::find();
 
         // add conditions that should always apply here
 
@@ -59,12 +58,11 @@ class EstadoConsumibleSearch extends EstadoConsumible
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'ESCO_ID' => $this->ESCO_ID,
-            'ESCO_MIN' => $this->ESCO_MIN,
-            'ESCO_MAX' => $this->ESCO_MAX,
+            'ITNC_ID' => $this->ITNC_ID,
+            'ITEM_ID' => $this->ITEM_ID,
+            'ESNC_ID' => $this->ESNC_ID,
+            'MODE_ID' => $this->MODE_ID,
         ]);
-
-        $query->andFilterWhere(['like', 'ESCO_NOMBRE', $this->ESCO_NOMBRE]);
 
         return $dataProvider;
     }

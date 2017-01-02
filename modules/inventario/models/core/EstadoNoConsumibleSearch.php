@@ -1,11 +1,10 @@
 <?php
 
-namespace app\modules\inventario\models;
+namespace app\modules\inventario\models\core;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\inventario\models\EstadoNoConsumible;
 
 /**
  * EstadoNoConsumibleSearch represents the model behind the search form about `app\models\EstadoNoConsumible`.

@@ -15,6 +15,10 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
+    <?php 
+        require Yii::getAlias("@inventarioViews").'/item-no-consumible/_form-fields.php';
+    ?>
+
     <?= $form->field($model, 'EQUI_SERIAL')->textInput(['maxlength' => true]) ?>
 
     <?// $form->field($model, 'ITNC_ID')->textInput() ?>

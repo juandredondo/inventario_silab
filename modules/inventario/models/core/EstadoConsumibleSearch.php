@@ -1,16 +1,15 @@
 <?php
 
-namespace app\modules\inventario\models;
+namespace app\modules\inventario\models\core;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\inventario\models\Items;
 
 /**
- * ItemsSearch represents the model behind the search form about `app\models\Items`.
+ * EstadoConsumibleSearch represents the model behind the search form about `app\models\EstadoConsumible`.
  */
-class ItemsSearch extends Items
+class EstadoConsumibleSearch extends EstadoConsumible
 {
     /**
      * @inheritdoc
@@ -18,8 +17,8 @@ class ItemsSearch extends Items
     public function rules()
     {
         return [
-            [['ITEM_ID', 'MARC_ID'], 'integer'],
-            [['ITEM_NOMBRE', 'ITEM_OBSERVACION'], 'safe'],
+            [['ESCO_ID', 'ESCO_MIN', 'ESCO_MAX'], 'integer'],
+            [['ESCO_NOMBRE'], 'safe'],
         ];
     }
 
@@ -41,7 +40,7 @@ class ItemsSearch extends Items
      */
     public function search($params)
     {
-        $query = Items::find();
+        $query = EstadoConsumible::find();
 
         // add conditions that should always apply here
 
@@ -59,12 +58,12 @@ class ItemsSearch extends Items
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'ITEM_ID' => $this->ITEM_ID,
-            'MARC_ID' => $this->MARC_ID,
+            'ESCO_ID' => $this->ESCO_ID,
+            'ESCO_MIN' => $this->ESCO_MIN,
+            'ESCO_MAX' => $this->ESCO_MAX,
         ]);
 
-        $query->andFilterWhere(['like', 'ITEM_NOMBRE', $this->ITEM_NOMBRE])
-            ->andFilterWhere(['like', 'ITEM_OBSERVACION', $this->ITEM_OBSERVACION]);
+        $query->andFilterWhere(['like', 'ESCO_NOMBRE', $this->ESCO_NOMBRE]);
 
         return $dataProvider;
     }
