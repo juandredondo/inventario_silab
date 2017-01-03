@@ -25,6 +25,11 @@ class Reactivo extends \app\modules\inventario\models\core\ItemBase
 {
     protected static $parentIdProperty   = "ITCO_ID";
 
+    public function init()
+    {
+        $this->CADU_ID  = Caducidad::Vigente;
+        parent::init();
+    }
     public static function getType()
     {
         return \app\modules\inventario\models\core\TipoItem::Reactivo;
@@ -112,5 +117,18 @@ class Reactivo extends \app\modules\inventario\models\core\ItemBase
     public function getUbicacion()
     {
         return $this->hasOne(Ubicacion::className(), ['UBIC_ID' => 'UBIC_ID']);
+    }    
+
+    public function beforeSave($insert)
+    {
+        if(parent::beforeSave($insert))
+        {
+            $this->CADU_ID  = Caducidad::getCaducado( $this->REAC_FECHA_VENCIMIENTO )->CADU_ID;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

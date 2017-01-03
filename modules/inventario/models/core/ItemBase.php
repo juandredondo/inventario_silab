@@ -39,8 +39,9 @@ abstract class ItemBase extends \yii\db\ActiveRecord implements IdentificableInt
     {
         if(!isset($this->_parent))
         {
-            $baseClass      = static::getItemRelation()[ "class" ];
-            $this->_parent  = new $baseClass;
+            $baseClass              = static::getItemRelation()[ "class" ];
+            $this->_parent          = new $baseClass;
+            $this->_parent->ITEM_ID = 0;
         }
 
         return $this->_parent;
@@ -173,7 +174,7 @@ abstract class ItemBase extends \yii\db\ActiveRecord implements IdentificableInt
                         {
                             $this->parent           = (isset($this->parent)) ? $this->parent :  new $parentClass;
                             $this->parent->ITEM_ID  = $this->item->id;
-                            $this->parent->ESCO_ID = $this->getByKey(
+                            $this->parent->ESCO_ID  = $this->getByKey(
                                 $params, 
                                 "estado", 
                                 isset($this->parent->ESCO_ID) ? $this->parent->ESCO_ID : EstadoConsumible::Agotado
@@ -218,24 +219,61 @@ abstract class ItemBase extends \yii\db\ActiveRecord implements IdentificableInt
         return ( isset($array) ) ? ( isset($array[ $key ]) ? $array[ $key ] : $default ) : $default;
     }
 
-    public function save($runValidation = true, $attributeNames = null)
+    public function beforeValidate()
     {
-        $result = $this->prepareSave( $this->prepareParams()  );
-
-        if( $result["status"]->state )
+        if(parent::beforeValidate())
         {
-            if ($this->getIsNewRecord()) 
+            $attributes = null;
+            
+            if($this->isNewRecord)
             {
-                return $this->insert($runValidation = true, $attributeNames = null);
-            } 
-            else 
-            {
-                return $this->update($runValidation = true, $attributeNames = null) !== false;
+                $attributes = $this->parent->getAttributes();
+                unset($attributes["ITEM_ID"]);
             }
+            $result = $this->item->validate() && $this->parent->validate($attributes);
+            
+            return $result;
         }
-        
+        else
+            return false;
     }
 
+    public function beforeSave($insert)
+    {
+        if(parent::beforeSave($insert))
+        {
+            $result = $this->prepareSave( $this->prepareParams()  );
+
+            return $result["status"]->state;
+        }
+        else
+            return false;
+    }
+
+    public function save($runValidation = true, $attributeNames = null)
+    {
+        
+        if ($this->getIsNewRecord()) 
+        {
+            return $this->insert($runValidation = true, $attributeNames = null);
+        } 
+        else 
+        {
+            return $this->update($runValidation = true, $attributeNames = null) !== false;
+        }        
+    }
+
+    public function validate($attributeNames = null, $clearErrors = true)
+    {
+        if($this->isNewRecord)
+        {
+            $attributeNames = isset($attributeNames) ? $attributeNames : $this->attributes;
+
+            unset($attributeNames[ static::$parentIdProperty ]);
+        }
+
+        return parent::validate($attributeNames, $clearErrors);
+    }
 
     private function prepareParams()
     {

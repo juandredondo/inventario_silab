@@ -83,10 +83,7 @@ class ReactivoController extends Controller
                         $reac->load($data, 'Reactivo')
           )
         {            
-            // calculamos el Caducado
-            $reac->CADU_ID  = Caducidad::getCaducado( $reac->REAC_FECHA_VENCIMIENTO )->CADU_ID;
-            
-            if($reac->item->validate() && $reac->parent->validate() && $reac->validate())
+            if($reac->validate())
             {              
                 $reac->save();
                 return $this->redirect(['view', 'id' => $reac->item->id]);
@@ -158,7 +155,7 @@ class ReactivoController extends Controller
             // calculamos el Caducado
             $reac->CADU_ID  = Caducidad::getCaducado( $reac->REAC_FECHA_VENCIMIENTO )->CADU_ID;
             
-            if($reac->item->validate() && $reac->parent->validate() && $reac->validate())
+            if($reac->validate())
             {              
                 $reac->save();
                 return $this->redirect(['view', 'id' => $reac->item->id]);

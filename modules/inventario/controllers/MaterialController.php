@@ -62,16 +62,27 @@ class MaterialController extends Controller
      * @return mixed
      */
     public function actionCreate()
-    {
-        $model = new Material();
+    {        
+        $material   = new \app\modules\inventario\models\Material();
+        $data       = Yii::$app->request->post();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->MATE_ID]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        if($data != null && 
+                $material->item->load($data, 'Items') &&
+                    $material->parent->load($data, 'ItemConsumible') &&
+                        $material->load($data, 'Material')
+          )
+        {            
+            
+            if($material->item->validate() && $material->parent->validate() && $material->validate())
+            {              
+                $reac->save();
+                return $this->redirect(['view', 'id' => $reac->item->id]);
+            }
         }
+        
+        return $this->render('/reactivo/create', [
+                'model'          => $reac
+            ]);
     }
 
     /**
