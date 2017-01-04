@@ -9,7 +9,10 @@ use yii\widgets\ActiveForm;
 ?>
 <?php 
     // variable para imprimir el boton tambien
-    $submitButton = (isset($submitButton)) ? $submitButton : true;
+    $submitButton       = (isset($submitButton))    ? $submitButton : true;  
+    $isJustLoad         = (isset($isJustLoad))      ? $isJustLoad   : false;
+    $item               = $model->item;
+    $itemNoConsumible   = $model->parent;
 ?>
 <div class="herramienta-form">
 
@@ -20,8 +23,6 @@ use yii\widgets\ActiveForm;
     ?>  
     
     <?= $form->field($model, 'HERR_CANTIDAD')->textInput() ?>
-
-    <?= $form->field($model, 'ITNC_ID')->textInput() ?>
 
     <?php if($submitButton): ?>
         <div class="form-group">

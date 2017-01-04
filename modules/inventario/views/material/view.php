@@ -2,13 +2,19 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
+use app\components\ArrayHelperFilter;
 /* @var $this yii\web\View */
 /* @var $model app\models\Material */
 
 $this->title = $model->MATE_ID;
 $this->params['breadcrumbs'][] = ['label' => 'Materials', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+$item           = $model->item;
+$itemConsumible = $model->parent;
+
+$attributes = require (Yii::getAlias('@inventarioViews').'/item-consumible/_attributes.php');
+
 ?>
 <div class="material-view">
 
@@ -27,11 +33,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= DetailView::widget([
         'model' => $model,
-        'attributes' => [
+        'attributes' => ArrayHelperFilter::merge($attributes, [
             'MATE_ID',
-            'MATE_MEDIDA',
-            'ITCO_ID',
-        ],
+            'MATE_MEDIDA'
+        ])
     ]) ?>
 
 </div>

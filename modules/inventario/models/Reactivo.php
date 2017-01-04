@@ -67,14 +67,14 @@ class Reactivo extends \app\modules\inventario\models\core\ItemBase
     public function attributeLabels()
     {
         return [
-            'REAC_ID' => 'Reac  ID',
-            'REAC_CODIGO' => 'Reac  Codigo',
-            'REAC_UNIDAD' => 'Reac  Unidad',
-            'REAC_FECHA_VENCIMIENTO' => 'Reac  Fecha  Vencimiento',
-            'ITCO_ID' => 'Itco  ID',
-            'UBIC_ID' => 'Ubic  ID',
-            'CADU_ID' => 'Cadu  ID',
-            'SIMB_ID' => 'Simb  ID',
+            'REAC_ID'                   => 'ID',
+            'REAC_CODIGO'               => 'CODIGO',
+            'REAC_UNIDAD'               => 'UNIDAD',
+            'REAC_FECHA_VENCIMIENTO'    => 'FECHA VENCIMIENTO',
+            'ITCO_ID'                   => 'CONSUMIBLE',
+            'UBIC_ID'                   => 'UBICACION',
+            'CADU_ID'                   => 'CADUCADO',
+            'SIMB_ID'                   => 'SIMBOLO',
         ];
     }
 

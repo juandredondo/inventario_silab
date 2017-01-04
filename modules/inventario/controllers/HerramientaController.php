@@ -14,6 +14,8 @@ use yii\filters\VerbFilter;
  */
 class HerramientaController extends Controller
 {
+    public $modelClass = "app\modules\inventario\models\Herramienta";
+
     /**
      * @inheritdoc
      */
@@ -51,8 +53,10 @@ class HerramientaController extends Controller
      */
     public function actionView($id)
     {
+        $modelClass = $this->modelClass;
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $modelClass::getByItemId($id),
         ]);
     }
 
@@ -63,15 +67,25 @@ class HerramientaController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Herramienta();
+        $herramienta    = new Herramienta();
+        $data           = Yii::$app->request->post();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->HERR_ID]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        if($data != null && 
+                $herramienta->item->load($data, 'Items') &&
+                    $herramienta->parent->load($data, 'ItemNoConsumible') &&
+                        $herramienta->load($data, 'Herramienta')
+          )
+        {            
+            if($herramienta->validate())
+            {              
+                $herramienta->save();
+                return $this->redirect(['view', 'id' => $herramienta->item->id]);
+            }
         }
+        
+        return $this->render('/herramienta/create', [
+                'model'          => $herramienta
+            ]);
     }
 
     /**
@@ -82,15 +96,27 @@ class HerramientaController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $herramienta    = $this->findModel($id);
+        $data           = Yii::$app->request->post();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->HERR_ID]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        if($data != null && 
+                $herramienta->item->load($data, 'Items') &&
+                    $herramienta->parent->load($data, 'ItemNoConsumible') &&
+                        $herramienta->load($data, 'Herramienta')
+          )
+        {            
+            if($herramienta->validate())
+            {              
+                $herramienta->save();
+                return $this->redirect(['view', 'id' => $herramienta->item->id]);
+            }
         }
+        
+        return $this->render('/herramienta/update', [
+            //'item'           => $herramienta->item,
+            //'itemConsumible' => $herramienta->parent,
+            'model'          => $herramienta
+        ]);
     }
 
     /**

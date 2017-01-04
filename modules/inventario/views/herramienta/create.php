@@ -17,8 +17,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php endIf; ?> 
 
     <?= $this->render('_form', [
-        'model' => $model,
-        'submitButton' => $submitButton
+        'model'         => $model,
+        'submitButton'  => $submitButton,
+        'formId'        => $formId,
+        'itemId'        => $itemId
     ]) ?>
 
 </div>

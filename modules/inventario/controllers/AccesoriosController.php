@@ -14,6 +14,7 @@ use yii\filters\VerbFilter;
  */
 class AccesoriosController extends Controller
 {
+    public $modelClass = "app\modules\inventario\models\Accesorios";
     /**
      * @inheritdoc
      */
@@ -35,12 +36,12 @@ class AccesoriosController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new AccesoriosSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $searchModel    = new AccesoriosSearch();
+        $dataProvider   = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'searchModel'   => $searchModel,
+            'dataProvider'  => $dataProvider,
         ]);
     }
 
@@ -51,8 +52,10 @@ class AccesoriosController extends Controller
      */
     public function actionView($id)
     {
+        $modelClass = $this->modelClass;
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $modelClass::getByItemId($id),
         ]);
     }
 
@@ -63,15 +66,25 @@ class AccesoriosController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Accesorios();
+        $accesorio  = new Accesorios();
+        $data       = Yii::$app->request->post();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->ACCE_ID]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        if($data != null && 
+                $accesorio->item->load($data, 'Items') &&
+                    $accesorio->parent->load($data, 'ItemNoConsumible') &&
+                        $accesorio->load($data, 'Accesorios')
+          )
+        {            
+            if($accesorio->validate())
+            {              
+                $accesorio->save();
+                return $this->redirect(['view', 'id' => $accesorio->item->id]);
+            }
         }
+        
+        return $this->render('/accesorios/create', [
+                'model'          => $accesorio
+            ]);
     }
 
     /**
@@ -82,15 +95,27 @@ class AccesoriosController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $accesorio  = $this->findModel($id);
+        $data       = Yii::$app->request->post();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->ACCE_ID]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        if($data != null && 
+                $accesorio->item->load($data, 'Items') &&
+                    $accesorio->parent->load($data, 'ItemNoConsumible') &&
+                        $accesorio->load($data, 'Accesorios')
+          )
+        {            
+            if($accesorio->validate())
+            {              
+                $accesorio->save();
+                return $this->redirect(['view', 'id' => $accesorio->item->id]);
+            }
         }
+        
+        return $this->render('/material/update', [
+            //'item'           => $accesorio->item,
+            //'itemConsumible' => $accesorio->parent,
+            'model'          => $accesorio
+        ]);
     }
 
     /**

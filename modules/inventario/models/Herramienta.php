@@ -15,6 +15,8 @@ use app\modules\inventario\models\core\ItemNoConsumible;
  */
 class Herramienta extends \app\modules\inventario\models\core\ItemBase
 {
+    protected static $parentIdProperty   = "ITNC_ID";
+
     public static function getType()
     {
         return \app\modules\inventario\models\core\TipoItem::Herramienta;
@@ -45,9 +47,9 @@ class Herramienta extends \app\modules\inventario\models\core\ItemBase
     public function attributeLabels()
     {
         return [
-            'HERR_ID' => 'Herr  ID',
-            'HERR_CANTIDAD' => 'Herr  Cantidad',
-            'ITNC_ID' => 'Itnc  ID',
+            'HERR_ID'       => 'ID',
+            'HERR_CANTIDAD' => 'CANTIDAD',
+            'ITNC_ID'       => 'NO CONSUMIBLE',
         ];
     }
 

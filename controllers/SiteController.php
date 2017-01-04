@@ -173,7 +173,27 @@ class SiteController extends Controller
             \app\modules\inventario\models\Reactivo::getByItemId( 3 ),
             \app\modules\inventario\models\Equipo::getByItemId( 1 ),
         ];*/
+        $array = [
+            "MARCA_ID",
+            "ITEM_ID",
+            "ITEM_NOMBRE",
+            "ITEM_OBSERVCION",
+            "TIIT_ID"
+        ];
 
+        return \app\components\ArrayHelperFilter::merge(
+            \app\components\ArrayHelperFilter::remove($array, ["hellos"]),
+            [
+                [
+                    "attr" => "MARC_ID",
+                    "value" => "value of MARC_ID"
+                ],
+                [
+                    "attr" => "TIIT_ID",
+                    "value" => "value of TIIT_ID"
+                ]
+            ]
+        );    
     }
 
     public function beforeAction($action)

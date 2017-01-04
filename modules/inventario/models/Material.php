@@ -3,8 +3,8 @@
 namespace app\modules\inventario\models;
 
 use Yii;
-use app\modules\inventario\model\core\Items;
-use app\modules\inventario\model\core\ItemConsumible;
+use app\modules\inventario\models\core\Items;
+use app\modules\inventario\models\core\ItemConsumible;
 /**
  * This is the model class for table "TBL_MATERIALES".
  *
@@ -16,6 +16,8 @@ use app\modules\inventario\model\core\ItemConsumible;
  */
 class Material extends \app\modules\inventario\models\core\ItemBase
 {
+    protected static $parentIdProperty   = "ITCO_ID";
+    
     public static function getType()
     {
         return \app\modules\inventario\models\core\TipoItem::Material;
@@ -55,16 +57,28 @@ class Material extends \app\modules\inventario\models\core\ItemBase
         ];
     }
 
+    
+
     /**
      * @inheritdoc
      */
     public function attributeLabels()
     {
         return [
-            'MATE_ID' => 'Mate  ID',
-            'MATE_MEDIDA' => 'Mate  Medida',
-            'ITCO_ID' => 'Itco  ID',
+            'MATE_ID'       => 'ID',
+            'MATE_MEDIDA'   => 'MEDIDA',
+            'ITCO_ID'       => 'CONSUMIBLE',
         ];
+    }
+
+    public function getId() 
+    {
+        return $this->MATE_ID;
+    }
+
+    public function setId($value = 0) 
+    {
+         $this->MATE_ID = $value;
     }
 
     /**

@@ -53,11 +53,11 @@ class Items extends \yii\db\ActiveRecord implements IdentificableInterface
     public function attributeLabels()
     {
         return [
-            'ITEM_ID'           => 'Item  ID',
-            'ITEM_NOMBRE'       => 'Item  Nombre',
-            'ITEM_OBSERVACION'  => 'Item  Observacion',
-            'MARC_ID'           => 'Marc  ID',
-            'TIIT_ID'           => 'Tipo Item',
+            'ITEM_ID'           => 'ID',
+            'ITEM_NOMBRE'       => 'NOMBRE',
+            'ITEM_OBSERVACION'  => 'OBSERVACION',
+            'MARC_ID'           => 'MARCA',
+            'TIIT_ID'           => 'TIPO',
         ];
     }
 

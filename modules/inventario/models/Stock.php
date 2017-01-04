@@ -1,9 +1,10 @@
 <?php
 
 namespace app\modules\inventario\models;
-use app\models\Periodo;
-use Yii;
 
+use Yii;
+use app\modules\inventario\models\core\Items;
+use app\models\Periodo;
 /**
  * This is the model class for table "TBL_STOCK".
  *

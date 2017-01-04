@@ -3,7 +3,8 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
-use app\modules\inventario\models\Items;
+
+use app\modules\inventario\models\core\Items;
 use app\models\Periodo;
 
 /* @var $this yii\web\View */

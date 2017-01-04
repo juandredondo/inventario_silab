@@ -57,6 +57,15 @@ abstract class ItemBase extends \yii\db\ActiveRecord implements IdentificableInt
         }
     }
 
+    public function getRelationPath($separator = ".") 
+    {
+        $relatedFunc  = static::getItemRelation()["relation"];
+        return [
+            "item" => $relatedFunc . $separator . "item",
+            "parent" => $relatedFunc
+        ];
+    }
+
     public function setParent(IdentificableInterface $value) 
     {
          $this->_parent = $value;
@@ -138,6 +147,10 @@ abstract class ItemBase extends \yii\db\ActiveRecord implements IdentificableInt
     {
         $class 		= get_called_class();
         $return 	= $class::find([ "ITEM_ID" => $id ])->with(static::getItemRelation()["relation"])->one();
+        if($return != null)
+        {
+            $return->fillParents();
+        }
         return $return;
     }
 

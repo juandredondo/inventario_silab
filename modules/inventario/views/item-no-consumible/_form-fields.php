@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 use app\components\widgets\DropDownWidget;
-use app\modules\inventario\models\EstadoNoConsumible;
+use app\modules\inventario\models\core\EstadoNoConsumible;
 use app\modules\inventario\models\Modelo;
 /* @var $this yii\web\View */
 /* @var $model app\models\ItemNoConsumible */
@@ -40,7 +40,7 @@ use app\modules\inventario\models\Modelo;
                 ],
                 "columns"   => [
                     "id"    =>  "MODE_ID",
-                    "text"  =>  "MODE_NOMBRE"
+                    "text"  =>  "MODE_CODIGO"
                 ]
             ]
         ); 

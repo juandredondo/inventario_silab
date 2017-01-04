@@ -2,13 +2,18 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
+use app\components\ArrayHelperFilter;
 /* @var $this yii\web\View */
 /* @var $model app\models\Equipo */
 
 $this->title = $model->EQUI_ID;
 $this->params['breadcrumbs'][] = ['label' => 'Equipos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+$item               = $model->item;
+$itemNoConsumible   = $model->parent;
+$attributes         = require (Yii::getAlias('@inventarioViews').'/item-no-consumible/_attributes.php');
+
 ?>
 <div class="equipo-view">
 
@@ -27,11 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= DetailView::widget([
         'model' => $model,
-        'attributes' => [
+        'attributes' => ArrayHelperFilter::merge($attributes, [
             'EQUI_ID',
             'EQUI_SERIAL',
-            'ITNC_ID',
-        ],
+        ])
     ]) ?>
 
 </div>

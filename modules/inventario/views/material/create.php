@@ -19,8 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model'         => $model,
         'submitButton'  => $submitButton,
         'formId'        => $formId,
-        'item'          => $item,
-        'itemId'        => $itemId,
+        'itemId'        => $itemId
     ]) ?>
 
 </div>

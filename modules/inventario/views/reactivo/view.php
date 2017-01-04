@@ -2,13 +2,18 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
+use app\components\ArrayHelperFilter;
 /* @var $this yii\web\View */
 /* @var $model app\models\Reactivo */
 
 $this->title = $model->REAC_ID;
 $this->params['breadcrumbs'][] = ['label' => 'Reactivos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+$item           = $model->item;
+$itemConsumible = $model->parent;
+
+$attributes = require (Yii::getAlias('@inventarioViews').'/item-consumible/_attributes.php');
 ?>
 <div class="reactivo-view">
 
@@ -27,16 +32,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= DetailView::widget([
         'model' => $model,
-        'attributes' => [
+        'attributes' => ArrayHelperFilter::merge($attributes, [
             'REAC_ID',
             'REAC_CODIGO',
             'REAC_UNIDAD',
             'REAC_FECHA_VENCIMIENTO',
-            'ITCO_ID',
             'UBIC_ID',
             'CADU_ID',
             'SIMB_ID',
-        ],
+        ])
     ]) ?>
 
 </div>

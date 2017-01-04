@@ -14,6 +14,7 @@ use yii\filters\VerbFilter;
  */
 class EquipoController extends Controller
 {
+    public $modelClass = "app\modules\inventario\models\Equipo";
     /**
      * @inheritdoc
      */
@@ -51,8 +52,10 @@ class EquipoController extends Controller
      */
     public function actionView($id)
     {
+        $modelClass = $this->modelClass;
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $modelClass::getByItemId($id),
         ]);
     }
 
@@ -63,15 +66,26 @@ class EquipoController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Equipo();
+        $equipo   = new Equipo();
+        $data     = Yii::$app->request->post();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->EQUI_ID]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        if($data != null && 
+                $equipo->item->load($data, 'Items') &&
+                    $equipo->parent->load($data, 'ItemNoConsumible') &&
+                        $equipo->load($data, 'Equipo')
+          )
+        {            
+            
+            if($equipo->validate())
+            {              
+                $equipo->save();
+                return $this->redirect(['view', 'id' => $equipo->item->id]);
+            }
         }
+        
+        return $this->render('/equipo/create', [
+                'model'          => $equipo
+            ]);
     }
 
     /**
@@ -82,15 +96,27 @@ class EquipoController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $equipo = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->EQUI_ID]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        $data     = Yii::$app->request->post();
+
+        if($data != null && 
+                $equipo->item->load($data, 'Items') &&
+                    $equipo->parent->load($data, 'ItemNoConsumible') &&
+                        $equipo->load($data, 'Equipo')
+          )
+        {            
+            
+            if($equipo->validate())
+            {              
+                $equipo->save();
+                return $this->redirect(['view', 'id' => $equipo->item->id]);
+            }
         }
+        
+        return $this->render('/equipo/update', [
+            'model'          => $equipo
+        ]);
     }
 
     /**

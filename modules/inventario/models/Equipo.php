@@ -15,6 +15,8 @@ use app\modules\inventario\models\core\ItemNoConsumible;
  */
 class Equipo extends \app\modules\inventario\models\core\ItemBase
 {
+    protected static $parentIdProperty   = "ITNC_ID";
+
     public static function getType()
     {
         return \app\modules\inventario\models\core\TipoItem::Equipo;
@@ -46,9 +48,9 @@ class Equipo extends \app\modules\inventario\models\core\ItemBase
     public function attributeLabels()
     {
         return [
-            'EQUI_ID' => 'Equi  ID',
-            'EQUI_SERIAL' => 'Equi  Serial',
-            'ITNC_ID' => 'Itnc  ID',
+            'EQUI_ID'       => 'ID',
+            'EQUI_SERIAL'   => 'SERIAL',
+            'ITNC_ID'       => 'NO CONSUMIBLE',
         ];
     }
 

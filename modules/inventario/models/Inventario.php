@@ -3,8 +3,11 @@
 namespace app\modules\inventario\models;
 
 use Yii;
+use app\modules\inventario\core\models\Items;
+
 use app\models\Laboratorio;
 use app\models\Periodo;
+
 /**
  * This is the model class for table "TBL_INVENTARIOS".
  *
@@ -161,7 +164,7 @@ class Inventario extends \yii\db\ActiveRecord
      */
     public function getItems()
     {
-        return $this->hasMany(Item::className(), ['ITEM_ID' => 'ITEM_ID'])->viaTable('TBL_STOCK', ['INVE_ID' => 'INVE_ID']);
+        return $this->hasMany(Items::className(), ['ITEM_ID' => 'ITEM_ID'])->viaTable('TBL_STOCK', ['INVE_ID' => 'INVE_ID']);
     }
 
    /**

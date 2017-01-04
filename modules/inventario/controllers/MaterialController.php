@@ -14,6 +14,7 @@ use yii\filters\VerbFilter;
  */
 class MaterialController extends Controller
 {
+    public $modelClass = "app\modules\inventario\models\Material";
     /**
      * @inheritdoc
      */
@@ -51,8 +52,10 @@ class MaterialController extends Controller
      */
     public function actionView($id)
     {
+        $modelClass = $this->modelClass;
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $modelClass::getByItemId($id),
         ]);
     }
 
@@ -73,15 +76,15 @@ class MaterialController extends Controller
           )
         {            
             
-            if($material->item->validate() && $material->parent->validate() && $material->validate())
+            if($material->validate())
             {              
-                $reac->save();
-                return $this->redirect(['view', 'id' => $reac->item->id]);
+                $material->save();
+                return $this->redirect(['view', 'id' => $material->item->id]);
             }
         }
         
-        return $this->render('/reactivo/create', [
-                'model'          => $reac
+        return $this->render('/material/create', [
+                'model'          => $material
             ]);
     }
 
@@ -93,15 +96,28 @@ class MaterialController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $material       = $this->findModel($id);
+        //$material->fillParents();
+        $data       = Yii::$app->request->post();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->MATE_ID]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        if($data != null && 
+                $material->item->load($data, 'Items') &&
+                    $material->parent->load($data, 'ItemConsumible') &&
+                        $material->load($data, 'Material')
+        )
+        {            
+            if($material->validate())
+            {              
+                $material->save();
+                return $this->redirect(['view', 'id' => $material->item->id]);
+            }
         }
+        
+        return $this->render('/material/update', [
+            //'item'           => $material->item,
+            //'itemConsumible' => $material->parent,
+            'model'          => $material
+        ]);
     }
 
     /**

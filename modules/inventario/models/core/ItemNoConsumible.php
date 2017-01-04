@@ -5,6 +5,7 @@ namespace app\modules\inventario\models\core;
 use Yii;
 use app\components\core\IdentificableInterface;
 use app\components\core\LoadableActiveRecord;
+use app\modules\inventario\models\Modelo;
 /**
  * This is the model class for table "TBL_ITEMSNOCONSUMIBLES".
  *
@@ -50,10 +51,10 @@ class ItemNoConsumible extends LoadableActiveRecord implements IdentificableInte
     public function attributeLabels()
     {
         return [
-            'ITNC_ID' => 'Itnc  ID',
-            'ITEM_ID' => 'Item  ID',
-            'ESNC_ID' => 'Esnc  ID',
-            'MODE_ID' => 'Mode  ID',
+            'ITNC_ID' => 'NO CONSUMIBLE',
+            'ITEM_ID' => 'ID',
+            'ESNC_ID' => 'ESTADO',
+            'MODE_ID' => 'MODELO',
         ];
     }
 
@@ -103,7 +104,7 @@ class ItemNoConsumible extends LoadableActiveRecord implements IdentificableInte
      */
     public function getItem()
     {
-        return $this->hasOne(Item::className(), ['ITEM_ID' => 'ITEM_ID']);
+        return $this->hasOne(Items::className(), ['ITEM_ID' => 'ITEM_ID']);
     }
 
     /**

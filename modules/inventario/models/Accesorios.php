@@ -3,7 +3,7 @@
 namespace app\modules\inventario\models;
 
 use Yii;
-use app\modules\inventario\models\core\NoItemConsumible;
+use app\modules\inventario\models\core\ItemNoConsumible;
 /**
  * This is the model class for table "TBL_ACCESORIOS".
  *
@@ -16,6 +16,8 @@ use app\modules\inventario\models\core\NoItemConsumible;
  */
 class Accesorios extends \app\modules\inventario\models\core\ItemBase
 {
+    protected static $parentIdProperty   = "ITNC_ID";
+
     public static function getType()
     {
         return \app\modules\inventario\models\core\TipoItem::Accesorio;
@@ -48,10 +50,10 @@ class Accesorios extends \app\modules\inventario\models\core\ItemBase
     public function attributeLabels()
     {
         return [
-            'ACCE_ID' => 'Acce  ID',
-            'ACCE_SERIAL' => 'Acce  Serial',
-            'ACCE_MODELO' => 'Acce  Modelo',
-            'ITNC_ID' => 'Itnc  ID',
+            'ACCE_ID' => 'ID',
+            'ACCE_SERIAL' => 'SERIAL',
+            'ACCE_MODELO' => 'MODELO',
+            'ITNC_ID' => 'NO CONSUMIBLE',
         ];
     }
 
@@ -86,7 +88,7 @@ class Accesorios extends \app\modules\inventario\models\core\ItemBase
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getITNC()
+    public function getItemNoConsumible()
     {
         return $this->hasOne(ItemNoConsumible::className(), ['ITNC_ID' => 'ITNC_ID']);
     }

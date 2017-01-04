@@ -9,7 +9,10 @@ use yii\widgets\ActiveForm;
 ?>
 <?php 
     // variable para imprimir el boton tambien
-    $submitButton = (isset($submitButton)) ? $submitButton : true;
+    $submitButton       = (isset($submitButton))    ? $submitButton : true;  
+    $isJustLoad         = (isset($isJustLoad))      ? $isJustLoad   : false;
+    $item               = $model->item;
+    $itemNoConsumible   = $model->parent;
 ?>
 <div class="equipo-form">
 

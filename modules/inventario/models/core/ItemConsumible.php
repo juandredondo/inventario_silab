@@ -47,9 +47,9 @@ class ItemConsumible extends LoadableActiveRecord implements IdentificableInterf
     public function attributeLabels()
     {
         return [
-            'ITCO_ID' => 'Itco  ID',
-            'ITEM_ID' => 'Item  ID',
-            'ESCO_ID' => 'Estado Consumible ID',
+            'ITCO_ID' => 'CONSUMIBLE',
+            'ITEM_ID' => 'ID',
+            'ESCO_ID' => 'ESTADO',
         ];
     }
 

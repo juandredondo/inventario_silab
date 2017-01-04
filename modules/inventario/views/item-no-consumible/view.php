@@ -9,6 +9,9 @@ use yii\widgets\DetailView;
 $this->title = $model->ITNC_ID;
 $this->params['breadcrumbs'][] = ['label' => 'Item No Consumibles', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+$attributes = require (Yii::getAlias('@inventarioViews').'/item-no-consumible/_attributes.php');
+
 ?>
 <div class="item-no-consumible-view">
 
@@ -27,12 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= DetailView::widget([
         'model' => $model,
-        'attributes' => [
-            'ITNC_ID',
-            'ITEM_ID',
-            'ESNC_ID',
-            'MODE_ID',
-        ],
+        'attributes' => $attributes
     ]) ?>
 
 </div>

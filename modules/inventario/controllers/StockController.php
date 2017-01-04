@@ -4,9 +4,10 @@ namespace app\modules\inventario\controllers;
 
 use Yii;
 use app\modules\inventario\models\Stock;
+use app\modules\inventario\models\StockSearch;
+
 use app\models\Flujo;
 use app\models\TipoFlujo;
-use app\modules\inventario\models\StockSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

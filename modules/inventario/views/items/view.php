@@ -9,6 +9,9 @@ use yii\widgets\DetailView;
 $this->title = $item->ITEM_ID;
 $this->params['breadcrumbs'][] = ['label' => 'Items', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+$attributes = require (Yii::getAlias('@inventarioViews').'/items/_attributes.php');
+
 ?>
 <div class="items-view">
 
@@ -27,12 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= DetailView::widget([
         'model' => $item,
-        'attributes' => [
-            'ITEM_ID',
-            'ITEM_NOMBRE',
-            'ITEM_OBSERVACION:ntext',
-            'MARC_ID',
-        ],
+        'attributes' => $attributes,
     ]) ?>
 
 </div>
