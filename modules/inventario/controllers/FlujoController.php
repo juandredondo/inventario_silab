@@ -1,14 +1,14 @@
 <?php
 
-namespace app\controllers;
+namespace app\modules\inventario\controllers;
 
 use Yii;
-use app\models\Flujo;
-use app\models\FlujoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+use app\modules\inventario\models\Flujo;
+use app\modules\inventario\models\FlujoSearch;
 /**
  * FlujoController implements the CRUD actions for Flujo model.
  */
@@ -35,8 +35,8 @@ class FlujoController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new FlujoSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $searchModel    = new FlujoSearch();
+        $dataProvider   = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,

@@ -179,7 +179,8 @@ class LaboratorioController extends Controller
         $return[ 'inventories' ] = Laboratorio::getInventariosById($return[ 'laboratory' ]->id);
 
         return $this->render('inventories', [
-            'data'  => $return,
+            'data'          => $return,
+            'queryParams'   => Yii::$app->request->queryParams 
         ]);
 
         return $return;

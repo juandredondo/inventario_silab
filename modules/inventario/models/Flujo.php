@@ -1,6 +1,7 @@
 <?php
 
-namespace app\models;
+namespace app\modules\inventario\models;
+
 use app\modules\inventario\models\Stock;
 
 use Yii;
@@ -115,4 +116,23 @@ class Flujo extends \yii\db\ActiveRecord
     {
         return $this->hasOne(TipoFlujo::className(), ['TIFL_ID' => 'TIFU_ID']);
     }
+
+    /**
+    * Obtiene las entradas o salidas del item en un inventario (stock_id)
+    * @author Jeancarlo Fontalvo
+    * @param entero $id representa el id del stock
+    * @param entero $tipo representa el tipo de flujo, sea entrada o salida
+    * @since 1.0.2
+    */
+    public static function getFlowsByStockId($id, $tipo = TipoFlujo::Entrada)
+    {
+        $return = static::find()->where([ "STOC_ID" => $id, "TIFU_ID" => $tipo ])->all();
+        if(isset($return))
+        {
+            return $return;
+        }
+        else
+            return [];
+    }
+
 }

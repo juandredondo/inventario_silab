@@ -21,9 +21,9 @@ if (Yii::$app->controller->action->id === 'login') {
     } else {
         app\assets\AppAsset::register($this);
     }
-
+    app\assets\MaterialIconsAsset::register($this);
     dmstr\web\AdminLteAsset::register($this);
-
+    
     $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed2010/adminlte/dist');
     ?>
     <?php $this->beginPage() ?>
@@ -36,7 +36,7 @@ if (Yii::$app->controller->action->id === 'login') {
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
     </head>
-    <body class="hold-transition skin-blue sidebar-mini layout-boxed">
+    <body class="hold-transition skin-yellow sidebar-mini layout-boxed">
     <?php $this->beginBody() ?>
     <div class="wrapper">
 

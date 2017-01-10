@@ -2,14 +2,18 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\ListView;
+use yii\data\ArrayDataProvider;
+
 use app\assets\DataTablesAsset;
 use app\assets\LaboratoryAsset;
+
 
 // Registrar Asset para modulo inventario
 DataTablesAsset::register($this);
 LaboratoryAsset::register($this);
 
- function checkPeriodo ($model)
+function checkPeriodo ($model)
 {
     $periodo = $model->periodo;
     if($periodo !== null)
@@ -19,6 +23,8 @@ LaboratoryAsset::register($this);
     else
         return $periodo;
 }
+
+$this->params[ "count" ] = count( $data[ "inventories" ] );
 
 ?>
 <section class="content">
@@ -52,12 +58,38 @@ LaboratoryAsset::register($this);
             </table>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <?php 
+                $dataProvider = new ArrayDataProvider([
+                    'allModels' => $data[ "inventories" ],
+                    'pagination' => [
+                        'pageSize' => 10,
+                    ],
+                ]);
+                echo ListView::widget([
+                    'dataProvider'  => $dataProvider,
+                    'itemView'      => '@inventarioViews/inventario/_card.php',
+                ]);
+            ?>
+        </div>
+    </div>
 </section>
+
 
 <?php 
     $this->registerJsFile(
         '@web/silab-vendor/js/silab-laboratory/laboratory.inventories.js',
         ['depends' => [LaboratoryAsset::className()]]
     );
+
+    $this->registerJs("
+        $(document).on('ready', alignCards);
+
+        function alignCards()
+        {
+            $(
+        }
+    ");
 ?>
 

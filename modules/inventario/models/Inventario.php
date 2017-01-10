@@ -3,8 +3,8 @@
 namespace app\modules\inventario\models;
 
 use Yii;
-use app\modules\inventario\core\models\Items;
-
+use app\modules\inventario\models\core\Items;
+use app\modules\inventario\models\Flujo;
 use app\models\Laboratorio;
 use app\models\Periodo;
 
@@ -173,5 +173,42 @@ class Inventario extends \yii\db\ActiveRecord
    public function getLaboratoriosCompartidos()
    {
        return $this->hasMany(Laboratorio::className(), ['LABO_ID' => 'LABO_ID'])->viaTable('TBL_INVENTARIOSCOMPARTIDOS', ['INVE_ID' => 'INVE_ID']);
+   }
+
+
+   public function getEntries()
+   {
+       // 1. Get the stocks from the Inventory
+       $stocks  =  $this->stocks;
+       // 2. Array of entries :v
+       $entries = [];
+       // 3. Retrieve each entries for each stock
+       foreach($stocks as $stock)
+       {
+           $flows = Flujo::getFlowsByStockId($stock->id);
+           
+           if( count($flows) > 0 )
+            array_push($entries, $flows);
+       }
+       // 4. Good bye 
+       return $entries;
+   }
+
+   public function getOuts()
+   {
+       // 1. Get the stocks from the Inventory
+       $stocks  =  $this->stocks;
+       // 2. Array of entries :v
+       $entries = [];
+       // 3. Retrieve each entries for each stock
+       foreach($stocks as $stock)
+       {
+           $flows = Flujo::getFlowsByStockId($stock->id, \app\modules\inventario\models\TipoFlujo::Salida);
+
+           if( count($flows) > 0 )
+            array_push($entries, $flows);
+       }
+       // 4. Good bye 
+       return $entries;
    }
 }

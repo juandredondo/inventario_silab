@@ -1,16 +1,16 @@
 <?php
 
-namespace app\models;
+namespace app\modules\inventario\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Flujo;
+use app\modules\inventario\models\TipoFlujo;
 
 /**
- * FlujoSearch represents the model behind the search form about `app\models\Flujo`.
+ * TipoFlujoSearch represents the model behind the search form about `app\models\TipoFlujo`.
  */
-class FlujoSearch extends Flujo
+class TipoFlujoSearch extends TipoFlujo
 {
     /**
      * @inheritdoc
@@ -18,8 +18,9 @@ class FlujoSearch extends Flujo
     public function rules()
     {
         return [
-            [['FLUJ_ID', 'MOVI_ID', 'STOC_ID', 'TIFU_ID'], 'integer'],
-            [['FLUJ_CANTIDAD'], 'number'],
+            [['TIFL_ID'], 'integer'],
+            [['TIFL_NOMBRE'], 'safe'],
+            [['TIFL_CONSTANTE'], 'number'],
         ];
     }
 
@@ -41,7 +42,7 @@ class FlujoSearch extends Flujo
      */
     public function search($params)
     {
-        $query = Flujo::find();
+        $query = TipoFlujo::find();
 
         // add conditions that should always apply here
 
@@ -59,12 +60,11 @@ class FlujoSearch extends Flujo
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'FLUJ_ID' => $this->FLUJ_ID,
-            'FLUJ_CANTIDAD' => $this->FLUJ_CANTIDAD,
-            'MOVI_ID' => $this->MOVI_ID,
-            'STOC_ID' => $this->STOC_ID,
-            'TIFU_ID' => $this->TIFU_ID,
+            'TIFL_ID' => $this->TIFL_ID,
+            'TIFL_CONSTANTE' => $this->TIFL_CONSTANTE,
         ]);
+
+        $query->andFilterWhere(['like', 'TIFL_NOMBRE', $this->TIFL_NOMBRE]);
 
         return $dataProvider;
     }

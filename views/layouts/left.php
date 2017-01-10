@@ -12,12 +12,14 @@ if(!isset($this->params["main-side-menu"]))
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="img-circle" alt="User Image"/>
+                <img src="<? echo $directoryAsset ?>/img/user2-160x160.jpg" class="img-circle" alt="User Image"/>
             </div>
             <div class="pull-left info">
-                <p><?= strtoupper( Yii::$app->user->identity->username ) ?></p>
-
-                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                <p>
+                    <i class="icon-bottom material-icons md-18 md-light">account_circle</i>
+                    <span class="text"><?= strtoupper( Yii::$app->user->identity->username ) ?> </span>
+                </p>
+                <a href="#"><i class="fa fa-circle text-success"></i> <?= !Yii::$app->user->isGuest ? "Online" : "Offline" ?></a>
             </div>
         </div>
 

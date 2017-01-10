@@ -56,6 +56,13 @@ class Stock extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getId() {
+        return $this->STOC_ID;
+    }
+    public function setId($value = '') {
+         $this->STOC_ID = $value;
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -87,4 +94,5 @@ class Stock extends \yii\db\ActiveRecord
    {
        return $this->hasOne(Periodo::className(), ['PERI_ID' => 'PERI_ID']);
    }
+
 }

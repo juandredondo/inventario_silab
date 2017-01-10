@@ -143,6 +143,40 @@ a.desc:after {
     margin-bottom: .75rem;
 }
 
+.card.clickable
+{
+    transition: all ease .2s;
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.card.clickable:hover
+{
+    opacity: 1;
+}
+
+.card .box-tools
+{
+    visibility: hidden;
+}
+
+.card:hover .box-tools
+{
+    visibility: visible;
+}
+
+.box-tools a.dropdown-toggle
+{
+    font-size: 12px;
+    opacity: 0.5;
+}
+
+.box-tools a.dropdown-toggle:hover
+{
+    font-size: inherit;
+    opacity: 1;
+}
+
 [data-next-form-wrapper]
 {
     transition: all ease;
@@ -170,3 +204,22 @@ a.desc:after {
     min-height: inherit !important;
     height: auto;
 }
+
+/**
+* @author andxyz
+* @link tomado de http://stackoverflow.com/a/18541484/3786841
+*/
+.icon-middle {
+    vertical-align: middle;
+}
+
+.icon-bottom {
+    vertical-align: text-bottom;
+}
+
+.icon-up {
+    vertical-align: super;
+}
+
+
+
