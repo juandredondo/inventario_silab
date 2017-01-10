@@ -94,12 +94,14 @@ class PerfilRoleController extends Controller
                     'title'=> "Create new PerfilRole",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
+                        'parents' => PerfilRole::find()->where([ 'PERO_PADRE' => null ])->all()
                     ]),
                     'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                                 Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
         
                 ];         
-            }else if($model->load($request->post()) && $model->save()){
+            }
+            else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
                     'title'=> "Create new PerfilRole",
@@ -156,6 +158,7 @@ class PerfilRoleController extends Controller
                     'title'=> "Update PerfilRole #".$id,
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
+                        'parents' => PerfilRole::find()->where([ 'PERO_PADRE' => null ])->all()
                     ]),
                     'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                                 Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])

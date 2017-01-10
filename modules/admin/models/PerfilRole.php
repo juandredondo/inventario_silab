@@ -48,11 +48,18 @@ class PerfilRole extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'PERO_ID' => 'Pero  ID',
-            'ROL_ID' => 'Rol  ID',
-            'PERM_ID' => 'Perm  ID',
-            'PERO_PADRE' => 'Pero  Padre',
+            'PERO_ID'       => 'Pero  ID',
+            'ROL_ID'        => 'Rol  ID',
+            'PERM_ID'       => 'Perm  ID',
+            'PERO_PADRE'    => 'Pero  Padre',
         ];
+    }
+
+    /**
+    * propiedad para proveer un alias al Active Record
+    */
+    public function getAlias() {
+        return '('. $this->rol->ROL_NOMBRE . ') - (' . $this->permiso->alias . ')';
     }
 
     /**
@@ -68,7 +75,7 @@ class PerfilRole extends \yii\db\ActiveRecord
      */
     public function getPadre()
     {
-        return $this->hasOne(PerfilRoles::className(), ['PERO_ID' => 'PERO_PADRE']);
+        return $this->hasOne(PerfilRole::className(), ['PERO_ID' => 'PERO_PADRE']);
     }
 
     /**
@@ -86,4 +93,6 @@ class PerfilRole extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Rol::className(), ['ROL_ID' => 'ROL_ID']);
     }
+
+
 }

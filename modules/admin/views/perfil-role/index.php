@@ -19,14 +19,14 @@ CrudAsset::register($this);
 <div class="perfil-role-index">
     <div id="ajaxCrudDatatable">
         <?=GridView::widget([
-            'id'=>'crud-datatable',
+            'id'=>'perfil-crud-datatable',
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'pjax'=>true,
-            'columns' => require(__DIR__.'/_columns.php'),
+            'columns' => require(__DIR__.'/_perfil-role-columns.php'),
             'toolbar'=> [
                 ['content'=>
-                    Html::a('<i class="glyphicon glyphicon-plus"></i>', ['create'],
+                    Html::a('<i class="glyphicon glyphicon-plus"></i>', ["perfil-role/create"],
                     ['role'=>'modal-remote','title'=> 'Create new Perfil Roles','class'=>'btn btn-default']).
                     Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''],
                     ['data-pjax'=>1, 'class'=>'btn btn-default', 'title'=>'Reset Grid']).
@@ -59,7 +59,7 @@ CrudAsset::register($this);
     </div>
 </div>
 <?php Modal::begin([
-    "id"    =>  "perfil-modal",
+    "id"    =>  "perfil-role-modal",
     "footer"=>  "",// always need it for jquery plugin
 ])?>
 <?php Modal::end(); ?>

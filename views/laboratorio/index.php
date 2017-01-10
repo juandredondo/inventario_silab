@@ -30,15 +30,24 @@ $this->params['breadcrumbs'][] = $this->title;
             'LABO_NIVEL',
             [
                 'attribute' => 'Edificio',
-                'value'     => '$data->edificio->EDIF_NOMBRE',
+                'value'     => function($model, $widget)
+                {
+                    return $model->edificio->EDIF_NOMBRE;
+                },
             ],
             [
                 'attribute' => 'Coordinador',
-                'value'     => '$data->coordinador->persona->PERS_NOMBRE',
+                'value'     => function($model, $widget)
+                {
+                    return $model->coordinador->persona->PERS_NOMBRE;
+                },
             ],
             [
                 'attribute' => 'Tipo',
-                'value'     => '$data->tipolaboratorio->TILA_NOMBRE',
+                'value'     => function($model, $widget)
+                {
+                    return $model->tipolaboratorio->TILA_NOMBRE;
+                },
             ],
             ['class' => 'yii\grid\ActionColumn'],
         ],

@@ -133,4 +133,10 @@ class InventarioController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function summaryInventory($id)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        
+    }
 }

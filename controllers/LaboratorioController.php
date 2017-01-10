@@ -25,7 +25,8 @@ class LaboratorioController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    'delete'             => ['POST'],
+                    'get-inventarios'    => ['GET']
                 ],
             ],
         ];
@@ -137,4 +138,52 @@ class LaboratorioController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    /**
+     * Finds the Laboratorio model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param string $nombre
+     * @return Laboratorio the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findByNombre($nombre)
+    {
+        if (($model = Laboratorio::getByNombre($alias)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    /**
+    * Busca los inventarios asociados al laboratorio
+    * @param entero $id laboratorio id 
+    * @return mixed
+    * @throws NotFoundHttpException si no se encuentra el laboratorio
+    */
+    function actionGetInventarios($id = 0, $alias = "")
+    {
+        // 1. local variables
+        $return = [ 'laboratory' => null, 'inventories'  =>  [] ];
+        // 2. Buscar por Id
+        if($id > 0)
+        {
+            $return[ 'laboratory' ]  = $this->findModel($id);
+        }
+        // 2.1 Buscar por Alias o nombre
+        else if($alias !== "")
+        {
+            $return[ 'laboratory' ]  = $this->findByNombre(str_replace('-', ' ', $alias));
+        }
+        // 3. Buscar inventarios
+        $return[ 'inventories' ] = Laboratorio::getInventariosById($return[ 'laboratory' ]->id);
+
+        return $this->render('inventories', [
+            'data'  => $return,
+        ]);
+
+        return $return;
+    }
 }
+
+

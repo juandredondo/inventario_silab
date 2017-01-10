@@ -36,7 +36,7 @@ if (Yii::$app->controller->action->id === 'login') {
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
     </head>
-    <body class="hold-transition skin-blue sidebar-mini">
+    <body class="hold-transition skin-blue sidebar-mini layout-boxed">
     <?php $this->beginBody() ?>
     <div class="wrapper">
 
@@ -49,7 +49,10 @@ if (Yii::$app->controller->action->id === 'login') {
         
         <?= $this->render(
             'left.php',
-            ['directoryAsset' => $directoryAsset]
+            [
+                'directoryAsset' => $directoryAsset,
+                'menuArray'      => $menuArray
+            ]
         )
         ?>
 

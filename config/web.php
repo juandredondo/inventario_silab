@@ -44,6 +44,10 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'admin/manager/index'                           =>  'admin/manager/index',
+                'admin/manager/<action:(?!index$)[\w\s]+>'      =>  'admin/manager/redirect',
+                'laboratorio/<alias:[a-zA-Z\-]+>/inventarios'   =>  'laboratorio/get-inventarios',
+                'laboratorio/<id:\d+>/inventarios'              =>  'laboratorio/get-inventarios'
             ],
         ],
         

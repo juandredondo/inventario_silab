@@ -8,7 +8,8 @@ use yii\helpers\Html;
 <div class="rol-update">
 
     <?= $this->render('_form', [
-        'model' => $model,
+        'model'     => $model,
+        'parents'   => $parents
     ]) ?>
 
 </div>

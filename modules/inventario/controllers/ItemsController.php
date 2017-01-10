@@ -164,8 +164,8 @@ class ItemsController extends Controller
             break;
 
             case TipoItem::Accesorio:
-                $formView   = "/accesorio" . $formView;
-                $model      = $this->loadModel(Accesorio::className(), $itemId);
+                $formView   = "/accesorios" . $formView;
+                $model      = $this->loadModel(Accesorios::className(), $itemId);
             break;
 
 

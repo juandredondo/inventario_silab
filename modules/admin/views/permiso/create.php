@@ -9,6 +9,7 @@ use yii\helpers\Html;
 ?>
 <div class="permiso-create">
     <?= $this->render('_form', [
-        'model' => $model,
+        'model'     => $model,
+        'parents'   => $parents
     ]) ?>
 </div>

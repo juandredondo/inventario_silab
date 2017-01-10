@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-
+use app\modules\inventario\models\Inventario;
 /**
  * This is the model class for table "TBL_LABORATORIOS".
  *
@@ -139,5 +139,27 @@ class Laboratorio extends \yii\db\ActiveRecord
     public function getEdificio()
     {
         return $this->hasOne(Edificio::className(), ['EDIF_ID' => 'EDIF_ID']);
+    }
+
+    public static function getInventariosById($id)
+    {
+        return  Inventario::find()
+                ->where(["LABO_ID" => $id])
+                ->all();
+    }
+
+    public static function getInventariosByNombre($nombre)
+    {
+        $laboratorio = static::getByNombre($nombre);
+        if($laboratorio !== null)
+            return static::getInventariosById($laboratorio->id);
+        else 
+            [];
+    }
+
+    public static function getByNombre($nombre)
+    {
+        $laboratorio = static::find()->where(['like', "LABO_NOMBRE", [$nombre]])->one();
+        return $laboratorio;
     }
 }

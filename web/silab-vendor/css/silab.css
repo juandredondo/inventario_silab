@@ -1,0 +1,35 @@
+.inventory-row
+{ 
+    transition: all ease .2s; 
+    height: 0px;
+    overflow-y: hidden;
+    border: none;
+}
+
+.inventory-row td{ padding: 0 !important; }
+
+.inventory-row td > .row
+{ 
+    transition: all ease .2s;
+    height: 0px; 
+    overflow-y: hidden; 
+}
+
+.inventory-row.open 
+{
+    height: auto;
+    overflow-y: auto;
+    border: 1px solid #aaa;
+}
+
+.inventory-row.open td
+{
+    padding: auto;
+}
+
+.inventory-row.open td > .row
+{ 
+    transition: all ease .2s;
+    height: auto; 
+    overflow-y: auto;
+}

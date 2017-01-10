@@ -16,17 +16,18 @@ $this->params['breadcrumbs'][] = $this->title;
 CrudAsset::register($this);
 
 ?>
+
 <div class="permiso-index">
     <div id="ajaxCrudDatatable">
         <?=GridView::widget([
-            'id'=>'crud-datatable',
+            'id'=>'permiso-crud-datatable',
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'pjax'=>true,
             'columns' => require(__DIR__.'/_permiso-columns.php'),
             'toolbar'=> [
                 ['content'=>
-                    Html::a('<i class="glyphicon glyphicon-plus"></i>', ['create'],
+                    Html::a('<i class="glyphicon glyphicon-plus"></i>', ["permiso/create"],
                     ['role'=>'modal-remote','title'=> 'Create new Permisos','class'=>'btn btn-default']).
                     Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''],
                     ['data-pjax'=>1, 'class'=>'btn btn-default', 'title'=>'Reset Grid']).
@@ -58,21 +59,18 @@ CrudAsset::register($this);
         ])?>
     </div>
 </div>
-<div class="profile-index">
-
-</div>
 
 <?php Modal::begin([
-    "id"=>"ajaxCrudModal",
+    "id"=>"permiso-modal",
     "footer"=>"",// always need it for jquery plugin
 ])?>
 <?php Modal::end(); ?>
 
-<?= 
-    $this->render('/rol/index',
+<?
+   /* $this->render('/rol/index',
         [
             'searchModel'   => $roleSearch,
             'dataProvider'  => $roleProvider
         ] 
-    );
+    );*/
 ?>

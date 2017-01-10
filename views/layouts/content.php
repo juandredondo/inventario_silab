@@ -7,7 +7,7 @@ use dmstr\widgets\Alert;
     <?php 
         if($module === "inventario"):
     ?>
-    <div class="">
+    <div class="nav-tabs-custom fixed">
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active">
                 <a data-toggle="tab" href="#home">Inventarios</a>

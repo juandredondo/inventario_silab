@@ -10,5 +10,6 @@ use yii\helpers\Html;
 <div class="perfil-role-create">
     <?= $this->render('_form', [
         'model' => $model,
+        'parents' => $parents
     ]) ?>
 </div>

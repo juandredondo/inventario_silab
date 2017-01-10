@@ -10,7 +10,7 @@ use app\modules\admin\models\PerfilRole;
 /**
  * PerfilRoleSeach represents the model behind the search form about `app\modules\admin\models\PerfilRole`.
  */
-class PerfilRoleSeach extends PerfilRole
+class PerfilRoleSearch extends PerfilRole
 {
     /**
      * @inheritdoc
