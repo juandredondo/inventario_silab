@@ -59,10 +59,10 @@ class InventarioSearch extends Inventario
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'INVE_ID' => $this->INVE_ID,
-            'LABO_ID' => $this->LABO_ID,
+            'INVE_ID'       => $this->INVE_ID,
+            'LABO_ID'       => $this->LABO_ID,
             'INVE_CANTIDAD' => $this->INVE_CANTIDAD,
-            'PERI_ID' => $this->PERI_ID,
+            'PERI_ID'       => $this->PERI_ID,
         ]);
 
         return $dataProvider;

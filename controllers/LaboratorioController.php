@@ -156,12 +156,37 @@ class LaboratorioController extends Controller
     }
 
     /**
+     * Finds the Laboratorio model based on its id or name alias
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param string $nombre
+     * @return Laboratorio the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findByIdOrName($id = 0, $alias = "")
+    {
+        $laboratory = null;
+
+        if($id > 0)
+        {
+            $laboratory  = $this->findModel($id);
+        }
+        // 2.1 Buscar por Alias o nombre
+        else if($alias !== "")
+        {
+            $laboratory  = $this->findByNombre(str_replace('-', ' ', $alias));
+        }
+
+        return $laboratory;
+    }
+
+
+    /**
     * Busca los inventarios asociados al laboratorio
     * @param entero $id laboratorio id 
     * @return mixed
     * @throws NotFoundHttpException si no se encuentra el laboratorio
     */
-    function actionGetInventarios($id = 0, $alias = "")
+    public function actionGetInventarios($id = 0, $alias = "")
     {
         // 1. local variables
         $return = [ 'laboratory' => null, 'inventories'  =>  [] ];
@@ -180,10 +205,33 @@ class LaboratorioController extends Controller
 
         return $this->render('inventories', [
             'data'          => $return,
-            'queryParams'   => Yii::$app->request->queryParams 
         ]);
 
         return $return;
+    }
+
+    /**
+    *   Manager para el laborotario especifco del alias provisto
+    *   @param string alias nombre del laboratorio
+    *   @return mixed
+    *   @throws NotFoundHttpException si no se encuentra el laboratorio
+    */
+    public function actionManager($id = 0, $alias = "")
+    {
+        $return             = [ 
+            'laboratory'    => null, 
+            'inventories'   => [],
+            'functioners'   => [],
+            'extraData'     => [] 
+        ];
+        // 1. get the laboratory 
+        $return[ 'laboratory' ]     = $this->findByIdOrName($id, $alias);
+        $return[ 'inventories' ]    = $return[ 'laboratory' ]->inventarios;
+        $return[ 'functioners' ]    = $return[ 'laboratory' ]->funcionarios;
+        return $this->render("manager", [
+                'data' => $return
+            ]
+        );
     }
 }
 

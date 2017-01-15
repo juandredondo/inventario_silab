@@ -47,6 +47,8 @@ $config = [
             'rules' => [
                 'admin/manager/index'                           =>  'admin/manager/index',
                 'admin/manager/<action:(?!index$)[\w\s]+>'      =>  'admin/manager/redirect',
+                'laboratorio/manager/<alias:[a-zA-Z\-]+>'       =>  'laboratorio/manager',
+                'laboratorio/manager/<id:\d+>'                  =>  'laboratorio/manager',
                 'laboratorio/<alias:[a-zA-Z\-]+>/inventarios'   =>  'laboratorio/get-inventarios',
                 'laboratorio/<id:\d+>/inventarios'              =>  'laboratorio/get-inventarios'
             ],

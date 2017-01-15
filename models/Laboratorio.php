@@ -141,18 +141,25 @@ class Laboratorio extends \yii\db\ActiveRecord
         return $this->hasOne(Edificio::className(), ['EDIF_ID' => 'EDIF_ID']);
     }
 
-    public static function getInventariosById($id)
+    public static function getInventariosById($id, $params = null)
     {
-        return  Inventario::find()
-                ->where(["LABO_ID" => $id])
-                ->all();
+        $query = Inventario::find()
+               ->where(["LABO_ID" => $id]);
+
+        if(isset($params[ 'page' ]))
+            $query->offset( $params[ 'page' ] - 1 );
+
+        if(isset($params[ 'per-page' ]))
+            $query->limit( $params[ 'per-page' ] );
+
+        return $query->all();
     }
 
-    public static function getInventariosByNombre($nombre)
+    public static function getInventariosByNombre($nombre, $params = null)
     {
         $laboratorio = static::getByNombre($nombre);
         if($laboratorio !== null)
-            return static::getInventariosById($laboratorio->id);
+            return static::getInventariosById($laboratorio->id, $params);
         else 
             [];
     }
