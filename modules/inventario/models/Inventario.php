@@ -211,4 +211,15 @@ class Inventario extends \yii\db\ActiveRecord
        // 4. Good bye 
        return $entries;
    }
+
+   public function getItemsStatistics()
+   {
+       $query = new \yii\db\Query();
+
+       $query ->select(['type', 'count'])
+              ->from('vw_count_type_items')
+              ->where(['inventory' => $this->INVE_ID]);            
+
+       return $query->all();
+   }
 }
