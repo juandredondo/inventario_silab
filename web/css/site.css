@@ -146,7 +146,6 @@ a.desc:after {
 .card.clickable
 {
     transition: all ease .2s;
-    cursor: pointer;
     opacity: 0.7;
 }
 

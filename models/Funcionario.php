@@ -82,4 +82,9 @@ class Funcionario extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Persona::className(), ['PERS_ID' => 'PERS_ID']);
     }
+
+    public function getAsignedByLaboratoryId($id)
+    {
+        return FuncionarioLaboratorio::find()->where([ "LABO_ID" => $id, "FUNC_ID" => $this->id ])->one();
+    }
 }

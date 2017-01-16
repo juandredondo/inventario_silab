@@ -24,8 +24,8 @@ function checkPeriodo ($model)
         return $periodo;
 }
 
-
-$this->params[ "count" ] = count( $data[ "inventories" ] );
+$this->params[ "data.laboratory" ]  = $data[ "laboratory" ];
+$this->params[ "count" ]            = count( $data[ "inventories" ] );
 ?>
 
 <section class="content">
@@ -72,7 +72,7 @@ $this->params[ "count" ] = count( $data[ "inventories" ] );
                 ]);
                 echo ListView::widget([
                     'dataProvider'  => $dataProvider,
-                'itemView'      => "@inventarioViews/inventario/" . ((Yii::$app->request->getQueryParam("view_mode", "list") == "list") ? '_list.php' : '_card.php'),
+                    'itemView'      => "@inventarioViews/inventario/" . ((Yii::$app->request->getQueryParam("view_mode", "list") == "list") ? '_list.php' : '_card.php'),
                 ]);
             ?>
         </div>

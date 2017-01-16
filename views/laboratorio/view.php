@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <div class="col-md-6">
-    <h1><?= Html::encode("Funcionarios ") ?></h1>
+    <h1><?= Html::encode("Funcionarios") ?></h1>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
       'columns' => [
@@ -60,13 +60,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'buttons'  =>
                  [
                     'view'=>function($model, $key,$url){
-                           
-
                             },
                     'update'=>function($model, $key,$url){
                                 $url=Yii::$app->urlManager->createUrl(['funcionario/update', 'id' => $key->FUNC_ID]);
-                          
-
                             },
                     'delete'=>function($model, $key,$url){
                                 $url=Yii::$app->urlManager->createUrl(['funcionario-laboratorio/delete', 'id' => $key->FULA_ID]);
@@ -78,16 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             },
                    
                 ],
-
-
-
-
-
             ],
-
-
-
-
         ],
     ]); ?>
 </div>

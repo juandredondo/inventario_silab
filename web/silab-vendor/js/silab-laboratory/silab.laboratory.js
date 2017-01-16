@@ -51,3 +51,10 @@ silab.laboratory.activeInventoryDataTable = function(target)
     }  
     
 }
+
+silab.laboratory.init = function()
+{
+    console.log("init from " + silab.laboratory.moduleName)
+}
+
+silab.laboratory.init();

@@ -9,6 +9,7 @@ use app\models\Periodo;
 /* @var $this yii\web\View */
 /* @var $model app\models\Inventario */
 /* @var $form yii\widgets\ActiveForm */
+$readOnly = $this->params[ "labo.readonly" ];
 ?>
 
 <div class="inventario-form">
@@ -24,7 +25,10 @@ use app\models\Periodo;
             "main"  => $model,
             "ref"   => Laboratorio::className()
         ],
-        "columns"   => [ "attribute" => 'LABO_ID', "id" => "id", "text" => "nombre" ]
+        "columns"   => [ "attribute" => 'LABO_ID', "id" => "id", "text" => "nombre" ],
+        'options'   => [
+            'disabled' => $readOnly
+        ]
     ])  ?>
 
     <?= DropDownWidget::widget([

@@ -6,6 +6,5 @@ use Yii;
 
 class StringHelper extends yii\helpers\StringHelper
 {
-    
 }
 ?>

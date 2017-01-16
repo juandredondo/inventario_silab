@@ -9,18 +9,8 @@ use yii\grid\GridView;
 
 $this->title = 'Funcionario Laboratorios';
 $this->params['breadcrumbs'][] = $this->title;
-?>
-<div class="funcionario-laboratorio-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a('Create Funcionario Laboratorio', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-    <?= GridView::widget([
+$gridViewSettings = [
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -30,5 +20,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
-    ]); ?>
+    ];
+
+if(isset($searchModel))
+{
+    $gridViewSettings[ 'filterModel' ] = $searchModel;
+}
+
+?>
+<div class="funcionario-laboratorio-index">
+
+    <h1><?= Html::encode($this->title) ?></h1>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <p>
+        <?= Html::a('Create Funcionario Laboratorio', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
+    <?= GridView::widget($gridViewSettings); ?>
 </div>
