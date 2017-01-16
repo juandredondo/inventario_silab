@@ -100,7 +100,7 @@ class Caducidad extends \yii\db\ActiveRecord
     public static function getCaducado($date)
     {
         $today = new \DateTime("today");
-        $date  = new \DateTime("2016-12-22");
+        $date  = new \DateTime($date);
         $diff  = $today->diff( $date );
 
         $rest = $diff->format('%R');
