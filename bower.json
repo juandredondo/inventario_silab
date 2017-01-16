@@ -1,0 +1,28 @@
+{
+  "name": "inventario_silab",
+  "description": "App for silab Ionic",
+  "main": "bower.json",
+  "keywords": [
+    "app",
+    "php",
+    "yii",
+    "silab-ionic"
+  ],
+  "authors": [
+    "Uniguajira"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor/bower",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "underscore": "^1.8.3"
+  }
+}
