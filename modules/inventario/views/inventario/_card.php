@@ -4,14 +4,15 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
     $count = $this->params[ "count" ];
-
-    if(isset($count))
+    
+    if(isset($count) && !isset($manualSize))
     {
         $count = ( ($count % 2 == 0) && !($count % 3 == 0) ) ? 6 : 4;
     }
     else
     {
-        $count = 4;
+        
+        $count = !isset($manualSize) ? 4 : $manualSize;
     }
 
     $laboratory = $this->params[ "data.laboratory" ];

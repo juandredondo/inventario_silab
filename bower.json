@@ -23,6 +23,7 @@
     "tests"
   ],
   "dependencies": {
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "seiyria-bootstrap-slider": "^9.7.0"
   }
 }

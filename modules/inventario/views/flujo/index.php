@@ -7,30 +7,35 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\FlujoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Flujos';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="flujo-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="flujo-index box box-default">
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Create Flujo', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'FLUJ_ID',
             'FLUJ_CANTIDAD',
-            'MOVI_ID',
-            'STOC_ID',
-            'TIFU_ID',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'attribute' => 'MOVI_ID',
+                'format'    => "html",
+                'value'     => function($model, $widget)
+                {
+                    return $model->MOVI_ID === null ? 
+                        "<span class='label label-primary'>INGRESO MANUAL</span>" : 
+                        "<span class='label label-success'>INGRESO POR PEDIDO</span>";
+                }
+            ],
+            [
+                'attribute' => 'TIFU_ID',
+                'format'    => 'html',
+                'value'     => function($model)
+                {
+                    return $model->tipoFlujo->TIFL_NOMBRE === "ENTRADA" ? 
+                        "<strong><i class='text-green icon-bottom material-icons md-24'>keyboard_arrow_up</i></strong>" :
+                        "<strong><i class='text-red icon-bottom material-icons md-24'>keyboard_arrow_down</i></strong>" ;
+                }
+            ],
+            'FLUJ_FECHA'
         ],
     ]); ?>
 </div>

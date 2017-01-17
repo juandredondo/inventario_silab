@@ -95,4 +95,33 @@ class Stock extends \yii\db\ActiveRecord
        return $this->hasOne(Periodo::className(), ['PERI_ID' => 'PERI_ID']);
    }
 
+   public static function getCurrentStock($item, $inventory)
+   {
+        $stock = static::find()
+                ->where([ "ITEM_ID" => $item, 'INVE_ID' => $inventory ])
+                ->limit(1)
+                ->orderBy('STOC_ID DESC')
+                ->one();
+
+        return $stock;
+   }
+
+   public function calculateAmount()
+   {
+       $flows = $this->flujos;
+
+       $amount = $this->STOC_CANTIDAD;
+
+       if(count($flows) > 0)
+       {
+           $amount = 0;
+           foreach($flows as $flow)
+           {
+               $amount += $flow->FLUJ_CANTIDAD * ( $flow->tipoFlujo->TIFL_CONSTANTE );
+           }
+       }
+       
+       return $amount;
+   }
+
 }
