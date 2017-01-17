@@ -47,9 +47,9 @@ class Consumible extends Items
     public function attributeLabels()
     {
         return [
-            'ITCO_ID' => 'Itco  ID',
-            'ITEM_ID' => 'Item  ID',
-            'ESCO_ID' => 'Estado Consumible ID',
+            'ITCO_ID' => 'ID',
+            'ITEM_ID' => 'ITEM',
+            'ESCO_ID' => 'ESTADO',
         ];
     }
 

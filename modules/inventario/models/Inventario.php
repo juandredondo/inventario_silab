@@ -56,14 +56,14 @@ class Inventario extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'INVE_ID'           => 'Inve ID',
-            'INVE_NOMBRE'       => 'Inve Nombre',
-            'INVE_DESCRIPCION'  => 'Inve Descripcion',
-            'INVE_ALIAS'        => 'Inve Alias',
-            'INVE_CANTIDAD'     => 'Inve Cantidad',
-            'INVE_PADRE'        => 'Inve Padre',
-            'LABO_ID'           => 'Labo ID',
-            'PERI_ID'           => 'Peri ID',
+            'INVE_ID'           => 'ID',
+            'INVE_NOMBRE'       => 'NOMBRE',
+            'INVE_DESCRIPCION'  => 'DESCRIPCION',
+            'INVE_ALIAS'        => 'ALIAS',
+            'INVE_CANTIDAD'     => 'CANTIDAD DE ITEMS',
+            'INVE_PADRE'        => 'PADRE',
+            'LABO_ID'           => 'LABORATORIO',
+            'PERI_ID'           => '# PERIODO #',
         ];
     }
 
