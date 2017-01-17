@@ -15,11 +15,12 @@ use yii\web\AssetBundle;
  */
 class AppAsset extends AssetBundle
 {
-    public $ScriptVersion   = 1.0;
+    public $ScriptVersion   = 1.1;
     public $basePath        = '@webroot';
     public $baseUrl         = '@web';
     public $css = [
         'css/site.css',
+        'silab-vendor/css/silab.css'
     ];
     public $js = [
         'silab-vendor/js/silab.app.js'

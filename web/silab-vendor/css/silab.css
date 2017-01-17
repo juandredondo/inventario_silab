@@ -33,3 +33,62 @@
     height: auto; 
     overflow-y: auto;
 }
+.silab-main-row
+{
+    margin-left: 0; 
+    margin-right: 0;
+}
+.no-side-paddings
+{
+    padding-left: 0;
+    padding-right: 0;
+}
+@media screen and ( min-width:728px ){
+    .no-left-padding
+    {
+        padding-left: 0;
+    }
+
+    .no-left-padding
+    {
+        padding-right: 0;
+    }
+}
+
+
+.laboratory-sidebar-container
+{    
+    padding-bottom: 15px;
+    box-shadow: 0px 5px 0px rgba(0, 0, 0, 0.15);
+    background-color: #f39c12;
+    position: relative;
+    height: 400px;
+    opacity: 0.1;
+    transition: all ease .2s;
+}
+.laboratory-sidebar-container .header
+{
+    margin-top: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+.laboratory-sidebar-container:hover {
+    opacity: 1;
+}
+
+.laboratory-sidebar-container *
+{
+    color: #fff !important; 
+}
+
+.laboratory-sidebar-container .nav-stacked>li.active>a, .nav-stacked>li.active>a:hover
+{
+    border-left-color: #fff !important;
+}
+
+.laboratory-sidebar-container .nav>li>a:hover, .nav>li>a:active, .nav>li>a:focus {
+    color: #fff;
+    background: rgba(0, 0, 0, 0.15);
+}

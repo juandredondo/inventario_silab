@@ -1,6 +1,23 @@
 var silab = silab || {};
 
 silab.tags = [];
+silab.colors = [
+    "aqua",
+    "red",
+    "green",
+    "orange",
+    "yellow",
+    "white",
+    "teal",
+    "maroon",
+];
+
+silab.itemsIcons = {
+    reactive    :   "fa fa-hourglass-end",
+    materials   :   "fa fa-eyedropper",
+    teams       :   "fa fa-laptop",
+    tools       :   "fa fa-gavel"
+}
 
 silab.needs = function(needs, moduleName)
 {
@@ -56,6 +73,7 @@ silab.basics = function() {
         console.log( "app!" );
         activeTab();
         bindLinkWithHash();
+        getLaboratories();
     }
 
     function bindLinkWithHash()
@@ -84,6 +102,36 @@ silab.basics = function() {
                 anchor.parents("li").addClass("active");
             }
 
+        }
+    }
+
+    function getLaboratories(size)
+    {
+        var domain  = $("body").data("domain");
+        size        = size || 5;
+
+        $.ajax({
+            url     :   domain + "/laboratorio/get-all?page=" + size,
+            type    :   "GET",
+            success :   renderLaboratories
+        });
+
+        function renderLaboratories(data)
+        {
+            let targetMenu  = "#laboratories-menu";
+                targetMenu  += " ul.treeview-menu";
+            var ref         = $(targetMenu);
+            
+            var items       = "<li><a href='" + domain + "/laboratorio/manager/<%= LABO_ID %>'><i class='fa fa-circle-o text-<%= color %>'></i><%= LABO_NOMBRE %></a></li>";
+            var template    = _.template(items);
+            
+            _.each(data, function(laboratory){
+                let silabCount      = silab.colors.length;
+                laboratory.color    = silab.colors[ _.random(0, silabCount - 1) ];
+                ref.append( template( laboratory ) );
+            });
+
+            console.log(data);
         }
     }
 
@@ -130,6 +178,7 @@ silab.checkProperty = function(property, object)
 
     return false;
 }
+
 
 
 
