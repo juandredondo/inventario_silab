@@ -62,10 +62,10 @@ class Caducidad extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'CADU_ID' => 'Cadu  ID',
-            'CADU_NOMBRE' => 'Cadu  Nombre',
-            'CADU_MIN' => 'Cadu  Min',
-            'CADU_MAX' => 'Cadu  Max',
+            'CADU_ID' => 'ID',
+            'CADU_NOMBRE' => 'CADUCIDAD',
+            'CADU_MIN' => 'MIN',
+            'CADU_MAX' => 'MAX',
         ];
     }
 
@@ -99,23 +99,31 @@ class Caducidad extends \yii\db\ActiveRecord
 
     public static function getCaducado($date)
     {
-        $today = new \DateTime("today");
+        /* Obsolete
+            $diff  = $today->diff( $date );
+
+            $rest = $diff->format('%R');
+            $days = $diff->days;
+
+
+            if($days <= 0)
+            {
+                return self::findOne(self::Vencido);
+            }
+            else if($days >= 1 && $days <= 50)
+            {
+                return self::findOne(self::ProximoVencer);
+            }
+
+            return self::findOne(self::Vigente);
+            $today = new \DateTime("today");
+        */
         $date  = new \DateTime($date);
-        $diff  = $today->diff( $date );
-
-        $rest = $diff->format('%R');
-        $days = $diff->days;
-
-        if($days <= 0)
-        {
-            return self::findOne(self::Vencido);
-        }
-        else if($days >= 1 && $days <= 50)
-        {
-            return self::findOne(self::ProximoVencer);
-        }
-
-        return self::findOne(self::Vigente);
+        
+        return self::find()
+                ->where("CADU_ID = getCaducidad(:date)" )
+                ->addParams([ ":date" => $date->format('y-m-d') ])
+                ->one();
     }
 
     /**
