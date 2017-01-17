@@ -233,6 +233,13 @@ class LaboratorioController extends Controller
             ]
         );
     }
+
+    public function actionGetAll($page = 10)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        return Laboratorio::find()->limit($page)->orderBy("LABO_NOMBRE")->all();
+    }
 }
 
 
