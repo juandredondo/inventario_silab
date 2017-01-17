@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\bootstrap\Modal;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ReactivoSearch */
@@ -10,13 +11,16 @@ use yii\grid\GridView;
 $this->title = 'Reactivos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="reactivo-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+<div class="reactivo-index content card">
 
     <p>
         <?= Html::a('Create Reactivo', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<i class="icon-bottom material-icons md-18">filter_list</i> Filtrar', ['#'], [
+                'class'         => 'btn btn-default',
+                "data-toggle"   => "modal", 
+                "data-target"   => "#filter-modal" 
+            ]) 
+        ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -26,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'REAC_ID',
             'REAC_CODIGO',
-            'REAC_UNIDAD',
+            'unidad.UNID_NOMBRE',
             'REAC_FECHA_VENCIMIENTO',
             'ITCO_ID',
             // 'UBIC_ID',
@@ -37,3 +41,11 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 </div>
+<?php Modal::begin([
+    "id"    =>  "filter-modal",
+    "header" => "Filtrar Reactivos!",
+    "footer"=>  "",// always need it for jquery plugin
+])?>
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+<?php Modal::end(); ?>
+

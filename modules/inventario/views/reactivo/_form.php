@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 
 use app\components\widgets\DropDownWidget;
 use app\modules\inventario\models\Ubicacion;
+use app\modules\inventario\models\Unidad;
 use app\modules\inventario\models\Simbolo;
 /* @var $this yii\web\View */
 /* @var $model app\models\Periodo */
@@ -31,7 +32,15 @@ DatePickerAsset::register($this);
 
     <?= $form->field($model, 'REAC_CODIGO')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'REAC_UNIDAD')->textInput(['maxlength' => true]) ?>
+    <?= DropDownWidget::widget([
+            'form'  => $form,
+            'model' => [
+                'main'  => $model,
+                'ref'   => Unidad::className()
+            ],
+            "columns"   => [ "id" => "UNID_ID", "text" => "UNID_NOMBRE" ]
+        ]) 
+    ?>
 
     <?= $form->field($model, 'REAC_FECHA_VENCIMIENTO', 
             [

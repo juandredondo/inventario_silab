@@ -15,7 +15,9 @@ use app\modules\inventario\models\core\ItemConsumible;
  * @property integer $UBIC_ID
  * @property integer $CADU_ID
  * @property integer $SIMB_ID
+ * @property integer $UNID_ID 
  *
+ * @property TBLUNIDADES $uNID 
  * @property TBLCADUCIDADES $cADU
  * @property TBLITEMSCONSUMIBLES $iTCO
  * @property TBLSIMBOLOS $sIMB
@@ -49,15 +51,15 @@ class Reactivo extends \app\modules\inventario\models\core\ItemBase
     public function rules()
     {
         return [
-            [['REAC_CODIGO', 'REAC_UNIDAD', 'REAC_FECHA_VENCIMIENTO', 'ITCO_ID', 'UBIC_ID', 'CADU_ID', 'SIMB_ID'], 'required'],
+            [['REAC_CODIGO', 'REAC_FECHA_VENCIMIENTO', 'ITCO_ID', 'UBIC_ID', 'CADU_ID', 'SIMB_ID'], 'required'],
             [['REAC_FECHA_VENCIMIENTO'], 'safe'],
-            [['ITCO_ID', 'UBIC_ID', 'CADU_ID', 'SIMB_ID'], 'integer'],
+            [['ITCO_ID', 'UBIC_ID', 'CADU_ID', 'SIMB_ID', 'UNID_ID'], 'integer'],
             [['REAC_CODIGO'], 'string', 'max' => 100],
-            [['REAC_UNIDAD'], 'string', 'max' => 45],
-            [['CADU_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Caducidad::className(), 'targetAttribute' => ['CADU_ID' => 'CADU_ID']],
+            [['CADU_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Caducidad::className(),      'targetAttribute' => ['CADU_ID' => 'CADU_ID']],
             [['ITCO_ID'], 'exist', 'skipOnError' => true, 'targetClass' => ItemConsumible::className(), 'targetAttribute' => ['ITCO_ID' => 'ITCO_ID']],
-            [['SIMB_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Simbolo::className(), 'targetAttribute' => ['SIMB_ID' => 'SIMB_ID']],
-            [['UBIC_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Ubicacion::className(), 'targetAttribute' => ['UBIC_ID' => 'UBIC_ID']],
+            [['SIMB_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Simbolo::className(),        'targetAttribute' => ['SIMB_ID' => 'SIMB_ID']],
+            [['UBIC_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Ubicacion::className(),      'targetAttribute' => ['UBIC_ID' => 'UBIC_ID']],
+            [['UNID_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Unidad::className(),         'targetAttribute' => ['UNID_ID' => 'UNID_ID']],
         ];
     }
 
@@ -69,12 +71,12 @@ class Reactivo extends \app\modules\inventario\models\core\ItemBase
         return [
             'REAC_ID'                   => 'ID',
             'REAC_CODIGO'               => 'CODIGO',
-            'REAC_UNIDAD'               => 'UNIDAD',
             'REAC_FECHA_VENCIMIENTO'    => 'FECHA VENCIMIENTO',
             'ITCO_ID'                   => 'CONSUMIBLE',
             'UBIC_ID'                   => 'UBICACION',
             'CADU_ID'                   => 'CADUCADO',
             'SIMB_ID'                   => 'SIMBOLO',
+            'UNID_ID'                   => 'UNIDAD',
         ];
     }
 
@@ -89,8 +91,10 @@ class Reactivo extends \app\modules\inventario\models\core\ItemBase
      */
     public function getCaducidad()
     {
-        return $this->hasOne(Caducidad::className(), ['CADU_ID' => 'CADU_ID']);
+        return Caducidad::getCaducado($this->REAC_FECHA_VENCIMIENTO);
     }
+
+
 
     /**
      * @return \yii\db\ActiveQuery
@@ -118,6 +122,11 @@ class Reactivo extends \app\modules\inventario\models\core\ItemBase
     {
         return $this->hasOne(Ubicacion::className(), ['UBIC_ID' => 'UBIC_ID']);
     }    
+
+    public function getUnidad()
+    {
+        return $this->hasOne(Unidad::className(), ['UNID_ID' => 'UNID_ID']);
+    }
 
     public function beforeSave($insert)
     {

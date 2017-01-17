@@ -5,12 +5,12 @@ namespace app\modules\inventario\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\inventario\models\Reactivo;
+use app\modules\inventario\models\Unidad;
 
 /**
- * ReactivoSearch represents the model behind the search form about `app\models\Reactivo`.
+ * UnidadSearch represents the model behind the search form about `app\modules\inventario\models\Unidad`.
  */
-class ReactivoSearch extends Reactivo
+class UnidadSearch extends Unidad
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class ReactivoSearch extends Reactivo
     public function rules()
     {
         return [
-            [['REAC_ID', 'ITCO_ID', 'UBIC_ID', 'CADU_ID', 'SIMB_ID', 'UNID_ID'], 'integer'],
-            [['REAC_CODIGO', 'REAC_FECHA_VENCIMIENTO'], 'safe'],
+            [['UNID_ID'], 'integer'],
+            [['UNID_NOMBRE', 'UNID_DESCRIPCION'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class ReactivoSearch extends Reactivo
      */
     public function search($params)
     {
-        $query = Reactivo::find();
+        $query = Unidad::find();
 
         // add conditions that should always apply here
 
@@ -59,16 +59,11 @@ class ReactivoSearch extends Reactivo
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'REAC_ID' => $this->REAC_ID,
-            'REAC_FECHA_VENCIMIENTO' => $this->REAC_FECHA_VENCIMIENTO,
-            'ITCO_ID' => $this->ITCO_ID,
-            'UBIC_ID' => $this->UBIC_ID,
-            'CADU_ID' => $this->CADU_ID,
-            'SIMB_ID' => $this->SIMB_ID,
             'UNID_ID' => $this->UNID_ID,
         ]);
 
-        $query->andFilterWhere(['like', 'REAC_CODIGO', $this->REAC_CODIGO]);            
+        $query->andFilterWhere(['like', 'UNID_NOMBRE', $this->UNID_NOMBRE])
+            ->andFilterWhere(['like', 'UNID_DESCRIPCION', $this->UNID_DESCRIPCION]);
 
         return $dataProvider;
     }
