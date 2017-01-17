@@ -91,6 +91,45 @@ class Periodo extends \yii\db\ActiveRecord
         return $_esVigente;
     }
 
+    public static function generatePeriod()
+    {
+        $monthsBySemester = [
+            1 => [ 1, 2, 3, 4, 5, 6 ],
+            2 => [ 7, 8, 9, 10, 11, 12 ]
+        ];
+
+        $currentDate        = new \DateTime("2017-09-26");
+        $currentSemester    = $currentDate->format("m") <= 6 ? 1 : 2; 
+        $currentDate->setDate($currentDate->format("Y"), $currentSemester == 1 ? 1 : 7 , 1);
+                                
+        
+        $period             = new Periodo();
+        $period->load([
+            "PERI_SEMESTRE" => $currentSemester,
+            "PERI_FECHA"    => $currentDate->format("Y-m-d")
+        ], '');
+
+        return $period;
+    }
+
+    public static function getCurrentPeriod()
+    {
+        $period = self::find()
+                ->where("PERI_ID = getCurrentPeriod()" )
+                ->one();
+        
+        if($period === null)
+        {
+            $period = static::generatePeriod();
+
+            if($period->validate() && $period->save())
+                return $period;
+        }
+        else
+            return $period;
+        
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
