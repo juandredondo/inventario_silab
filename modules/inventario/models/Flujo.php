@@ -37,6 +37,7 @@ class Flujo extends \yii\db\ActiveRecord
         return [
             [['FLUJ_CANTIDAD', 'STOC_ID'], 'required'],
             [['FLUJ_CANTIDAD'], 'number'],
+            [['FLUJ_FECHA'], 'datetime'],
             [['MOVI_ID', 'STOC_ID', 'TIFU_ID'], 'integer'],
             [['MOVI_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Movimiento::className(), 'targetAttribute' => ['MOVI_ID' => 'MOVI_ID']],
             [['STOC_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Stock::className(), 'targetAttribute' => ['STOC_ID' => 'STOC_ID']],
@@ -50,11 +51,12 @@ class Flujo extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'FLUJ_ID' => 'Fluj  ID',
-            'FLUJ_CANTIDAD' => 'Fluj  Cantidad',
-            'MOVI_ID' => 'Movi  ID',
-            'STOC_ID' => 'Stoc  ID',
-            'TIFU_ID' => 'Tifu  ID',
+            'FLUJ_ID'       => 'ID',
+            'FLUJ_CANTIDAD' => 'CANTIDAD',
+            'FLUJ_FECHA' => 'FECHA',
+            'MOVI_ID' => 'MOVIMIENTO',
+            'STOC_ID' => 'STOCK',
+            'TIFU_ID' => 'TIPO',
         ];
     }
 
@@ -91,6 +93,13 @@ class Flujo extends \yii\db\ActiveRecord
     }
     public function setTipoFlujoId($value = '') {
          $this->TIFU_ID = $value;
+    }
+
+    public function getFecha() {
+        return $this->FLUJ_FECHA;
+    }
+    public function setFecha($value = '') {
+         $this->FLUJ_FECHA = $value;
     }
 
     /**
