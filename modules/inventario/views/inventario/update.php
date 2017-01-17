@@ -10,7 +10,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Inventarios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->INVE_ID, 'url' => ['view', 'id' => $model->INVE_ID]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="inventario-update">
+<div class="inventario-update content card">
 
     <?= $this->render('_form', [
         'model' => $model,
