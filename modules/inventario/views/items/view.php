@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 $attributes = require (Yii::getAlias('@inventarioViews').'/items/_attributes.php');
 
 ?>
-<div class="items-view">
+<div class="items-view content card">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

@@ -10,7 +10,7 @@ $this->title = 'Create Marca';
 $this->params['breadcrumbs'][] = ['label' => 'Marcas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="marca-create">
+<div class="marca-create content card">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

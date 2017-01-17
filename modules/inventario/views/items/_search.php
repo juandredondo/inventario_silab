@@ -6,6 +6,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\ItemsSearch */
 /* @var $form yii\widgets\ActiveForm */
+
 ?>
 
 <div class="items-search">
@@ -15,13 +16,9 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'ITEM_ID') ?>
-
-    <?= $form->field($model, 'ITEM_NOMBRE') ?>
-
-    <?= $form->field($model, 'ITEM_OBSERVACION') ?>
-
-    <?= $form->field($model, 'MARC_ID') ?>
+    <?php 
+        require Yii::getAlias('@inventarioViews').'/items/_search-fields.php';
+    ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

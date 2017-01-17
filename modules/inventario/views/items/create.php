@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 ?>
-<div class="items-create">
+<div class="items-create content card">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
