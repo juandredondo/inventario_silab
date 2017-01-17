@@ -1,25 +1,29 @@
 <?php
 use yii\widgets\Breadcrumbs;
 use dmstr\widgets\Alert;
+use yii\helpers\Url;
+
+function isActive($action, $controller)
+{
+    $yC = Yii::$app->controller;
+    return $yC->id == $controller && $yC->action->id == $action ? "active" : "";
+}
 
 ?>
 <div class="content-wrapper">
     <?php 
         if($module === "inventario"):
     ?>
-    <div class="nav-tabs-custom fixed">
+    <div class="nav-tabs-custom fixed" role="navigation">
         <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active">
-                <a data-toggle="tab" href="#home">Inventarios</a>
+            <li role="presentation" class="<?= isActive("index", "inventario") ?>">
+                <a data-toggle="tab" href="<?= Url::toRoute("/inventario/inventario/index") ?>">Inventarios</a>
             </li>
-            <li role="presentation">
-                <a data-toggle="tab" href="#profile">Items</a>
+            <li role="presentation" class="<?= isActive("index", "items") ?>">
+                <a data-toggle="tab" href="<?= Url::toRoute("/inventario/items/index") ?>">Items</a>
             </li>
-            <li role="presentation">
-                <a data-toggle="tab" href="#messages">Laboratorios</a>
-            </li>
-            <li role="presentation">
-                <a data-toggle="tab" href="#settings">Movimientos</a>
+            <li role="presentation" class="<?= isActive("index", "flujo") ?>">
+                <a data-toggle="tab" href="<?= Url::toRoute("/inventario/flujo/index") ?>">Flujos</a>
             </li>
         </ul>
     </div>

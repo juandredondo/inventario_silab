@@ -3,7 +3,18 @@
 return [
         'options' => ['class' => 'sidebar-menu'],
         'items' => [
-            ['label' => 'INVENTARIO', 'options' => ['class' => 'header']],
+            ['label' => 'LABORATORIOS & STOCKS', 'options' => ['class' => 'header']],
+            ['label' => 'EDIFICIOS', 'url' => ['edificio/index']],
+            [
+                'label'     =>  'LABORATORIOS',
+                'url'       =>  '#',
+                'template'  =>  '<a class="bg-orange" href="{url}"><i class="icon-middle material-icons md-18">business</i> {label}</a>',
+                'options'   => [ 'id' => 'laboratories-menu' ],
+                'visible'   => !Yii::$app->user->isGuest,
+                'items'     => [
+                    ['label' => 'AGREGAR', 'template' => '<a class="bg-green" href="{url}"><i class="icon-middle material-icons md-18">add_circle</i> {label}</a>',    'url' => ['/inventario/inventario']],
+                ]
+            ],
             [
                 'label' =>  'STOCKS',
                 'icon'  =>  'fa fa-database',
