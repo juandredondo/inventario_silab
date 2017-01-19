@@ -8,6 +8,7 @@ use yii\grid\GridView;
 use app\assets\DataTablesAsset;
 use app\assets\LaboratoryAsset;
 $this->title = $data[ "laboratory" ]->LABO_NOMBRE;
+$GLOBALS["data"] = $data;
 ?>
 
 <div class="nav-tabs-custom">
@@ -100,7 +101,7 @@ $this->title = $data[ "laboratory" ]->LABO_NOMBRE;
                                             $url=Yii::$app->urlManager->createUrl(['funcionario/update', 'id' => $key->FUNC_ID]);
                                         },
                                 'delete'=>function($model, $key,$url){
-                                            $url=Yii::$app->urlManager->createUrl(['funcionario-laboratorio/delete', 'id' => $model->AsignedByLaboratoryId->FULA_ID]);
+                                            $url=Yii::$app->urlManager->createUrl(['funcionario-laboratorio/delete', 'id' => $key->getAsignedByLaboratoryId($GLOBALS["data"]["laboratory"]->LABO_ID)->FULA_ID]);
                                         return Html::a('<i class=" material-icons">remove_circle</i>', $url ,
                                             [
                                                 'title' => \Yii::t('yii', 'Quitar funcionario'),
