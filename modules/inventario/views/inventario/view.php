@@ -50,7 +50,7 @@ function checkPeriodo($model)
                     [
                         'attribute' => "Periodo Vigente",
                         'format'    => "html",
-                        'value'     => checkPeriod($model)
+                        'value'     => checkPeriodo($model)
                     ],
                 ],
             ]) ?>
