@@ -303,6 +303,7 @@ CREATE TABLE `TBL_FLUJOS` (
   `MOVI_ID` int(11) DEFAULT NULL,
   `STOC_ID` int(11) NOT NULL,
   `TIFU_ID` int(11) DEFAULT NULL,
+  `FLUJ_FECHA` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`FLUJ_ID`),
   KEY `FK_FLUJOS_STOC_ID_idx` (`STOC_ID`),
   KEY `FK_FLUJOS_TIFU_ID_idx` (`TIFU_ID`),
@@ -310,7 +311,7 @@ CREATE TABLE `TBL_FLUJOS` (
   CONSTRAINT `FK_FLUJOS_PEDI_ID` FOREIGN KEY (`MOVI_ID`) REFERENCES `TBL_MOVIMIENTOS` (`MOVI_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_FLUJOS_STOC_ID` FOREIGN KEY (`STOC_ID`) REFERENCES `TBL_STOCK` (`STOC_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_FLUJOS_TIFU_ID` FOREIGN KEY (`TIFU_ID`) REFERENCES `TBL_TIPOFLUJO` (`TIFL_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -319,7 +320,7 @@ CREATE TABLE `TBL_FLUJOS` (
 
 LOCK TABLES `TBL_FLUJOS` WRITE;
 /*!40000 ALTER TABLE `TBL_FLUJOS` DISABLE KEYS */;
-INSERT INTO `TBL_FLUJOS` VALUES (1,50000,NULL,1,1),(2,2000,NULL,2,1),(3,25512,NULL,3,1),(4,500,NULL,4,1),(5,25,NULL,5,1),(6,25,NULL,6,1),(7,15,NULL,7,1);
+INSERT INTO `TBL_FLUJOS` VALUES (1,50000,NULL,1,1,'2017-01-16 20:16:51'),(2,2000,NULL,2,1,'2017-01-16 20:16:51'),(3,25512,NULL,3,1,'2017-01-16 20:16:51'),(4,500,NULL,4,1,'2017-01-16 20:16:51'),(5,25,NULL,5,1,'2017-01-16 20:16:51'),(6,25,NULL,6,1,'2017-01-16 20:16:51'),(7,15,NULL,7,1,'2017-01-16 20:16:51'),(10,2054,NULL,1,2,'2017-01-16 20:21:32');
 /*!40000 ALTER TABLE `TBL_FLUJOS` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -461,7 +462,7 @@ CREATE TABLE `TBL_INVENTARIOS` (
 
 LOCK TABLES `TBL_INVENTARIOS` WRITE;
 /*!40000 ALTER TABLE `TBL_INVENTARIOS` DISABLE KEYS */;
-INSERT INTO `TBL_INVENTARIOS` VALUES (1,'EQUIPOS BIOLOGICOS','Inventario para equipos biologicos en proceso','equipos-biologicos',NULL,NULL,2,5),(2,'MATERIALES Biologia','Materiales para el laboratorio de Biologia','materiales-biologia',NULL,NULL,1,5);
+INSERT INTO `TBL_INVENTARIOS` VALUES (1,'EQUIPOS BIOLOGICOS','Inventario para equipos biologicos en proceso','equipos-biologicos',NULL,NULL,2,5),(2,'MATERIALES','Materiales para el laboratorio de Biologia','materiales',NULL,NULL,1,5);
 /*!40000 ALTER TABLE `TBL_INVENTARIOS` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -820,7 +821,7 @@ CREATE TABLE `TBL_PERIODOS` (
   `PERI_SEMESTRE` int(11) NOT NULL,
   `PERI_FECHA` date DEFAULT NULL,
   PRIMARY KEY (`PERI_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -829,7 +830,7 @@ CREATE TABLE `TBL_PERIODOS` (
 
 LOCK TABLES `TBL_PERIODOS` WRITE;
 /*!40000 ALTER TABLE `TBL_PERIODOS` DISABLE KEYS */;
-INSERT INTO `TBL_PERIODOS` VALUES (1,1,'2016-01-01'),(2,2,'2016-01-01'),(3,1,'2015-01-01'),(4,2,'2015-01-01'),(5,1,'2017-01-01');
+INSERT INTO `TBL_PERIODOS` VALUES (1,1,'2016-01-01'),(2,2,'2016-07-01'),(3,1,'2015-01-01'),(4,2,'2015-07-01'),(5,1,'2017-01-01'),(6,2,'2017-07-01');
 /*!40000 ALTER TABLE `TBL_PERIODOS` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -927,17 +928,19 @@ DROP TABLE IF EXISTS `TBL_REACTIVOS`;
 CREATE TABLE `TBL_REACTIVOS` (
   `REAC_ID` int(11) NOT NULL AUTO_INCREMENT,
   `REAC_CODIGO` varchar(100) NOT NULL,
-  `REAC_UNIDAD` varchar(45) NOT NULL,
   `REAC_FECHA_VENCIMIENTO` date NOT NULL,
   `ITCO_ID` int(11) NOT NULL,
   `UBIC_ID` int(11) NOT NULL,
   `CADU_ID` int(11) NOT NULL,
   `SIMB_ID` int(11) NOT NULL,
+  `UNID_ID` int(11) DEFAULT NULL,
   PRIMARY KEY (`REAC_ID`),
   KEY `fk_reactivos_caducidad_id_idx` (`CADU_ID`),
   KEY `fk_reactivos_ubicacion_id_idx` (`UBIC_ID`),
   KEY `fk_reactivos_simbolo_id_idx` (`SIMB_ID`),
   KEY `fk_reactivos_itemCuantitativo_id_idx` (`ITCO_ID`),
+  KEY `FK_REACTIVOS_UNID_ID_idx` (`UNID_ID`),
+  CONSTRAINT `FK_REACTIVOS_UNID_ID` FOREIGN KEY (`UNID_ID`) REFERENCES `TBL_UNIDADES` (`UNID_ID`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_reactivos_caducidad_id` FOREIGN KEY (`CADU_ID`) REFERENCES `TBL_CADUCIDADES` (`CADU_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_reactivos_itemCuantitativo_id` FOREIGN KEY (`ITCO_ID`) REFERENCES `TBL_ITEMSCONSUMIBLES` (`ITCO_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_reactivos_simbolo_id` FOREIGN KEY (`SIMB_ID`) REFERENCES `TBL_SIMBOLOS` (`SIMB_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -951,7 +954,7 @@ CREATE TABLE `TBL_REACTIVOS` (
 
 LOCK TABLES `TBL_REACTIVOS` WRITE;
 /*!40000 ALTER TABLE `TBL_REACTIVOS` DISABLE KEYS */;
-INSERT INTO `TBL_REACTIVOS` VALUES (2,'R4','gh','2017-04-06',7,2,2,4),(3,'REAC SIX EDITED','kg','2017-06-15',10,2,2,4),(4,'TESTONE','kg','2017-03-30',11,2,2,8);
+INSERT INTO `TBL_REACTIVOS` VALUES (2,'R4','2017-04-06',7,2,1,4,2),(3,'REAC SIX EDITED','2017-06-15',10,2,2,4,NULL),(4,'TESTONE','2017-03-30',11,2,2,8,NULL);
 /*!40000 ALTER TABLE `TBL_REACTIVOS` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1190,6 +1193,31 @@ INSERT INTO `TBL_UBICACIONES` VALUES (1,1,1,'A1'),(2,1,2,'B1');
 UNLOCK TABLES;
 
 --
+-- Table structure for table `TBL_UNIDADES`
+--
+
+DROP TABLE IF EXISTS `TBL_UNIDADES`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `TBL_UNIDADES` (
+  `UNID_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `UNID_NOMBRE` varchar(45) NOT NULL,
+  `UNID_DESCRIPCION` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`UNID_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `TBL_UNIDADES`
+--
+
+LOCK TABLES `TBL_UNIDADES` WRITE;
+/*!40000 ALTER TABLE `TBL_UNIDADES` DISABLE KEYS */;
+INSERT INTO `TBL_UNIDADES` VALUES (1,'M','Metro (M)'),(2,'Kg','Kilogramo (Kg)'),(3,'g','Gramo (g)');
+/*!40000 ALTER TABLE `TBL_UNIDADES` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `TBL_USUARIOS`
 --
 
@@ -1392,6 +1420,64 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `getCurrentPeriod` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `getCurrentPeriod`() RETURNS int(11)
+BEGIN
+	DECLARE dates 		DATE;
+    DECLARE periodId 	INT;
+    -- - - - - - - - - - - - 
+    SET 	dates = NOW();
+    
+	SET periodId = ( 
+		SELECT PERI_ID 
+		FROM TBL_PERIODOS 
+			WHERE 	PERI_SEMESTRE 		= getSemester(dates) AND 
+					YEAR(PERI_FECHA) 	= YEAR(dates)
+	);
+    
+RETURN periodId;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `getSemester` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `getSemester`(fecha DATE) RETURNS int(11)
+BEGIN
+	DECLARE mont INT;
+    
+    SET mont = MONTH(fecha);
+    
+    IF ( mont <= 6 ) THEN 
+		RETURN 1;
+    END IF;
+    
+	RETURN 2;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `FindItem` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1448,4 +1534,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-01-16  0:17:50
+-- Dump completed on 2017-01-19  0:39:56
