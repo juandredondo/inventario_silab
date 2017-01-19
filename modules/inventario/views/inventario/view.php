@@ -58,6 +58,7 @@ function checkPeriodo($model)
 
         <div class="col-md-12">
             <h3>Items del inventario</h3>
+            <?= Html::a('<i class="icon-bottom material-icons md-18">add</i> <span class="hidden-xs"></span>', ['stock/create', 'id' => $model->INVE_ID], ['class' => 'btn btn-primary btn-flat']) ?>
             <div class="box">
                 <?php   
                 

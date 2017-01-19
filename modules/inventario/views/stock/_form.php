@@ -28,6 +28,7 @@ use app\models\Periodo;
   
     <?= $form->field($stock, 'STOC_CANTIDAD')->textInput(['type' => 'number']) ?>
 
+    <input type="checkbox" name="manual-period" >
     <?= $form->field($stock, 'PERI_ID')->dropDownList(
 		     
             ArrayHelper::map(Periodo::find()->asArray()->all(), 'PERI_ID', 'PERI_FECHA'),

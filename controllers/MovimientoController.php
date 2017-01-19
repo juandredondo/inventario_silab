@@ -1,21 +1,18 @@
 <?php
 
-namespace app\modules\inventario\controllers;
+namespace app\controllers;
 
 use Yii;
-use app\modules\inventario\models\Stock;
-use app\modules\inventario\models\StockSearch;
-
-use app\modules\inventario\models\Flujo;
-use app\modules\inventario\models\TipoFlujo;
+use app\models\Movimiento;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * StockController implements the CRUD actions for Stock model.
+ * MovimientoController implements the CRUD actions for Movimiento model.
  */
-class StockController extends Controller
+class MovimientoController extends Controller
 {
     /**
      * @inheritdoc
@@ -33,22 +30,22 @@ class StockController extends Controller
     }
 
     /**
-     * Lists all Stock models.
+     * Lists all Movimiento models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new StockSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = new ActiveDataProvider([
+            'query' => Movimiento::find(),
+        ]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single Stock model.
+     * Displays a single Movimiento model.
      * @param integer $id
      * @return mixed
      */
@@ -60,36 +57,25 @@ class StockController extends Controller
     }
 
     /**
-     * Creates a new Stock model.
+     * Creates a new Movimiento model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionAdd()
+    public function actionCreate()
     {
-        $stock = new Stock();
-        $flujo = new Flujo();
+        $model = new Movimiento();
 
-        if ($stock->load(Yii::$app->request->post()) ) {
-
-            if($stock->save()){
-                $flujo->STOC_ID =  $stock->STOC_ID;
-                $flujo->FLUJ_CANTIDAD =  $stock->STOC_CANTIDAD;
-                $flujo->TIFU_ID =  TipoFlujo::Entrada;
-
-                if($flujo->save())
-              return $this->redirect(['inventario/view', 'id' => $stock->INVE_ID]);  
-            }
-            
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->MOVI_ID]);
         } else {
             return $this->render('create', [
-                'stock' => $stock,
-                'flujo' => $flujo,
+                'model' => $model,
             ]);
         }
     }
 
     /**
-     * Updates an existing Stock model.
+     * Updates an existing Movimiento model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -99,7 +85,7 @@ class StockController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->STOC_ID]);
+            return $this->redirect(['view', 'id' => $model->MOVI_ID]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -108,7 +94,7 @@ class StockController extends Controller
     }
 
     /**
-     * Deletes an existing Stock model.
+     * Deletes an existing Movimiento model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -121,15 +107,15 @@ class StockController extends Controller
     }
 
     /**
-     * Finds the Stock model based on its primary key value.
+     * Finds the Movimiento model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Stock the loaded model
+     * @return Movimiento the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Stock::findOne($id)) !== null) {
+        if (($model = Movimiento::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
