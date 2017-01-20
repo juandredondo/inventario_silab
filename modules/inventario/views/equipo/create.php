@@ -10,9 +10,7 @@ $this->title = 'Create Equipo';
 $this->params['breadcrumbs'][] = ['label' => 'Equipos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="equipo-create">
-
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="equipo-create  content card">
 
     <?= $this->render('_form', [
         'model'         => $model,

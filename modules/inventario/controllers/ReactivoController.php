@@ -11,16 +11,17 @@ use app\modules\inventario\models\core\EstadoConsumible;
 use app\modules\inventario\models\Caducidad;
 use app\modules\inventario\models\Reactivo;
 use app\modules\inventario\models\ReactivoSearch;
-use yii\web\Controller;
+use app\components\core\controllers\BaseItemController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * ReactivoController implements the CRUD actions for Reactivo model.
  */
-class ReactivoController extends Controller
+class ReactivoController extends BaseItemController
 {
     public $modelClass = "app\modules\inventario\models\Reactivo";
+    public $viewName   = "reactivo";
     /**
      * @inheritdoc
      */
@@ -196,5 +197,10 @@ class ReactivoController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function loadForm()
+    {
+
     }
 }

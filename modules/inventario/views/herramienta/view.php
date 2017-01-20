@@ -15,9 +15,7 @@ $itemNoConsumible   = $model->parent;
 $attributes         = require (Yii::getAlias('@inventarioViews').'/item-no-consumible/_attributes.php');
 
 ?>
-<div class="herramienta-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="herramienta-view  content card">
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->HERR_ID], ['class' => 'btn btn-primary']) ?>

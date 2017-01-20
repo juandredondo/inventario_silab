@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -13,10 +14,12 @@ use yii\widgets\ActiveForm;
     $isJustLoad         = (isset($isJustLoad))      ? $isJustLoad   : false;
     $item               = $model->item;
     $itemNoConsumible   = $model->parent;
+
+    $action             = Url::toRoute($model->isNewRecord ? "create" : "update");
 ?>
 <div class="equipo-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(["action" => $action]); ?>
 
     <?php 
         require Yii::getAlias("@inventarioViews").'/item-no-consumible/_form-fields.php';

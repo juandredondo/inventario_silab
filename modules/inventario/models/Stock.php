@@ -49,10 +49,11 @@ class Stock extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'STOC_ID' => 'Stoc  ID',
-            'ITEM_ID' => 'Item  ID',
-            'INVE_ID' => 'Inve  ID',
-            'STOC_CANTIDAD' => 'Stoc  Cantidad',
+            'STOC_ID' => 'STOCK',
+            'ITEM_ID' => 'ITEM',
+            'INVE_ID' => 'INVENTARIO',
+            'STOC_CANTIDAD' => 'CANTIDAD',
+            'PERI_ID'       => 'PERIODO',
         ];
     }
 

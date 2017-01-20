@@ -3,11 +3,12 @@
 namespace app\modules\inventario\controllers;
 
 use Yii;
+use app\models\Periodo;
 use app\modules\inventario\models\Stock;
 use app\modules\inventario\models\StockSearch;
-
 use app\modules\inventario\models\Flujo;
 use app\modules\inventario\models\TipoFlujo;
+
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -66,26 +67,30 @@ class StockController extends Controller
      */
     public function actionAdd()
     {
+        
         $stock = new Stock();
         $flujo = new Flujo();
-
-        if ($stock->load(Yii::$app->request->post()) ) {
+        $data  = Yii::$app->request->post();
+        if ($stock->load($data) ) 
+        {
+            if($data[ "manual-period" ] === "auto")
+                $stock->PERI_ID = Periodo::getCurrentPeriod()->PERI_ID;
 
             if($stock->save()){
-                $flujo->STOC_ID =  $stock->STOC_ID;
-                $flujo->FLUJ_CANTIDAD =  $stock->STOC_CANTIDAD;
-                $flujo->TIFU_ID =  TipoFlujo::Entrada;
+                $flujo->STOC_ID         =  $stock->STOC_ID;
+                $flujo->FLUJ_CANTIDAD   =  $stock->STOC_CANTIDAD;
+                $flujo->TIFU_ID         =  TipoFlujo::Entrada;
 
                 if($flujo->save())
-              return $this->redirect(['inventario/view', 'id' => $stock->INVE_ID]);  
+                    return $this->redirect(['/inventario/inventario/view', 'id' => $stock->INVE_ID]);  
             }
             
-        } else {
-            return $this->render('create', [
+        }         
+
+        return $this->render('create', [
                 'stock' => $stock,
                 'flujo' => $flujo,
             ]);
-        }
     }
 
     /**
@@ -113,11 +118,14 @@ class StockController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete($id, $fromInventory = false)
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        if(!$fromInventory)
+            return $this->redirect(['index']);
+        else
+            return $this->goBack((!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : null));
     }
 
     /**

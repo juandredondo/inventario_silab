@@ -23,16 +23,15 @@ class InventarioAsset extends AssetBundle
     public $js = [];
 
     public $depends = [       
-        'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
-        'yii\bootstrap\BootstrapPluginAsset',
+        'app\assets\AppAsset',
     ];
 
     // Agrego version del script
     private function getJs()
     {
         return [
-            'js/items.js' . (($version != 0) ? ("?v=" .$version) : "")
+            'js/items.js' . (($version != 0) ? ("?v=" .$version) : ""),
+            'js/silab-inventory/silab.inventory.items.js' . (($version != 0) ? ("?v=" .$version) : ""),
         ];
     }
 

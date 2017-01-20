@@ -5,16 +5,17 @@ namespace app\modules\inventario\controllers;
 use Yii;
 use app\modules\inventario\models\Equipo;
 use app\modules\inventario\models\EquipoSearch;
-use yii\web\Controller;
+use app\components\core\controllers\BaseItemController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * EquipoController implements the CRUD actions for Equipo model.
  */
-class EquipoController extends Controller
+class EquipoController extends BaseItemController
 {
     public $modelClass = "app\modules\inventario\models\Equipo";
+    public $viewName   = "equipo";
     /**
      * @inheritdoc
      */

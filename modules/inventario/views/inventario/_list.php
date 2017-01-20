@@ -17,13 +17,15 @@ else
 ?>
 
 <div class="row">
-    <div data-href="<?= Url::toRoute(["/inventario/inventario/view", "id" => $model->INVE_ID]) ?>" class="col-md-12 card clickable">
+    <div class="col-md-12 card clickable">
         <div class="row">
             <div class="col-md-3 col-sm-3">
                 <p class="text-justified">
-                    <b> 
-                        <i class="icon-bottom material-icons">view_module</i> <?= $model->INVE_NOMBRE ?>
-                    </b>
+                    <a href="<?= Url::toRoute(["/inventario/inventario/view", "id" => $model->INVE_ID]) ?>">
+                        <b> 
+                            <i class="icon-bottom material-icons">view_module</i> <?= $model->INVE_NOMBRE ?>
+                        </b>
+                    </a>
                 </p>
                 <p class="text-center">
                     <?= checkPeriodo($model) ?>

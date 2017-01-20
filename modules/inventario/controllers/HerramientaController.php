@@ -5,17 +5,17 @@ namespace app\modules\inventario\controllers;
 use Yii;
 use app\modules\inventario\models\Herramienta;
 use app\modules\inventario\models\HerramientaSearch;
-use yii\web\Controller;
+use app\components\core\controllers\BaseItemController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * HerramientaController implements the CRUD actions for Herramienta model.
  */
-class HerramientaController extends Controller
+class HerramientaController extends BaseItemController
 {
     public $modelClass = "app\modules\inventario\models\Herramienta";
-
+    public $viewName   = "herramienta";
     /**
      * @inheritdoc
      */

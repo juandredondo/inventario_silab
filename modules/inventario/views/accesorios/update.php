@@ -10,9 +10,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Accesorios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->ACCE_ID, 'url' => ['view', 'id' => $model->ACCE_ID]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="accesorios-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="accesorios-update content card">
 
     <?= $this->render('_form', [
         'model'     => $model,

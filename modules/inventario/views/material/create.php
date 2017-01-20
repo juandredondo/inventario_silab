@@ -11,9 +11,6 @@ $this->params['breadcrumbs'][] = ['label' => 'Materials', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="material-create content card">
-    <?php if($submitButton == true): ?>
-        <h1><?= Html::encode($this->title) ?></h1>
-    <?php endIf; ?> 
 
     <?= $this->render('_form', [
         'model'         => $model,

@@ -3,7 +3,7 @@
 namespace app\modules\inventario\models;
 
 use app\modules\inventario\models\Stock;
-
+use app\models\Movimiento;
 use Yii;
 
 /**

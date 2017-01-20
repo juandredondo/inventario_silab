@@ -173,6 +173,7 @@ class SiteController extends Controller
             \app\modules\inventario\models\Reactivo::getByItemId( 3 ),
             \app\modules\inventario\models\Equipo::getByItemId( 1 ),
         ];*/
+        /*
         $array = [
             "MARCA_ID",
             "ITEM_ID",
@@ -193,7 +194,10 @@ class SiteController extends Controller
                     "value" => "value of TIIT_ID"
                 ]
             ]
-        );    
+        );   
+        */
+        return \app\modules\inventario\models\Stock::getCurrentStock(3, 1);
+                //->createCommand()->sql;
     }
 
     public function beforeAction($action)

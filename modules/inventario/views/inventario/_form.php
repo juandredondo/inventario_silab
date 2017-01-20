@@ -30,6 +30,8 @@ $readOnly = $this->params[ "labo.readonly" ];
             'disabled' => $readOnly
         ]
     ])  ?>
+    
+    <input name="Inventario[LABO_ID]" type="hidden" value="<?= $model->LABO_ID ?>">
 
     <?= DropDownWidget::widget([
         'form'      => $form,

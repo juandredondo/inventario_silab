@@ -5,16 +5,17 @@ namespace app\modules\inventario\controllers;
 use Yii;
 use app\modules\inventario\models\Accesorios;
 use app\modules\inventario\models\AccesoriosSearch;
-use yii\web\Controller;
+use app\components\core\controllers\BaseItemController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * AccesoriosController implements the CRUD actions for Accesorios model.
  */
-class AccesoriosController extends Controller
+class AccesoriosController extends BaseItemController
 {
     public $modelClass = "app\modules\inventario\models\Accesorios";
+    public $viewName   = "accesorio";
     /**
      * @inheritdoc
      */

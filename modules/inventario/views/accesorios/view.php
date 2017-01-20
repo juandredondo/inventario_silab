@@ -16,10 +16,7 @@ $attributes         = require (Yii::getAlias('@inventarioViews').'/item-no-consu
 
 ?>
 
-<div class="accesorios-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
+<div class="accesorios-view content card">
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->ACCE_ID], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->ACCE_ID], [

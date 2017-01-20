@@ -5,16 +5,17 @@ namespace app\modules\inventario\controllers;
 use Yii;
 use app\modules\inventario\models\Material;
 use app\modules\inventario\models\MaterialSearch;
-use yii\web\Controller;
+use app\components\core\controllers\BaseItemController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * MaterialController implements the CRUD actions for Material model.
  */
-class MaterialController extends Controller
+class MaterialController extends BaseItemController
 {
     public $modelClass = "app\modules\inventario\models\Material";
+    public $viewName   = "material";
     /**
      * @inheritdoc
      */

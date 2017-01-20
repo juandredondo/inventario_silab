@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\bootstrap\Modal;
 use yii\data\ActiveDataProvider;
+use yii\helpers\Url;
+
 use kartik\grid\GridView;
 
 use app\modules\inventario\models\Stock;
@@ -58,7 +60,11 @@ function checkPeriodo($model)
 
         <div class="col-md-12">
             <h3>Items del inventario</h3>
-            <?= Html::a('<i class="icon-bottom material-icons md-18">add</i> <span class="hidden-xs"></span>', ['stock/create', 'id' => $model->INVE_ID], ['class' => 'btn btn-primary btn-flat']) ?>
+            <?= Html::a('<i class="icon-bottom material-icons md-18">add</i> <span class="hidden-xs"></span>', 
+                    ['stock/add', 'id' => $model->INVE_ID], 
+                    ['class' => 'btn btn-primary btn-flat']
+                ) 
+            ?>
             <div class="box">
                 <?php   
                 
@@ -104,7 +110,18 @@ function checkPeriodo($model)
                                     
                                 }
                             ],
-                            ['class' => 'yii\grid\ActionColumn'],
+                            [
+                                'class' => 'yii\grid\ActionColumn',
+                                'urlCreator' => function($action, $model, $key, $index) { 
+                                        if($action == "delete")
+                                            return Url::to(["/inventario/stock/delete",'id'=>$key]);
+                                        else 
+                                        {
+                                            $item = strtolower( $model->item->tipoItem->TIIT_NOMBRE );
+                                            return Url::to(["/inventario/". $item ."/". $action,'id'=>$key]);                                            
+                                        }
+                                },
+                            ],
                         ],
                     ]);?> 
             </div>

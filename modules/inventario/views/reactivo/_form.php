@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 use app\components\widgets\DropDownWidget;
@@ -19,11 +20,13 @@ DatePickerAsset::register($this);
     $isJustLoad     = (isset($isJustLoad)) ? $isJustLoad : false;
     $item           = $model->item;
     $itemConsumible = $model->parent;
+
+    $action = Url::toRoute($model->isNewRecord ? "create" : "update");
 ?>
 <div class="reactivo-form">
 
     <?php 
-        $form = ($formId === null) ? ActiveForm::begin() : ActiveForm::begin([ "id" => $formId]); 
+        $form = ($formId === null) ? ActiveForm::begin(["action" => $action ]) : ActiveForm::begin([ "id" => $formId]); 
     ?>
 
     <?php 

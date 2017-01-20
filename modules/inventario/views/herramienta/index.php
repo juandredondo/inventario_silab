@@ -10,9 +10,8 @@ use yii\grid\GridView;
 $this->title = 'Herramientas';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="herramienta-index">
+<div class="herramienta-index  content card">
 
-    <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
