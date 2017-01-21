@@ -53,10 +53,10 @@ class Flujo extends \yii\db\ActiveRecord
         return [
             'FLUJ_ID'       => 'ID',
             'FLUJ_CANTIDAD' => 'CANTIDAD',
-            'FLUJ_FECHA' => 'FECHA',
-            'MOVI_ID' => 'MOVIMIENTO',
-            'STOC_ID' => 'STOCK',
-            'TIFU_ID' => 'TIPO',
+            'FLUJ_FECHA'    => 'FECHA',
+            'MOVI_ID'       => 'MOVIMIENTO',
+            'STOC_ID'       => 'STOCK',
+            'TIFU_ID'       => 'TIPO',
         ];
     }
 
@@ -100,6 +100,36 @@ class Flujo extends \yii\db\ActiveRecord
     }
     public function setFecha($value = '') {
          $this->FLUJ_FECHA = $value;
+    }
+
+    /**
+    * Suma o resta el flujo al monto, (definido por su constante)
+    * @param integer $amount    Es el monto al que se le quiere sumar o restar el flujo y
+    *                           ademas, valida que el monto no quede negativo, al menos que se especique                                 
+    * @param boolean $excedent  Indica si debe retornar el excendete del calculo
+    * @return double|array      Retorna la operacion suma o resta al monto. Si se especifica el excedente
+    *                           se retorna un arrglo con el monto, y el excedente                       
+    */
+    public function calculateWithAmount( $amount )
+    {
+        $tempAmount     = $amount + $this->calculate();
+        $hasExcess      = $tempAmount < 0 ? true : false;
+        
+        return [
+            "amount"        => $hasExcedent ? 0 : $tempAmount,
+            "excess"        => $tempAmount,
+            "validAmount"   => $amount,
+            "hasExcess"     => $hasExcess
+        ];    
+    }
+
+    /**
+    * Calcula el flujo, (definido por su constante)
+    * @return double Retorna la operacion suma o resta al monto
+    */
+    public function calculate( )
+    {
+        return ( $this->FLUJ_CANTIDAD * ( $this->tipoFlujo->TIFL_CONSTANTE ) );
     }
 
     /**
