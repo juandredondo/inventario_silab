@@ -9,14 +9,16 @@ use yii\filters\VerbFilter;
 
 use app\modules\inventario\models\Flujo;
 use app\modules\inventario\models\FlujoSearch;
+use app\modules\inventario\models\Stock;
+use app\modules\inventario\models\StockSearch;
 /**
  * FlujoController implements the CRUD actions for Flujo model.
  */
 class FlujoController extends Controller
 {
     /**
-     * @inheritdoc
-     */
+    * @inheritdoc
+    */
     public function behaviors()
     {
         return [
@@ -24,15 +26,16 @@ class FlujoController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'add-out' => ['POST'],
                 ],
             ],
         ];
     }
 
     /**
-     * Lists all Flujo models.
-     * @return mixed
-     */
+    * Lists all Flujo models.
+    * @return mixed
+    */
     public function actionIndex()
     {
         $searchModel    = new FlujoSearch();
@@ -45,10 +48,10 @@ class FlujoController extends Controller
     }
 
     /**
-     * Displays a single Flujo model.
-     * @param integer $id
-     * @return mixed
-     */
+    * Displays a single Flujo model.
+    * @param integer $id
+    * @return mixed
+    */
     public function actionView($id)
     {
         return $this->render('view', [
@@ -57,10 +60,10 @@ class FlujoController extends Controller
     }
 
     /**
-     * Creates a new Flujo model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
+    * Creates a new Flujo model.
+    * If creation is successful, the browser will be redirected to the 'view' page.
+    * @return mixed
+    */
     public function actionCreate()
     {
         $model = new Flujo();
@@ -75,11 +78,11 @@ class FlujoController extends Controller
     }
 
     /**
-     * Updates an existing Flujo model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
+    * Updates an existing Flujo model.
+    * If update is successful, the browser will be redirected to the 'view' page.
+    * @param integer $id
+    * @return mixed
+    */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -94,11 +97,11 @@ class FlujoController extends Controller
     }
 
     /**
-     * Deletes an existing Flujo model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
+    * Deletes an existing Flujo model.
+    * If deletion is successful, the browser will be redirected to the 'index' page.
+    * @param integer $id
+    * @return mixed
+    */
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
@@ -107,18 +110,105 @@ class FlujoController extends Controller
     }
 
     /**
-     * Finds the Flujo model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Flujo the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+    * Finds the Flujo model based on its primary key value.
+    * If the model is not found, a 404 HTTP exception will be thrown.
+    * @param integer $id
+    * @return Flujo the loaded model
+    * @throws NotFoundHttpException if the model cannot be found
+    */
     protected function findModel($id)
     {
-        if (($model = Flujo::findOne($id)) !== null) {
+        if (($model = Flujo::findOne($id)) !== null) 
+        {
             return $model;
-        } else {
+        } 
+        else 
+        {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionAddOut()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $model          = new Flujo();
+        $data           = Yii::$app->request->post();
+        $allowExcess    = $data[ "allowExcess" ];
+        $return = [
+            "message" => "Extraccion del item correcta",
+            "data"    => [],
+            "status"  => 0
+        ];
+
+        if ($model->load($data)) 
+        {
+            // Indicamos que es una entrada
+            $model->TIFU_ID         =  TipoFlujo::Salida;
+
+            $currentAmount  = $model->stock->calculateAmount();
+            $calculated     = $model->calculateWithAmount( $currentAmount );
+
+            if( $allowExcess == false && $calculated[ "hasExcess" ] )
+            {
+                $return[ "message" ]    = "No se puede extraer, ya que hay un exceso de <%= excess %>";
+                $return[ "data" ]       = [ "excess" => $calculated[ "excess" ] ];
+                $return[ "status" ]     = -1; 
+            }
+            else if($allowExcess == true)
+            {
+                $model->FLUJ_CANTIDAD = $calculated[ "validAmount" ];
+                // - - - - guardar - - - <-></->
+                if($model->save())
+                    return $return;
+            }
+            
+            
+        } 
+        else 
+        {
+            $return[ "data" ]       = $model->getErrors();
+            $return[ "message" ]    = "No se pudo extraer, hay errores";
+            $return[ "status" ]     = -1; 
+        }
+
+        return $return;
+    }
+
+    public function actionAddEntry()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        
+        $model  = new Flujo();
+        $data   = Yii::$app->request->post();
+        $return = [
+            "message" => "Extraccion del item correcta",
+            "data"    => [],
+            "status"  => 0
+        ];
+
+        if ($model->load($data)) 
+        {
+            // Indicamos que es una entrada
+            $model->TIFU_ID         =  TipoFlujo::Entrada;
+            
+            if($model->save())
+                return $return;
+            
+        } 
+        else 
+        {
+            $return[ "data" ]       = $model->getErrors();
+            $return[ "message" ]    = "No se pudo extraer, hay errores";
+            $return[ "status" ]     = -1; 
+        }
+
+        return $return;
+    }
+
+    public function beforeAction($action) 
+    {
+        $this->enableCsrfValidation = false;
+        return parent::beforeAction($action);
     }
 }
