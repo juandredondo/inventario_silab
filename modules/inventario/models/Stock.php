@@ -19,6 +19,8 @@ use app\models\Periodo;
  */
 class Stock extends \yii\db\ActiveRecord
 {
+    // Algoritmos para el calculo 
+    public $calculador;
     /**
      * @inheritdoc
      */
@@ -109,20 +111,32 @@ class Stock extends \yii\db\ActiveRecord
 
    public function calculateAmount()
    {
-       $flows = $this->flujos;
+       // flujos del stock
+       $flows           = $this->flujos;
+       // monto temporal
+       $amount          = 0;
 
-       $amount = $this->STOC_CANTIDAD;
-
+       // 1. Si tiene flujos, entonces se proxigen a calcularse
        if(count($flows) > 0)
        {
            $amount = 0;
            foreach($flows as $flow)
            {
-               $amount += $flow->FLUJ_CANTIDAD * ( $flow->tipoFlujo->TIFL_CONSTANTE );
+               // 2.    Se calcula el monto, ya se sumando o restando el flujo 
+               //       (definido por su constante)
+               $calculated  = $flow->calculateWithAmount($amount);               
+               $amount      = $calculated[ "amount" ];
+           }
+           
+           // 3. Actualizar el monto, si es diferente del actual
+           if($amount !== $currentAmount && $amount > -1)
+           {
+               $this->STOC_CANTIDAD = $amount;
+               $this->update(true, [ "STOC_CANTIDAD" ]);
            }
        }
        
-       return $amount;
+       return $this->STOC_CANTIDAD;
    }
 
 }
