@@ -35,6 +35,7 @@ return [
                 'items'  => [
                     // ['label' => 'items', 'icon' => 'fa fa-briefcase', 'url' => ['/inventario/items']],
                     //['label' => 'Manager',          'icon' => 'fa fa-briefcase',        'url' => ['/inventario/items']],
+                    ['label' => 'AGREGAR', 'template' => '<a class="bg-green" href="{url}"><i class="icon-middle material-icons md-18">add_circle</i> {label}</a>',    'url' => ['/inventario/items/create']],
                     ['label' => 'Reactivos',        'icon' => 'fa fa-hourglass-end',    'url' => ['/inventario/reactivo']],
                     ['label' => 'Materiales',       'icon' => 'fa fa-eyedropper',       'url' => ['/inventario/material']],
                     ['label' => 'Equipos',          'icon' => 'fa fa-laptop',           'url' => ['/inventario/equipo']],
