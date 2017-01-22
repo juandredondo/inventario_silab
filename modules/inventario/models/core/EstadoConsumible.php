@@ -35,8 +35,28 @@ class EstadoConsumible extends \yii\db\ActiveRecord
             [ 'id' => self::Agotado,        'name' => 'Agotado' ],
             [ 'id' => self::Reponer,   	    'name' => 'Reponer' ],
             [ 'id' => self::Minimas,        'name' => 'Minimas' ],
-            [ 'id' => self::Suficientes,    'name' => 'Suficientes' ]
+            [ 'id' => self::Suficiente,    'name' =>  'Suficiente' ]
         ];
+    }
+
+    public static function getEstadosById()
+    {
+        $types = [
+            self::Agotado => [
+                'name'      => "Agotado",
+            ],      
+            self::Reponer => [
+                'name'      => "Reponer",
+            ], 
+            self::Minimas => [
+                'name'      => "Minimas",
+            ], 
+            self::Suficiente => [
+                'name'      => "Suficientes",
+            ]
+        ];
+
+        return $types;
     }
 
     /**
@@ -107,4 +127,92 @@ class EstadoConsumible extends \yii\db\ActiveRecord
     {
         return $this->hasMany(ItemConsumible::className(), ['ESCO_ID' => 'ESCO_ID']);
     }
+
+    /**
+    * Obtiene los estados de los items (agotados o suficientes)
+    * @param integer $inventarioId El id del inventario
+    * @param integer $tipoItem     El tipo de item, definido en las constantes de TipoItem
+    * @return array  retorna un arreglo con informacion de los estados de cada item en un inventario
+    */
+    public static function getEstadosItems($invetarioId, $tipoItem)
+    {
+        $stocks = (new \yii\db\Query)
+                    ->select("*")
+                    ->from("vm_stocks_actuales")
+                    ->where([ "INVE_ID" => $invetarioId  ])
+                    ->all();
+        
+        $tiposItems = TipoItem::getTypesById();
+
+        $fnEstado = new \yii\db\Query;
+
+        $estados = [];
+
+        foreach( $stocks as $stock )
+        {
+            $tipo = $tiposItems[ $stock[ "TIPO" ] ];
+
+            if( $tipo[ "parent" ] == $tipoItem  )
+            {
+                $estadoId = $fnEstado->select( "silab_db.getConsumibleState(:amount)" )
+                                            ->addParams([ ":amount" => $stock[ "STOC_CANTIDAD" ]  ])
+                                            ->scalar();
+                array_push( $estados, [ 
+                        "estado"        => [
+                            "id"     => $estadoId,
+                            "nombre" => static::getEstadosById()[ $estadoId ]
+                        ],
+                        "inventario"    => $stock[ "INVE_ID" ],
+                        "item"          => [
+                            "id"     => $stock[ "ITEM_ID" ],
+                            "nombre" => $stock[ "NOMBRE" ]
+                        ],
+                        "cantidad"      => $stock[ "STOC_CANTIDAD" ]
+                    ]
+                );
+            }
+        }
+
+        return $estados;
+    }
 }
+
+/*
+$inventarios = laboratorio->inventarios;
+foreach($ivnetarios)
+$estado = EstadoConsumible::getEstados( 11 );
+
+foreach($estados as $estado)
+{
+    if($estado[ "estado-id" ] == EstadoConsumible::Agotado)
+    {   
+        echo "item esta agotaod en el inventairo " . 
+                (Inventario::findOne( $estado[ "inventario" ] ))->INVE_NOMBRE
+    }
+}
+*/
+
+//1. Buscar el laboratorio
+//2. Obtener los inventarios
+    //3. Obtener los estados
+        //3.1 
+/*
+[
+    [
+        "INVE_ID" => 1,
+        [
+            "ITEMS" => [
+                [
+                    "id" => 1,
+                    "estados" => [
+                        
+                    ]
+                ]
+            ]
+        ]
+    ],
+    [
+
+    ]
+]
+*/
