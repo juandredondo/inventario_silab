@@ -5,6 +5,7 @@ namespace app\modules\inventario\models\core;
 use Yii;
 use app\components\core\IdentificableInterface;
 use app\modules\inventario\models\Marca;
+use app\modules\inventario\models\Stock;
 /**
  * This is the model class for table "TBL_ITEMS".
  *
@@ -128,7 +129,7 @@ class Items extends \yii\db\ActiveRecord implements IdentificableInterface
      */
     public function getItemsConsumibles()
     {
-        return $this->hasMany(TBLITEMSCONSUMIBLES::className(), ['ITEM_ID' => 'ITEM_ID']);
+        return $this->hasMany(ItemConsumible::className(), ['ITEM_ID' => 'ITEM_ID']);
     }
 
     /**
@@ -144,7 +145,7 @@ class Items extends \yii\db\ActiveRecord implements IdentificableInterface
      */
     public function getStocks()
     {
-        return $this->hasMany(TBLSTOCK::className(), ['ITEM_ID' => 'ITEM_ID']);
+        return $this->hasMany(Stock::className(), ['ITEM_ID' => 'ITEM_ID']);
     }
 
     /**

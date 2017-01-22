@@ -3,11 +3,15 @@
 namespace app\modules\inventario\controllers;
 
 use Yii;
-use app\modules\inventario\models\ItemConsumible;
+use app\modules\inventario\models\core\ItemConsumible;
 use app\modules\inventario\models\ItemConsumibleSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use mPDF;
+use app\modules\inventario\models\core\Items;
+use app\modules\inventario\models\core\EstadoConsumible;
+use yii\helpers\ArrayHelper;
 
 /**
  * ItemConsumibleController implements the CRUD actions for ItemConsumible model.
@@ -33,6 +37,30 @@ class ItemConsumibleController extends Controller
      * Lists all ItemConsumible models.
      * @return mixed
      */
+
+    public function actionEstados()
+    {
+        return $this->render('/items/formestados');
+    }
+    public function actionRptestadoitems(){
+        $mpdf=new mPDF();
+        $estado = $_REQUEST["ESCO_ID"];
+        $model = ItemConsumible::find()
+        ->where(['ESCO_ID'=>$estado])->all();
+
+         $mpdf->useOnlyCoreFonts = true;
+         $mpdf->SetTitle("ESTADO DE LOS ITEMS");
+         $mpdf->SetAuthor("SILAB ");
+         $mpdf->SetWatermarkText("SILAB ");
+         $mpdf->SetDisplayMode('fullpage');
+        $mpdf->WriteHTML($this->renderPartial('itemagotado', [
+                        'model' => $model,
+                ],true));
+
+        $mpdf->Output();
+       
+        return $this->renderPartial('itemagotado');
+    }
     public function actionIndex()
     {
         $searchModel = new ItemConsumibleSearch();
