@@ -150,7 +150,7 @@ class EstadoConsumible extends \yii\db\ActiveRecord
 
         foreach( $stocks as $stock )
         {
-            $tipo = $tiposItems[ $stock[ "TIPO" ] ];
+            $tipo = $tiposItems[ $stock[ "TIIT_ID" ] ];
 
             if( $tipo[ "parent" ] == $tipoItem  )
             {
@@ -165,7 +165,7 @@ class EstadoConsumible extends \yii\db\ActiveRecord
                         "inventario"    => $stock[ "INVE_ID" ],
                         "item"          => [
                             "id"     => $stock[ "ITEM_ID" ],
-                            "nombre" => $stock[ "NOMBRE" ]
+                            "nombre" => $stock[ "ITEM_NOMBRE" ]
                         ],
                         "cantidad"      => $stock[ "STOC_CANTIDAD" ]
                     ]
