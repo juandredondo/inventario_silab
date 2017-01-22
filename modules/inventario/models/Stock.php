@@ -139,4 +139,11 @@ class Stock extends \yii\db\ActiveRecord
        return $this->STOC_CANTIDAD;
    }
 
+   public static function getEmptyItems()
+   {
+       $db       = Yii::$app->db->createCommand("CALL getEmptyItems()");
+       $stocks   = $db->queryAll();
+
+       return $stocks;
+   }
 }
