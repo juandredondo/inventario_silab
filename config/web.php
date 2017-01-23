@@ -11,6 +11,9 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'y_E3Lk1sbGa9lpCOHzfD7TftP4_NDNhn',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ]
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -64,6 +67,19 @@ $config = [
         'inventario' => [
             'class' => 'app\modules\inventario\Inventario',
             'basePath'  => '@app/modules/inventario'            
+        ],
+        'notifications' => [
+            'class' => 'machour\yii2\notifications\NotificationsModule',
+            // Point this to your own Notification class
+            // See the "Declaring your notifications" section below
+            'notificationClass' => 'app\components\Notification',
+            // Allow to have notification with same (user_id, key, key_id)
+            // Default to FALSE
+            'allowDuplicate' => true,
+            // This callable should return your logged in user Id
+            'userId' => function() {
+                return \Yii::$app->user->id;
+            }
         ],
         'gridview' => [ 'class' => '\kartik\grid\Module' ]
     ],

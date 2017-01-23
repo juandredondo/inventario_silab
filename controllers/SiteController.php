@@ -14,6 +14,8 @@ use app\components\filters\AuthCookieFilter;
 use app\modules\admin\models\LoginForm;
 use app\modules\admin\models\Rol;
 use app\models\Test;
+use app\components\Notification;
+use app\modules\inventario\models\core\TipoItem;
 class SiteController extends Controller
 {
     /**
@@ -196,13 +198,25 @@ class SiteController extends Controller
             ]
         );   
         */
-        return \app\modules\inventario\models\Stock::getCurrentStock(3, 1);
-                //->createCommand()->sql;
+        return \app\modules\inventario\models\Stock::getEmptyItems( );
     }
 
     public function beforeAction($action)
     {
         $this->enableCsrfValidation = false;
         return parent::beforeAction($action);
+    }
+
+    public function actionPostNotification()
+    {
+        $app  = Yii::$app;
+        $data = $app->request->getBodyParams();
+
+        if(!empty($data)) {
+            Notification::warning(Notification::KEY_EMPTY_ITEMS, 
+                    $data[ "user-id" ], 
+                    $data[ "inventory-id" ]
+            );
+        }
     }
 }
