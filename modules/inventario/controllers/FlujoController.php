@@ -8,6 +8,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 use app\modules\inventario\models\Flujo;
+use app\modules\inventario\models\TipoFlujo;
 use app\modules\inventario\models\FlujoSearch;
 use app\modules\inventario\models\Stock;
 use app\modules\inventario\models\StockSearch;
@@ -149,15 +150,15 @@ class FlujoController extends Controller
             $currentAmount  = $model->stock->calculateAmount();
             $calculated     = $model->calculateWithAmount( $currentAmount );
 
-            if( $allowExcess == false && $calculated[ "hasExcess" ] )
+            if( $calculated[ "hasExcess" ] )
             {
                 $return[ "message" ]    = "No se puede extraer, ya que hay un exceso de <%= excess %>";
                 $return[ "data" ]       = [ "excess" => $calculated[ "excess" ] ];
                 $return[ "status" ]     = -1; 
             }
-            else if($allowExcess == true)
+            else //if($allowExcess == true)
             {
-                $model->FLUJ_CANTIDAD = $calculated[ "validAmount" ];
+                $model->FLUJ_CANTIDAD = $calculated[ "amount" ];
                 // - - - - guardar - - - <-></->
                 if($model->save())
                     return $return;
@@ -182,7 +183,7 @@ class FlujoController extends Controller
         $model  = new Flujo();
         $data   = Yii::$app->request->post();
         $return = [
-            "message" => "Extraccion del item correcta",
+            "message" => "Ingreso del item correcto",
             "data"    => [],
             "status"  => 0
         ];
@@ -194,7 +195,6 @@ class FlujoController extends Controller
             
             if($model->save())
                 return $return;
-            
         } 
         else 
         {

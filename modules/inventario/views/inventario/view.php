@@ -9,6 +9,10 @@ use yii\helpers\Url;
 use kartik\grid\GridView;
 
 use app\modules\inventario\models\Stock;
+use app\modules\inventario\models\Flujo;
+use app\modules\inventario\models\TipoFlujo;
+use app\modules\inventario\models\TipoItem;
+use app\modules\inventario\models\Unidad;
 /* @var $this yii\web\View */
 /* @var $model app\models\Inventario */
 
@@ -83,9 +87,24 @@ function checkPeriodo($model)
                             'item.marca.MARC_NOMBRE',
                             [
                                 'attribute' => 'STOC_CANTIDAD',
+                                'format'    => 'raw',
                                 'value'     => function($model)
                                 {
-                                    return $model->calculateAmount();
+                                    $und   =  Unidad::getItemUnity( $model->item->ITEM_ID );
+                                    $html  = '<div data-stock="' . $model->STOC_ID . '" class="hoverable-tools"><div class="col-xs-7">
+                                                    <span class="pull-left"><b>{cantidad}</b></span> <span class="pull-right">{unidad}</span>
+                                                </div>
+                                                <div class="col-xs-5">
+                                                    <div class="tools btn-group-vertical" role="group">
+                                                        <a href="#" data-flow="' . TipoFlujo::Entrada . '" data-toggle="modal" data-target="#flow-modal" class="text-green"><i class="icon-bottom material-icons md-24">add_circle</i></a>
+                                                        <a href="#" data-flow="' . TipoFlujo::Salida . '" data-toggle="modal" data-target="#flow-modal" class="text-red"><i class="icon-bottom material-icons md-24">remove_circle</i></a>
+                                                    </div>
+                                                </div></div>';   
+
+                                    return str_replace( 
+                                                "{unidad}", $und,
+                                                str_replace("{cantidad}", $model->calculateAmount(), $html )
+                                           );
                                 }
                             ],
                             'periodo.PERI_FECHA',
@@ -134,3 +153,45 @@ function checkPeriodo($model)
         "footer"=>"",// always need it for jquery plugin
     ])?>
 <?php Modal::end(); ?>
+
+<?php Modal::begin([
+    "id"    =>  "flow-modal",
+    "footer"=>  "",// always need it for jquery plugin
+])?>
+    <?php  
+        $flowForm = "flow-form";
+
+        echo $this->render('@inventarioViews/flujo/_form_entry', [
+                'model'     => new Flujo,
+                'formName' => $flowForm
+            ]
+        ); 
+    ?>
+<?php Modal::end(); ?>
+
+
+<?php 
+    $this->registerJs("
+        $(document).on('ready', inventory_view);
+
+        function inventory_view()
+        {   
+            $('#flow-modal').on('show.bs.modal', function(e){
+                let form    = $('#". $flowForm . "'); 
+                let trigger = $(e.relatedTarget);
+                let flow    = trigger.data( 'flow' );
+                let stock   = trigger.parents('.hoverable-tools').data('stock');
+                let action  = form.find('input[name*=\'action\']').val();
+
+                console.log([
+                    flow, stock, action
+                ]);
+
+                form.attr('action', action + (flow == 1 ? '/add-entry' : '/add-out') );
+                $('#". $flowForm . "' + ' #button-text').text( (flow == 1 ? 'Agregar!' : 'Extraer!') )
+                $('input[name*=\'STOC_ID\']').val( stock );
+                $('input[name*=\'TIFU_ID\']').val( flow );
+            });
+        }
+    ");
+?>
