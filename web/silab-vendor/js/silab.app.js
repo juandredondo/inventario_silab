@@ -1,5 +1,18 @@
 var silab = silab || {};
 
+String.prototype.capitalize = function () {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
+String.prototype.deentitize = function () {
+    var ret = this.replace(/&gt;/g, '>');
+    ret = ret.replace(/&lt;/g, '<');
+    ret = ret.replace(/&quot;/g, '"');
+    ret = ret.replace(/&apos;/g, "'");
+    ret = ret.replace(/&amp;/g, '&');
+    return ret;
+},
+
+
 silab.tags = [];
 silab.colors = [
     "aqua",
@@ -133,8 +146,7 @@ silab.basics = function() {
 
             console.log(data);
         }
-    }
-
+    }    
 }
 
 silab.registerTabIds = function(tabs) {   
@@ -179,6 +191,34 @@ silab.checkProperty = function(property, object)
     return false;
 }
 
+silab.helpers = {
+    getTemplate : function(params)
+    {
+        if(silab.needs())
+        {
+            if(!_.isUndefined(params))
+            {
+                let targets = { source: "#templates", target: "" };
 
+                if (!_.isUndefined(params.source))
+                    targets.source = params.source;
 
+                if (!_.isUndefined(params.target))
+                    targets.target = params.target;
 
+                let isGrouped = !_.isUndefined(params.isGrouped) ? params.isGrouped : false;
+
+                let html = $(targets.source).html();
+
+                if (isGrouped) {
+                    var template = $(targets.target, html);
+                    html         = template.html().deentitize();
+                }
+
+                return html;
+            }
+        }
+        
+        return "";
+    },
+}
