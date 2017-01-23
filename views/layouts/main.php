@@ -35,6 +35,11 @@ if (Yii::$app->controller->action->id === 'login') {
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
+        <script id="templates" type="text/template">
+            <templates>
+                <?= require(Yii::getAlias("@app") . "/views/templates/_alert-dimissible.html") ?>
+            </templates>
+        </script>
     </head>
     <body class="hold-transition skin-yellow sidebar-mini layout-boxed" data-domain="<?= \yii\helpers\Url::base()?>">
     <?php $this->beginBody() ?>
