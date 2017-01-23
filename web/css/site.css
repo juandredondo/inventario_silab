@@ -220,5 +220,23 @@ a.desc:after {
     vertical-align: super;
 }
 
+.hoverable-tools .tools
+{
+    visibility: hidden;
+}
+.hoverable-tools .tools a
+{
+    transition: all ease .2s;
+    opacity: 0.3;
+}
+.hoverable-tools:hover .tools
+{
+    visibility: visible;
+}
+
+.hoverable-tools:hover .tools a:hover
+{
+    opacity: 1;
+}
 
 
