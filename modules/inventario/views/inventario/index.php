@@ -32,7 +32,12 @@ $this->params['breadcrumbs'][]  = $this->title;
             'laboratorio.LABO_NOMBRE',
             [
                 'attribute' => "Cantidad de items",
-                'value'     => 'INVE_CANTIDAD'
+                'format'    => 'html',
+                'value'     => function($model)
+                {
+                    return "<b>" . count($model->stocks) . "</b>";
+                }
+                
             ],
             [
                 'attribute' => "Periodo Vigente",
