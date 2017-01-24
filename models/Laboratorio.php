@@ -109,6 +109,14 @@ class Laboratorio extends \yii\db\ActiveRecord
         return $this->hasMany(Funcionario::className(), ['FUNC_ID' => 'FUNC_ID'])->viaTable('TBL_FUNCIONALABORATORIO', ['LABO_ID' => 'LABO_ID']);
     }
 
+    public function getCuentasFuncionarios()
+    {
+        $db         = Yii::$app->db->createCommand("CALL getWorkersByLaboratoryId(:lab_id)");
+        $workers    = $db->bindParam(":lab_id", $this->LABO_ID)->queryAll();
+        
+        return  $workers;  
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
