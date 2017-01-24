@@ -105,4 +105,15 @@ class Persona extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Usuario::className(), ['PERS_ID' => 'PERS_ID']);
     }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        if($insert)
+        {
+            $username = substr(str_replace(' ','',strtolower($changedAttributes[ "PERS_NOMBRE" ])), 0, 5) . rand(1,20);
+            //$password = $this-
+        }
+
+        return true;
+    }
 }
