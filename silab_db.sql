@@ -335,6 +335,7 @@ CREATE TABLE `TBL_FUNCIONALABORATORIO` (
   `FULA_ID` int(11) NOT NULL AUTO_INCREMENT,
   `FUNC_ID` int(11) DEFAULT NULL,
   `LABO_ID` int(11) DEFAULT NULL,
+  `FULA_ISBOSS` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`FULA_ID`),
   KEY `FK_FUNCIONALABORATORIO_FUNC_ID_idx` (`FUNC_ID`),
   KEY `FK_FUNCIONALABORATORIO_LABO__ID_idx` (`LABO_ID`),
@@ -349,7 +350,7 @@ CREATE TABLE `TBL_FUNCIONALABORATORIO` (
 
 LOCK TABLES `TBL_FUNCIONALABORATORIO` WRITE;
 /*!40000 ALTER TABLE `TBL_FUNCIONALABORATORIO` DISABLE KEYS */;
-INSERT INTO `TBL_FUNCIONALABORATORIO` VALUES (1,1,1);
+INSERT INTO `TBL_FUNCIONALABORATORIO` VALUES (1,1,1,1);
 /*!40000 ALTER TABLE `TBL_FUNCIONALABORATORIO` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -891,7 +892,7 @@ CREATE TABLE `TBL_PERSONAS` (
 
 LOCK TABLES `TBL_PERSONAS` WRITE;
 /*!40000 ALTER TABLE `TBL_PERSONAS` DISABLE KEYS */;
-INSERT INTO `TBL_PERSONAS` VALUES (1,'LOIDA HORTENCIA GIMENEZ GOMEZ',1552487524,1,1),(2,'PAOLO GOMEZ HERNANDEZ',11584621,2,1);
+INSERT INTO `TBL_PERSONAS` VALUES (1,'LOIDA HORTENCIA GIMENEZ GOMEZ',1552487524,1,1),(2,'PAOLO G. HERNANDEZ',11584621,2,1);
 /*!40000 ALTER TABLE `TBL_PERSONAS` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1353,6 +1354,39 @@ LOCK TABLES `tb_solicitud` WRITE;
 UNLOCK TABLES;
 
 --
+-- Temporary view structure for view `vm_coordinadores_laboratorios`
+--
+
+DROP TABLE IF EXISTS `vm_coordinadores_laboratorios`;
+/*!50001 DROP VIEW IF EXISTS `vm_coordinadores_laboratorios`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `vm_coordinadores_laboratorios` AS SELECT 
+ 1 AS `PERS_ID`,
+ 1 AS `PERS_NOMBRE`,
+ 1 AS `PERS_IDENTIFICACION`,
+ 1 AS `GENE_ID`,
+ 1 AS `TIID_ID`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `vm_funcionarios_laboratorios`
+--
+
+DROP TABLE IF EXISTS `vm_funcionarios_laboratorios`;
+/*!50001 DROP VIEW IF EXISTS `vm_funcionarios_laboratorios`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `vm_funcionarios_laboratorios` AS SELECT 
+ 1 AS `PERS_ID`,
+ 1 AS `PERS_NOMBRE`,
+ 1 AS `PERS_IDENTIFICACION`,
+ 1 AS `GENE_ID`,
+ 1 AS `TIID_ID`,
+ 1 AS `LABO_ID`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Temporary view structure for view `vm_stocks_actuales`
 --
 
@@ -1369,6 +1403,30 @@ SET character_set_client = utf8;
  1 AS `ITEM_NOMBRE`,
  1 AS `TIIT_ID`,
  1 AS `TIIT_NOMBRE`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `vm_users`
+--
+
+DROP TABLE IF EXISTS `vm_users`;
+/*!50001 DROP VIEW IF EXISTS `vm_users`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `vm_users` AS SELECT 
+ 1 AS `USUA_ID`,
+ 1 AS `USUA_USUARIO`,
+ 1 AS `USUA_PASSWORD`,
+ 1 AS `USUA_ES_ACTIVO`,
+ 1 AS `USUA_TOKEN`,
+ 1 AS `ROL_ID`,
+ 1 AS `ROL_NOMBRE`,
+ 1 AS `ROL_ORDEN`,
+ 1 AS `PERS_ID`,
+ 1 AS `PERS_NOMBRE`,
+ 1 AS `PERS_IDENTIFICACION`,
+ 1 AS `GENE_ID`,
+ 1 AS `TIID_ID`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -1551,6 +1609,28 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `getUserIdByPersonId` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `getUserIdByPersonId`(id INT) RETURNS int(11)
+BEGIN
+	DECLARE user_id INT;
+	SET user_id = ( SELECT USUA_ID FROM TBL_USUARIOS WHERE PERS_ID = id );
+    
+RETURN user_id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `FindItem` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1600,6 +1680,113 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `getWorkersByLaboratoryId` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getWorkersByLaboratoryId`(laboratory_id INT)
+BEGIN
+	SELECT 	PERS_ID, 
+			PERS_NOMBRE, 
+            PERS_IDENTIFICACION, 
+            GENE_ID, 
+            TIID_ID, 
+            LABO_ID, 
+			getUserIdByPersonId( PERS_ID ) AS USUA_ID
+	FROM silab_db.vm_funcionarios_laboratorios
+	WHERE LABO_ID = laboratory_id; 
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `registerAccount` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `registerAccount`(
+        usua_usuario 	VARCHAR(45), 
+        usua_password 	VARCHAR(45),
+        usua_token    	VARCHAR(250),
+        pers_id INT, 
+        rol_id INT
+)
+BEGIN
+	
+	INSERT INTO silab_db.TBL_USUARIOS
+	(	
+		USUA_USUARIO,
+		USUA_PASSWORD,
+		USUA_ES_ACTIVO,
+		USUA_TOKEN,
+		PERS_ID,
+		ROL_ID
+	)
+	VALUES
+	(
+		usua_usuario,
+		usua_password,
+        1,
+		usua_token,
+		PERS_ID,
+		ROL_ID
+    );
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Final view structure for view `vm_coordinadores_laboratorios`
+--
+
+/*!50001 DROP VIEW IF EXISTS `vm_coordinadores_laboratorios`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `vm_coordinadores_laboratorios` AS select `PERS`.`PERS_ID` AS `PERS_ID`,`PERS`.`PERS_NOMBRE` AS `PERS_NOMBRE`,`PERS`.`PERS_IDENTIFICACION` AS `PERS_IDENTIFICACION`,`PERS`.`GENE_ID` AS `GENE_ID`,`PERS`.`TIID_ID` AS `TIID_ID` from (`tbl_coordinadores` `COORD` join `tbl_personas` `PERS` on((`COORD`.`PERS_ID` = `PERS`.`PERS_ID`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `vm_funcionarios_laboratorios`
+--
+
+/*!50001 DROP VIEW IF EXISTS `vm_funcionarios_laboratorios`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `vm_funcionarios_laboratorios` AS select `PERS`.`PERS_ID` AS `PERS_ID`,`PERS`.`PERS_NOMBRE` AS `PERS_NOMBRE`,`PERS`.`PERS_IDENTIFICACION` AS `PERS_IDENTIFICACION`,`PERS`.`GENE_ID` AS `GENE_ID`,`PERS`.`TIID_ID` AS `TIID_ID`,`FLAB`.`LABO_ID` AS `LABO_ID` from ((`tbl_funcionalaboratorio` `FLAB` join `tbl_funcionarios` `FUNC` on((`FLAB`.`FUNC_ID` = `FUNC`.`FUNC_ID`))) join `tbl_personas` `PERS` on((`FUNC`.`PERS_ID` = `PERS`.`PERS_ID`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
 -- Final view structure for view `vm_stocks_actuales`
@@ -1615,6 +1802,24 @@ DELIMITER ;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `vm_stocks_actuales` AS select `ST`.`STOC_ID` AS `STOC_ID`,`ST`.`ITEM_ID` AS `ITEM_ID`,`ST`.`INVE_ID` AS `INVE_ID`,`ST`.`STOC_CANTIDAD` AS `STOC_CANTIDAD`,`ST`.`PERI_ID` AS `PERI_ID`,`IT`.`ITEM_NOMBRE` AS `ITEM_NOMBRE`,`IT`.`TIIT_ID` AS `TIIT_ID`,`TI`.`TIIT_NOMBRE` AS `TIIT_NOMBRE` from ((`tbl_stock` `ST` join `tbl_items` `IT` on((`ST`.`ITEM_ID` = `IT`.`ITEM_ID`))) join `tbl_tipositems` `TI` on((`IT`.`TIIT_ID` = `TI`.`TIIT_ID`))) where (`ST`.`PERI_ID` = `GETCURRENTPERIOD`()) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `vm_users`
+--
+
+/*!50001 DROP VIEW IF EXISTS `vm_users`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `vm_users` AS select `US`.`USUA_ID` AS `USUA_ID`,`US`.`USUA_USUARIO` AS `USUA_USUARIO`,`US`.`USUA_PASSWORD` AS `USUA_PASSWORD`,`US`.`USUA_ES_ACTIVO` AS `USUA_ES_ACTIVO`,`US`.`USUA_TOKEN` AS `USUA_TOKEN`,`ROL`.`ROL_ID` AS `ROL_ID`,`ROL`.`ROL_NOMBRE` AS `ROL_NOMBRE`,`ROL`.`ROL_ORDEN` AS `ROL_ORDEN`,`PERS`.`PERS_ID` AS `PERS_ID`,`PERS`.`PERS_NOMBRE` AS `PERS_NOMBRE`,`PERS`.`PERS_IDENTIFICACION` AS `PERS_IDENTIFICACION`,`PERS`.`GENE_ID` AS `GENE_ID`,`PERS`.`TIID_ID` AS `TIID_ID` from ((`tbl_usuarios` `US` join `tbl_roles` `ROL` on((`US`.`ROL_ID` = `ROL`.`ROL_ID`))) join `tbl_personas` `PERS` on((`PERS`.`PERS_ID` = `US`.`PERS_ID`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1646,4 +1851,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-01-22 22:16:17
+-- Dump completed on 2017-01-23 22:06:23
