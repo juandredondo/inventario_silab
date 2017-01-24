@@ -60,6 +60,12 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         ];
     }
 
+
+    public static function getUserByPersonId($personId)
+    {
+        return static::find()->where([ "PERS_ID" => $personId ])->one();
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
