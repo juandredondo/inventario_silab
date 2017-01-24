@@ -29,10 +29,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'REAC_ID',
+            'itemConsumible.item.ITEM_NOMBRE',
+            'itemConsumible.estadoConsumible.ESCO_NOMBRE',
             'REAC_CODIGO',
-            'unidad.UNID_NOMBRE',
             'REAC_FECHA_VENCIMIENTO',
-            'ITCO_ID',
+            'unidad.UNID_NOMBRE',
             // 'UBIC_ID',
             // 'CADU_ID',
             // 'SIMB_ID',

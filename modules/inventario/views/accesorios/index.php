@@ -22,12 +22,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'ACCE_ID',
+            'itemNoConsumible.item.ITEM_NOMBRE',
+            'itemNoConsumible.item.marca.MARC_NOMBRE',
+            'itemNoConsumible.estadoNoConsumible.ESNC_NOMBRE',
             'ACCE_SERIAL',
             'ACCE_MODELO',
-            'ITNC_ID',
-
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

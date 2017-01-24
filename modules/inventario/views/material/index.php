@@ -12,7 +12,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="material-index content card">
 
-    <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
@@ -23,11 +22,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'MATE_ID',
+            'itemConsumible.item.ITEM_NOMBRE',
+            'itemConsumible.estadoConsumible.ESCO_NOMBRE',
             'MATE_MEDIDA',
-            'ITCO_ID',
-
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

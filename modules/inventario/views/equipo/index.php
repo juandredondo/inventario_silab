@@ -23,8 +23,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'EQUI_ID',
+            'itemNoConsumible.item.ITEM_NOMBRE',
+            'itemNoConsumible.item.marca.MARC_NOMBRE',
+            'itemNoConsumible.estadoNoConsumible.ESNC_NOMBRE',
             'EQUI_SERIAL',
-            'ITNC_ID',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

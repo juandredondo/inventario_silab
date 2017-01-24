@@ -11,7 +11,7 @@ use yii\bootstrap\Modal;
 $this->title = 'Items';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="items-index">
+<div class="items-index content card">
     
     <p>
         <?= Html::a('Create Items', ['create'], ['class' => 'btn btn-success']) ?>
