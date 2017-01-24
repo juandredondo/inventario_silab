@@ -221,4 +221,11 @@ silab.helpers = {
         
         return "";
     },
+    pushNotification: function(params, callback)
+    {
+        if( silab.needs() ) {
+            $.post("/notify/" + params.type, params.data, callback);
+        }
+    }
 }
+
