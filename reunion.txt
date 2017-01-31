@@ -1,0 +1,14 @@
+Requerimientos funcionales
+- Cada laboratorio debe especificar su stock 
+minimo para poder laborar, esto se hace con los historicos
+- Cada reactivo tiene un historico por 
+
+- Configuracion de laboratorio
+- Seguido de 
+- Solo consumibles tienen stock minimos.
+minimo
+- Concepto  de requerimientos
+--- Tiene un stock minimo
+- periodo anual 
+
+- Director SILAB, debe obtener reportes del requerimiento
