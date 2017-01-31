@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Laboratorio;
+use app\models\LaboratorioConfig;
 use app\models\LaboratorioSearch;
 use app\models\FuncionarioLaboratorio;
 use app\models\FuncionarioLaboratorioSearch;
@@ -228,6 +229,7 @@ class LaboratorioController extends Controller
         $return[ 'laboratory' ]     = $this->findByIdOrName($id, $alias);
         $return[ 'inventories' ]    = $return[ 'laboratory' ]->inventarios;
         $return[ 'functioners' ]    = $return[ 'laboratory' ]->funcionarios;
+        $return[ 'config' ]         = $return[ 'laboratory' ]->currentConfig;
         return $this->render("manager", [
                 'data' => $return
             ]
@@ -240,6 +242,30 @@ class LaboratorioController extends Controller
 
         return Laboratorio::find()->limit($page)->orderBy("LABO_NOMBRE")->all();
     }
+
+    public function actionAddConfig()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $config = new LaboratorioConfig();
+        $data   = Yii::$app->request->post();
+
+        if( $config->load( $data ) && $config->save())
+        {
+            return [
+                "message" => "Configuracion guardada",
+                "status"  => 0
+            ];
+        }
+        else
+        {
+            return [
+                "message" => "Oops no se pudo guardar la configuracion",
+                "status"  => -1
+            ];
+        }
+    }
+    
 }
 
 

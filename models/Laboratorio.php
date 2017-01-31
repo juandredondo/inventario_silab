@@ -177,4 +177,21 @@ class Laboratorio extends \yii\db\ActiveRecord
         $laboratorio = static::find()->where(['like', "LABO_NOMBRE", [$nombre]])->one();
         return $laboratorio;
     }
+
+    public function getCurrentConfig()
+    {
+        $result  = LaboratorioConfig::find()
+                    ->where([ "LABO_ID" => $this->id, "PERI_ID" => "getCurrentPeriod()" ])
+                    ->orderBy([ "LACO_ID" => SORT_DESC ])
+                    ->one();
+
+        $result  = isset($result) ? $result : new LaboratorioConfig(
+            [ 
+                "LABO_ID" => $this->id, 
+            ]
+        );
+
+
+        return $result;
+    }
 }
