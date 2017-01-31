@@ -9,6 +9,9 @@ use app\models\CoordinadorSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\modules\admin\models\Usuario;
+use app\modules\admin\models\Rol;
+
 
 /**
  * CoordinadorController implements the CRUD actions for Coordinador model.
@@ -16,7 +19,7 @@ use yii\filters\VerbFilter;
 class CoordinadorController extends Controller
 {
     /**
-     * @inheritdoc
+     * @inheritdoc 
      */
     public function behaviors()
     {
@@ -71,6 +74,16 @@ class CoordinadorController extends Controller
             if($persona->save()){
                 $coordinador->PERS_ID = $persona->PERS_ID; 
 
+            $username = substr(str_replace(' ','',strtolower($persona->PERS_NOMBRE)), 0, 5) . rand(1,20);
+            $usuario = new Usuario( [ 
+               "PERS_ID" => $persona->PERS_ID,
+               "ROL_ID"  => Rol::getRoleByName(  Rol::Coordinador )->ROL_ID,
+               "USUA_PASSWORD" => md5( 123456 ),
+               "USUA_ES_ACTIVO"=>1,
+               "USUA_TOKEN"=>md5($persona->PERS_ID),
+               "USUA_USUARIO" => $username
+              ]);
+                $usuario->save();
                 if($coordinador->save())
                      return $this->redirect(['view', 'id' => $coordinador->COOR_ID]);
             }

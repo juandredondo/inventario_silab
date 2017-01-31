@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 
+
 /**
  * This is the model class for table "TBL_PERSONAS".
  *
@@ -110,8 +111,17 @@ class Persona extends \yii\db\ActiveRecord
     {
         if($insert)
         {
+           /* echo "Guardo";
             $username = substr(str_replace(' ','',strtolower($changedAttributes[ "PERS_NOMBRE" ])), 0, 5) . rand(1,20);
-            //$password = $this-
+            $usuario = new Usuario( [ 
+               "PERS_ID" => $changedAttributes[ "PERS_ID" ],
+               "ROL_ID"  => Rol::getRoleByName(  Rol::Coordinador )->ROL_ID,
+               "USUA_PASSWORD" => md5( 123456 ),
+               "USUA_ES_ACTIVO"=>1,
+               "USUA_TOKEN"=>md5(12345),
+               "USUA_USUARIO" => $username
+              ]);
+            return $usuario->save();*/
         }
 
         return true;
