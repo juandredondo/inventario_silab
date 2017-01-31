@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\grid\GridView;
 use app\models\Edificio;
 
@@ -49,7 +50,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->tipolaboratorio->TILA_NOMBRE;
                 },
             ],
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'urlCreator' => function($action, $model, $key, $index) { 
+                    if($action == "view")
+                        return Url::to(["/laboratorio/manager/",'id'=>$key]);
+                    else 
+                    {
+                        return Url::to(["/laboratorio/". $action,'id'=>$key]);                                            
+                    }
+                },
+            ],
         ],
     ]); ?>
 </div>

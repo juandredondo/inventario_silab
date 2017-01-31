@@ -15,20 +15,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-        
             'LABO_ID',
             'LABO_NOMBRE',
-            'LABO_NIVEL',
             'edificio.EDIF_NOMBRE',
             'coordinador.persona.PERS_NOMBRE',
             'tipolaboratorio.TILA_NOMBRE',
 
         ],
     ]) ?>
+    
     <p>
         <?= Html::a('Actualizar', ['update', 'id' => $model->LABO_ID], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Agregar Funcionarios', ['funcionario-laboratorio/create', 'idLaboratorio' => $model->LABO_ID], ['class' => 'btn btn-success']) ?>
