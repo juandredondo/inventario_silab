@@ -77,4 +77,9 @@ class Rol extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Usuario::className(), ['ROL_ID' => 'ROL_ID']);
     }
+
+    public static function getRoleByName($name)
+    {
+        return static::find([ "ROL_NOMBRE" => $name ])->one();
+    }
 }
