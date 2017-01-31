@@ -6,6 +6,7 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
+use \yii\helpers;
 
 use app\models\ContactForm;
 use app\components\JsonHelper;
@@ -218,5 +219,24 @@ class SiteController extends Controller
                     $data[ "inventory-id" ]
             );
         }
+    }
+
+    public function actionControllerActions()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $controllers = helpers\FileHelper::findFiles(Yii::getAlias('@inventario/controllers'), ['recursive' => true]);
+        $actions = [];
+        foreach ($controllers as $controller) {
+            $contents = file_get_contents($controller);
+            $controllerId = helpers\Inflector::camel2id(substr(basename($controller), 0, -14));
+            preg_match_all('/public function action(\w+?)\(/', $contents, $result);
+            foreach ($result[1] as $action) {
+                $actionId = helpers\Inflector::camel2id($action);
+                $route = $controllerId . '/' . $actionId;
+                $actions[$route] = $route;
+            }
+        }
+        asort($actions);
+        return $actions;
     }
 }
