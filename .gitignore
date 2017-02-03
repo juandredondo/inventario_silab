@@ -34,3 +34,4 @@ tests/_support/_generated
 *.bak
 composer.lock
 config/db.php
+modules/inventario/views/inventario/_search.php
