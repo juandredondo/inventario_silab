@@ -13,6 +13,10 @@ $GLOBALS["data"] = $data;
 ?>
 
 <div class="content card">
+    <div class="row">
+        <div id="laboratory-alert-spot" class="col-md-12"></div>
+    </div>
+    <!-- Details from Laboratory -->
     <?= DetailView::widget([
         'model' => $data[ "laboratory" ],
         'attributes' => [
@@ -44,49 +48,49 @@ $GLOBALS["data"] = $data;
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="inventories">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="btn-group pull-left">
-                                    <?= Html::a('<i class="icon-bottom material-icons md-18">add</i> Agregar', ['inventario/inventario/create', 'lab' => $data[ "laboratory" ]->LABO_ID], ['class' => 'btn btn-success']) ?>
-                                    </div>
-                                    <div class="btn-group pull-right">
-                                    <?php 
-                                        $id        = Yii::$app->request->getQueryParam("id", 0);
-                                        $alias     = Yii::$app->request->getQueryParam("alias", "");      
-                                        $aliasOrId = [ 
-                                            'key'   => "",
-                                            'value' => ""
-                                        ];
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="btn-group pull-left">
+                                        <?= Html::a('<i class="icon-bottom material-icons md-18">add</i> Agregar', ['inventario/inventario/create', 'lab' => $data[ "laboratory" ]->LABO_ID], ['class' => 'btn btn-success']) ?>
+                                        </div>
+                                        <div class="btn-group pull-right">
+                                        <?php 
+                                            $id        = Yii::$app->request->getQueryParam("id", 0);
+                                            $alias     = Yii::$app->request->getQueryParam("alias", "");      
+                                            $aliasOrId = [ 
+                                                'key'   => "",
+                                                'value' => ""
+                                            ];
 
-                                        if($id > 0)
-                                            $aliasOrId = [ 'key'   => "id", 'value' => $id ];
-                                        else if($alias !== "")
-                                            $aliasOrId = [ 'key'   => "alias", 'value' => $alias ];
-                                    ?>
-                                    <?= Html::a('<i class="icon-bottom material-icons md-18">view_module</i>', ['', $aliasOrId[ "key" ] => $aliasOrId[ "value" ] , 'view_mode' => "card"], ['class' => 'btn btn-default']) ?>
-                                    <?= Html::a('<i class="icon-bottom material-icons md-18">view_list</i>', ['', $aliasOrId[ "key" ] => $aliasOrId[ "value" ], 'view_mode' => "list"], ['class' => 'btn btn-default']) ?>                      
+                                            if($id > 0)
+                                                $aliasOrId = [ 'key'   => "id", 'value' => $id ];
+                                            else if($alias !== "")
+                                                $aliasOrId = [ 'key'   => "alias", 'value' => $alias ];
+                                        ?>
+                                        <?= Html::a('<i class="icon-bottom material-icons md-18">view_module</i>', ['', $aliasOrId[ "key" ] => $aliasOrId[ "value" ] , 'view_mode' => "card"], ['class' => 'btn btn-default']) ?>
+                                        <?= Html::a('<i class="icon-bottom material-icons md-18">view_list</i>', ['', $aliasOrId[ "key" ] => $aliasOrId[ "value" ], 'view_mode' => "list"], ['class' => 'btn btn-default']) ?>                      
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12" id="inventories">
+                                        <?= $this->render("inventories",
+                                        [
+                                            'data' => $data
+                                        ]) ?>
                                     </div>
                                 </div>
-                                
                             </div>
-                            <div class="row">
-                                <div class="col-md-12" id="inventories">
-                                    <?= $this->render("inventories",
-                                    [
-                                        'data' => $data
-                                    ]) ?>
-                                </div>
-                            </div>
+                            <script id="silab-template-card" type="text/template">
+                                <?= $this->render("@inventarioViews/inventario/_cardTemplate.php") ?>
+                            </script>
+                            <script id="silab-template-list" type="text/template">
+                                <?= $this->render("@inventarioViews/inventario/_cardTemplate.php") ?>
+                            </script>
                         </div>
-                        <script id="silab-template-card" type="text/template">
-                            <?= $this->render("@inventarioViews/inventario/_cardTemplate.php") ?>
-                        </script>
-                        <script id="silab-template-list" type="text/template">
-                            <?= $this->render("@inventarioViews/inventario/_cardTemplate.php") ?>
-                        </script>
-                    </div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="functionaries">
                         <div class="row">
@@ -140,7 +144,7 @@ $GLOBALS["data"] = $data;
                     <div role="tabpanel" class="tab-pane" id="config">
                         <? 
                             $newConfig = $data[ "config" ]->isNewRecord;
-                            echo $this->render("config/" . ( $newConfig ? "create" : "update" ), [
+                            echo $this->render("config/" . ( "create"), [
                                 "model" => $data[ "config" ]
                             ]); 
                         ?>
@@ -151,5 +155,7 @@ $GLOBALS["data"] = $data;
         </div>
     </div>
 </div>
+
+
 
 

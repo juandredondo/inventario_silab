@@ -11,6 +11,7 @@ use app\modules\inventario\models\Flujo;
 use app\modules\inventario\models\TipoFlujo;
 use app\modules\inventario\models\FlujoSearch;
 use app\modules\inventario\models\Stock;
+use app\modules\inventario\models\StockExpirado;
 use app\modules\inventario\models\StockSearch;
 /**
  * FlujoController implements the CRUD actions for Flujo model.
@@ -183,7 +184,7 @@ class FlujoController extends Controller
         $model  = new Flujo();
         $data   = Yii::$app->request->post();
         $return = [
-            "message" => "Ingreso del item correcto",
+            "message" => "Ingreso del item correcto.",
             "data"    => [],
             "status"  => 0
         ];
@@ -194,7 +195,20 @@ class FlujoController extends Controller
             $model->TIFU_ID         =  TipoFlujo::Entrada;
             
             if($model->save())
+            {
+                if( $model->stock->item->isExpirable )
+                {
+                    $vencimiento = new StockExpirado([
+                        "FLUJ_ID"               => $model->FLUJ_ID,
+                        "STVE_FECHAVENCIMIENTO" => $data[ "StockExpirado" ][ "STVE_FECHAVENCIMIENTO" ]
+                    ]);
+
+                    if( $vencimiento->save() )
+                        $return[ "message" ] = $return[ "message" ] . "<b> Se ingresó a la pila FI-FO la nueva fecha de caducación. </b>";
+                }
+
                 return $return;
+            }
         } 
         else 
         {
@@ -210,5 +224,18 @@ class FlujoController extends Controller
     {
         $this->enableCsrfValidation = false;
         return parent::beforeAction($action);
+    }
+
+    public function actionIsExpirableStock($id)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $flow = new Flujo([
+            "STOC_ID" => $id
+        ]);
+        
+        return [
+            "result" => $flow->isExpirable
+        ];
     }
 }

@@ -10,7 +10,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Herramientas', 'url' => ['index']]
 $this->params['breadcrumbs'][] = ['label' => $model->HERR_ID, 'url' => ['view', 'id' => $model->HERR_ID]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="herramienta-update  content card">
+<div class="herramienta-update content card">
 
     <?= $this->render('_form', [
         'model'     => $model,

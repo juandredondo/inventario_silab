@@ -186,4 +186,13 @@ class Items extends \yii\db\ActiveRecord implements IdentificableInterface
 
         return $this;
     }
+
+    public function getIsExpirable()
+    {
+        $query          = (new \yii\db\Query); 
+        $isExpirable    = $query->select('isExpirableItem(:id)')
+                                ->addParams([ ":id" => $this->id ])
+                                ->scalar();
+        return $isExpirable == 1 ? true: false;
+    }
 }

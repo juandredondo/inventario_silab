@@ -24,18 +24,29 @@ use app\modules\inventario\models\core\TipoItem;
         ); 
     ?>
     
-    <?= DropDownWidget::widget(
-            [
-                "form"  =>  $form,
-                "model" =>  [
-                    "main"  => $item,
-                ],
-                "refData"   => TipoItem::find()->where(['not', ['TIIT_PADRE' => null]])->all(),
-                "columns"   => [
-                    "id"    =>  "TIIT_ID",
-                    "text"  =>  "TIIT_NOMBRE"
-                ],
-                "options" => [ "disabled" => ($itemId !== null && $itemId !== "") ? true : false ]
-            ]
-        ); 
+    <? 
+        $tipoItemInput = "";
+
+        if(isset($item->TIIT_ID)) 
+        {
+            $tipoItemInput = $form->field($item, 'TIIT_ID')->textInput(["type" => "hidden"])->label(false);
+        }
+        else {
+            $tipoItemInput =    DropDownWidget::widget(
+                                    [
+                                        "form"  =>  $form,
+                                        "model" =>  [
+                                            "main"  => $item,
+                                        ],
+                                        "refData"   => TipoItem::find()->where(['not', ['TIIT_PADRE' => null]])->all(),
+                                        "columns"   => [
+                                            "id"    =>  "TIIT_ID",
+                                            "text"  =>  "TIIT_NOMBRE"
+                                        ],
+                                        "options" => [ "disabled" => ($itemId !== null && $itemId !== "") ? true : false ]
+                                    ]
+                                ); 
+        }
+
+        echo $tipoItemInput;
     ?>

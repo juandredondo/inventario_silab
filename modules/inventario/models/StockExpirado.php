@@ -32,7 +32,7 @@ class StockExpirado extends \yii\db\ActiveRecord
             [['FLUJ_ID'], 'integer'],
             [['STVE_VENCIDO'], 'boolean'],
             [['STVE_FECHAVENCIMIENTO'], 'safe'],
-            [['FLUJ_ID'], 'exist', 'skipOnError' => true, 'targetClass' => TBLFLUJOS::className(), 'targetAttribute' => ['FLUJ_ID' => 'FLUJ_ID']],
+            [['FLUJ_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Flujo::className(), 'targetAttribute' => ['FLUJ_ID' => 'FLUJ_ID']],
         ];
     }
 

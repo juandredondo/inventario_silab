@@ -2,9 +2,9 @@
 
 namespace app\modules\inventario\models;
 
-use app\modules\inventario\models\Stock;
-use app\models\Movimiento;
 use Yii;
+use app\models\Movimiento;
+use app\modules\inventario\models\Stock;
 
 /**
  * This is the model class for table "TBL_FLUJOS".
@@ -172,6 +172,11 @@ class Flujo extends \yii\db\ActiveRecord
         }
         else
             return [];
+    }
+
+    public function getIsExpirable()
+    {
+        return $this->stock->item->isExpirable;
     }
 
 }

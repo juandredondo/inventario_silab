@@ -20,7 +20,7 @@ use yii\helpers\Url;
 ?>
 
 
-<div class="col-md-<?=$count?>">
+<div class="col-md-<?=$count?> col-xs-12 col-sm-12">
     <div class="card clickable inventory-card">
         <div class="box-header with-border">
             <h3 class="box-title text-center"> 

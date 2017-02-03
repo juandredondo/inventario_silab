@@ -146,4 +146,5 @@ class Stock extends \yii\db\ActiveRecord
 
        return $stocks;
    }
+
 }

@@ -243,14 +243,14 @@ class LaboratorioController extends Controller
         return Laboratorio::find()->limit($page)->orderBy("LABO_NOMBRE")->all();
     }
 
-    public function actionAddConfig()
+    public function actionSaveConfig($id = null)
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-
-        $config = new LaboratorioConfig();
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+        $config = LaboratorioConfig::getConfigByLaboratory( $id );
         $data   = Yii::$app->request->post();
 
-        if( $config->load( $data ) && $config->save())
+        if( $config->load( $data, 'LaboratorioConfig' ) && $config->save() )
         {
             return [
                 "message" => "Configuracion guardada",

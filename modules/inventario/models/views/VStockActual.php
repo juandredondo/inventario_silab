@@ -3,6 +3,7 @@
 namespace app\modules\inventario\models\views;
 
 use Yii;
+use app\modules\inventario\models\Stock;
 
 /**
  * This is the model class for table "vm_stocks_actuales".
@@ -17,7 +18,7 @@ use Yii;
  * @property integer $TIIT_ID
  * @property string $TIIT_NOMBRE
  */
-class VStockActual extends \yii\db\ActiveRecord
+class VStockActual extends Stock
 {
     /**
      * @inheritdoc
@@ -48,15 +49,16 @@ class VStockActual extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'STOC_ID' => 'Stoc  ID',
-            'ITEM_ID' => 'Item  ID',
-            'INVE_ID' => 'Inve  ID',
-            'STOC_CANTIDAD' => 'Stoc  Cantidad',
-            'PERI_ID' => 'Peri  ID',
-            'STOC_ESCONSUMIBLE' => 'Stoc  Esconsumible',
-            'ITEM_NOMBRE' => 'Item  Nombre',
-            'TIIT_ID' => 'Tiit  ID',
-            'TIIT_NOMBRE' => 'Tiit  Nombre',
+            'STOC_ID' => 'STOCK',
+            'ITEM_ID' => 'ITEM',
+            'INVE_ID' => 'INVENTARIO',
+            'STOC_CANTIDAD' => 'CANTIDAD EN STOCK',
+            'PERI_ID' => 'PERIODO VIGENTE',
+            'STOC_ESCONSUMIBLE' => 'CATEGORIA',
+            'ITEM_NOMBRE' => 'NOMBRE',
+            'TIIT_ID' => 'TIPO ID',
+            'TIIT_NOMBRE' => 'TIPO DE ITEM',
         ];
     }
+
 }

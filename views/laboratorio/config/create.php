@@ -5,12 +5,10 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\LaboratorioConfig */
-
-$this->title = 'Create Laboratorio Config';
-$this->params['breadcrumbs'][] = ['label' => 'Laboratorio Configs', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$title = "Parametros";
 ?>
 <div class="laboratorio-config-create content card">
+    <h1><?= Html::encode($title) ?></h1>
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>

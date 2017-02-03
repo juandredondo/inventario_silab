@@ -63,10 +63,31 @@ class LaboratorioConfig extends \yii\db\ActiveRecord
         // Set current period
         $this->PERI_ID              = Periodo::getCurrentPeriod()->PERI_ID;
         $this->LACO_STOCKMIN        = 50;
-        $this->LACO_STOCKMAX        = 2000;
+        $this->LACO_STOCKMAX        = 100;
         $this->LACO_MAXINVENTARIOS  = 10;
         
         // parent initialization
         parent::init();
     }
+
+    public static function getConfigByLaboratory($id = null)
+    {
+        $config = static::find()
+                    ->where( [ "LABO_ID" => $id ] )
+                    ->andWhere( "PERI_ID = getCurrentPeriod()" )
+                    ->orderBy( [ "LACO_ID" => SORT_DESC ] )
+                    ->one();
+
+        if( !isset($config) ) {
+            return new LaboratorioConfig(
+                [ 
+                    "LABO_ID" => $id, 
+                ]
+            );
+        }
+        
+        return $config;
+        
+    }
+
 }

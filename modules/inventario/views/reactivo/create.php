@@ -10,7 +10,7 @@ $this->title = 'Create Reactivo';
 $this->params['breadcrumbs'][] = ['label' => 'Reactivos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="reactivo-create">
+<div class="reactivo-create content card">
     <?= $this->render('_form', [
         'model'         => $model,
         'submitButton'  => $submitButton,

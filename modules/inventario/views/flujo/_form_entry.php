@@ -4,8 +4,11 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;    
 use app\modules\inventario\models\TipoFlujo;
+use app\modules\inventario\models\StockExpirado;
+use app\assets\DatePickerAsset;
+DatePickerAsset::register($this);
 
-$model->TIFU_ID = TipoFlujo::Entrada;
+$model->TIFU_ID             = TipoFlujo::Entrada;
 ?>
 
 <div class="container card col-md-12">
@@ -22,6 +25,23 @@ $model->TIFU_ID = TipoFlujo::Entrada;
                 <?= $form->field($model, 'STOC_ID')->textInput([ "type" => "hidden" ])->label(false) ?>
 
                 <?= $form->field($model, 'TIFU_ID')->textInput([ "type" => "hidden" ])->label(false) ?>
+                
+                <section id="flow-expirable" class="hidden">
+                    <?
+                        $expirableStock = new StockExpirado ();
+
+                        echo $form->field($expirableStock, 'STVE_FECHAVENCIMIENTO', 
+                            [
+                                "template" => '{label}<div class="input-group date">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                {input}
+                                                </div>{hint}{error}'
+                            ]
+                        )->textInput([ "required" => false, "id" => "entry-expiration-date" ]);
+                    ?>   
+                </section>
 
                 <input type="hidden" name="action" value="<?= Url::toRoute(["/inventario/flujo/"]) ?>">
 
@@ -74,6 +94,10 @@ $model->TIFU_ID = TipoFlujo::Entrada;
                 }
 
                 return false;
+            });
+
+            $('input[name*=\"STVE_FECHAVENCIMIENTO\"]').datepicker({
+                format: 'yyyy-mm-dd',
             });
         });
     ");

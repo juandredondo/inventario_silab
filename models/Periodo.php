@@ -45,9 +45,9 @@ class Periodo extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'PERI_ID' => 'Peri  ID',
-            'PERI_SEMESTRE' => 'Peri  Semestre',
-            'PERI_FECHA' => 'Peri  Fecha',
+            'PERI_ID'       => 'PERIODO',
+            'PERI_SEMESTRE' => 'SEMESTRE',
+            'PERI_FECHA'    => 'FECHA',
         ];
     }
 

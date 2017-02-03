@@ -180,18 +180,6 @@ class Laboratorio extends \yii\db\ActiveRecord
 
     public function getCurrentConfig()
     {
-        $result  = LaboratorioConfig::find()
-                    ->where([ "LABO_ID" => $this->id, "PERI_ID" => "getCurrentPeriod()" ])
-                    ->orderBy([ "LACO_ID" => SORT_DESC ])
-                    ->one();
-
-        $result  = isset($result) ? $result : new LaboratorioConfig(
-            [ 
-                "LABO_ID" => $this->id, 
-            ]
-        );
-
-
-        return $result;
+        return LaboratorioConfig::getConfigByLaboratory( $this->id );
     }
 }

@@ -10,7 +10,7 @@ $this->title = 'Create Herramienta';
 $this->params['breadcrumbs'][] = ['label' => 'Herramientas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="herramienta-create  content card">
+<div class="herramienta-create content card">
 
     <?= $this->render('_form', [
         'model'         => $model,

@@ -91,7 +91,7 @@ $this->params[ "count" ]            = count( $data[ "inventories" ] );
 
         function alignCards()
         {
-            $(
+            console.log('aligned');
         }
     ");
 ?>

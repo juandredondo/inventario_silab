@@ -3,13 +3,16 @@
 namespace app\modules\inventario\controllers;
 
 use Yii;
+use yii\data\ActiveDataProvider;
+use yii\filters\VerbFilter;
 use yii\helpers\Url;
-use app\modules\inventario\models\Inventario;
-use app\modules\inventario\models\InventarioSearch;
-
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+
+use app\modules\inventario\models\Inventario;
+use app\modules\inventario\models\InventarioSearch;
+use app\modules\inventario\models\views\VStockActual;
+
 
 /**
  * InventarioController implements the CRUD actions for Inventario model.
@@ -53,8 +56,16 @@ class InventarioController extends Controller
      */
     public function actionView($id)
     {
+        $dataProvider = new ActiveDataProvider([
+                            'query' => VStockActual::find()->where(['INVE_ID' => $id]),
+                            'pagination' => [
+                                'pageSize' => 4,
+                            ],
+                        ]);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model'         => $this->findModel($id),
+            'dataProvider'  => $dataProvider
         ]);
     }
 

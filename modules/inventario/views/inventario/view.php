@@ -70,20 +70,12 @@ function checkPeriodo($model)
                 ) 
             ?>
             <div class="box">
-                <?php   
-                
-                $dataProvider = new ActiveDataProvider([
-                        'query' => Stock::find()->where(['INVE_ID' => $model->INVE_ID]),
-                        'pagination' => [
-                            'pageSize' => 4,
-                        ],
-                    ]);
-                    echo GridView::widget([
+                <?=  GridView::widget([
                         'dataProvider' => $dataProvider,
                                 'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
-
-                            'item.ITEM_NOMBRE',
+                            'ITEM_ID',
+                            'ITEM_NOMBRE',
                             'item.marca.MARC_NOMBRE',
                             [
                                 'attribute' => 'STOC_CANTIDAD',
@@ -91,7 +83,7 @@ function checkPeriodo($model)
                                 'value'     => function($model)
                                 {
                                     $und   =  Unidad::getItemUnity( $model->item->ITEM_ID );
-                                    $html  = '<div data-stock="' . $model->STOC_ID . '" class="hoverable-tools"><div class="col-xs-7">
+                                    $html  = '<div data-expirable="' . ($model->item->isExpirable ? "true" : "false") . '" data-stock="' . $model->STOC_ID . '" class="hoverable-tools"><div class="col-xs-7">
                                                     <span class="pull-left"><b>{cantidad}</b></span> <span class="pull-right">{unidad}</span>
                                                 </div>
                                                 <div class="col-xs-5">
@@ -108,6 +100,14 @@ function checkPeriodo($model)
                                 }
                             ],
                             'periodo.PERI_FECHA',
+                            [
+                                'attribute' => 'STOC_ESCONSUMIBLE',
+                                'value'     => function($model)
+                                {
+                                    return $model->STOC_ESCONSUMIBLE ? "CONSUMIBLE" : "NO CONSUMIBLE";
+                                }
+                            ],
+                            
                             [
                                 'class'     => 'kartik\grid\ExpandRowColumn',
                                 'value'     => function($model, $key, $index, $column){
@@ -176,21 +176,47 @@ function checkPeriodo($model)
 
         function inventory_view()
         {   
-            $('#flow-modal').on('show.bs.modal', function(e){
-                let form    = $('#". $flowForm . "'); 
-                let trigger = $(e.relatedTarget);
-                let flow    = trigger.data( 'flow' );
-                let stock   = trigger.parents('.hoverable-tools').data('stock');
-                let action  = form.find('input[name*=\'action\']').val();
+            $('#flow-modal').on('show.bs.modal', function(e){                
 
-                console.log([
-                    flow, stock, action
-                ]);
+                if (e.namespace === 'bs.modal') {
+                    
+                    let form                = $('#". $flowForm . "'); 
+                    let trigger             = $(e.relatedTarget);
+                    let flow                = trigger.data( 'flow' );
+                    let parent              = trigger.parents('.hoverable-tools');
+                    let stock               = parent.data('stock');
+                    let isExpirable         = parent.data('expirable');
+                    let action              = form.find('input[name*=\'action\']').val();
 
-                form.attr('action', action + (flow == 1 ? '/add-entry' : '/add-out') );
-                $('#". $flowForm . "' + ' #button-text').text( (flow == 1 ? 'Agregar!' : 'Extraer!') )
-                $('input[name*=\'STOC_ID\']').val( stock );
-                $('input[name*=\'TIFU_ID\']').val( flow );
+                    console.log([
+                        flow, stock, action
+                    ]);
+
+                    form.attr('action', action + (flow == 1 ? '/add-entry' : '/add-out') );
+                    $('#". $flowForm . "' + ' #button-text').text( (flow == 1 ? 'Agregar!' : 'Extraer!') )
+                    
+                    $('input[name*=\'STOC_ID\']').val( stock );
+                    $('input[name*=\'TIFU_ID\']').val( flow );
+
+                    if( flow == 1 )
+                    {
+                        $('#flow-expirable').removeClass( isExpirable  ? 'hidden' : '' )
+                                            .addClass   ( !isExpirable ? 'hidden' : '' )
+                        $('#entry-expiration-date').attr('required', isExpirable ? true : false );
+                    }
+                    else if ( flow == 2 ) 
+                    {
+                        isExpirable = false;
+                        // - - - - - - - -- 
+                        $('#entry-expiration-date').attr('required', isExpirable ? true : false );
+                        $('#flow-expirable').removeClass( isExpirable  ? 'hidden' : '' )
+                                            .addClass   ( !isExpirable ? 'hidden' : '' )
+                    }
+
+
+                }
+                
+                
             });
         }
     ");
