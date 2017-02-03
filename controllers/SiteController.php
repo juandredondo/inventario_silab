@@ -199,7 +199,7 @@ class SiteController extends Controller
             ]
         );   
         */
-        return \app\modules\inventario\models\Stock::getEmptyItems( );
+        return \app\modules\inventario\models\core\Items::findOne(20)->isExpirable;
     }
 
     public function beforeAction($action)
@@ -239,4 +239,6 @@ class SiteController extends Controller
         asort($actions);
         return $actions;
     }
+
+    
 }
