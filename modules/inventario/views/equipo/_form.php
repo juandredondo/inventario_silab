@@ -15,11 +15,17 @@ use yii\widgets\ActiveForm;
     $item               = $model->item;
     $itemNoConsumible   = $model->parent;
 
-    $action             = Url::toRoute($model->isNewRecord ? "create" : "update");
+    $actionConfig       = [ $model->isNewRecord ? "create" : "update", "returnUrl" => ( isset($returnUrl) ?  $returnUrl : "" )];
+    
+    if( $model->id )
+        $actionConfig[ "id" ] = $model->id;
+
+    $action         = Url::toRoute( $actionConfig );
+
 ?>
 <div class="equipo-form">
 
-    <?php $form = ActiveForm::begin(["action" => $action]); ?>
+    <?php $form = ActiveForm::begin(["action" => $action, "id" => "item-team-form"]); ?>
 
     <?php 
         require Yii::getAlias("@inventarioViews").'/item-no-consumible/_form-fields.php';

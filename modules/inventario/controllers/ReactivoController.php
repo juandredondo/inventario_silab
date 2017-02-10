@@ -3,17 +3,19 @@
 namespace app\modules\inventario\controllers;
 
 use Yii;
+use yii\filters\VerbFilter;
+use yii\web\NotFoundHttpException;
+
+use app\config\SilabConfig;
+use app\components\core\controllers\BaseItemController;
+
 use app\modules\inventario\models\core\Items;
 use app\modules\inventario\models\core\ItemConsumible;
 use app\modules\inventario\models\core\TipoItem;
 use app\modules\inventario\models\core\EstadoConsumible;
-
 use app\modules\inventario\models\Caducidad;
 use app\modules\inventario\models\Reactivo;
 use app\modules\inventario\models\ReactivoSearch;
-use app\components\core\controllers\BaseItemController;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * ReactivoController implements the CRUD actions for Reactivo model.
@@ -73,7 +75,7 @@ class ReactivoController extends BaseItemController
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($returnUrl = "")
     {        
         $reac = new \app\modules\inventario\models\Reactivo();
         $data = Yii::$app->request->post();
@@ -83,13 +85,19 @@ class ReactivoController extends BaseItemController
                     $reac->parent->load($data, 'ItemConsumible') &&
                         $reac->load($data, 'Reactivo')
           )
-        {            
-            if($reac->validate())
+        {  
+                
+            if($reac->validate() && $reac->save() )
             {              
-                $reac->save();
-                return $this->redirect(['view', 'id' => $reac->item->id]);
+                if( $returnUrl != "" ) { 
+                    return $this->redirect( [$returnUrl, 'id' => $reac->item->id]);
+                }
+
+                return $this->redirect( ['view', 'id' => $reac->item->id]);
             }
+            
         }
+
         
         return $this->render('/reactivo/create', [
                 'model'          => $reac
@@ -100,33 +108,23 @@ class ReactivoController extends BaseItemController
     {
         Yii::$app->response->format = \yii\web\response::FORMAT_JSON;
 
-        $reactivo       = new Reactivo();
-        $itemConsumible = new ItemConsumible();
-        $item           = new Items();
+        $reac   = new \app\modules\inventario\models\Reactivo();
+        $data   = Yii::$app->request->post();
+        $return = [];
 
-        $return         = [];
-
-        if ($item->load(Yii::$app->request->post(), 'Items') && $item->save()) {
-            
-            if($reactivo->load(Yii::$app->request->post(), 'Reactivo'))
-            {
-                $itemConsumible->ITEM_ID = $item->id;
-                $itemConsumible->ESCO_ID = EstadoConsumible::Agotado;
-
-                if($itemConsumible->save())
-                {   
-                    $reactivo->ITCO_ID = $itemConsumible->ITCO_ID;
-                    $reactivo->CADU_ID = Caducidad::getCaducado( $reactivo->REAC_FECHA_VENCIMIENTO )->CADU_ID;
-                    
-                    if($reactivo->save())
-                    {
-                        $return["location"] = Url::toRoute(['view', 'id' => $reactivo->id]);
-                        $return["message"]  = "Item registrado correctamente";
-                        $return["status"]   = "OK";
-                    }
-                }
+        if($data != null && 
+                $reac->item->load($data, 'Items') &&
+                    $reac->parent->load($data, 'ItemConsumible') &&
+                        $reac->load($data, 'Reactivo')
+          )
+        {     
+            if($reac->validate() && $reac->save() )
+            {              
+                $return["location"] = Url::toRoute(['view', 'id' => $reactivo->id]);
+                $return["message"]  = "Item registrado correctamente";
+                $return["status"]   = "OK";
             }
-        } 
+        }
         
         $item->TIIT_ID = TipoItem::Reactivo;
 
@@ -135,6 +133,7 @@ class ReactivoController extends BaseItemController
 
         return $return;
     }
+    
     /**
      * Updates an existing Reactivo model.
      * If update is successful, the browser will be redirected to the 'view' page.

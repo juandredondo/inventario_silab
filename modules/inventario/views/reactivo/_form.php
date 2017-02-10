@@ -21,12 +21,17 @@ DatePickerAsset::register($this);
     $item           = $model->item;
     $itemConsumible = $model->parent;
 
-    $action = Url::toRoute($model->isNewRecord ? "create" : "update");
+    $actionConfig   = [ $model->isNewRecord ? "create" : "update", "returnUrl" => ( isset($returnUrl) ?  $returnUrl : "" )];
+    
+    if( $model->id )
+        $actionConfig[ "id" ] = $model->id;
+
+    $action         = Url::toRoute( $actionConfig );
 ?>
 <div class="reactivo-form">
 
     <?php 
-        $form = ($formId === null) ? ActiveForm::begin(["action" => $action ]) : ActiveForm::begin([ "id" => $formId]); 
+        $form = ($formId === null) ? ActiveForm::begin(["action" => $action, "id" => "item-reactive-form" ]) : ActiveForm::begin([ "id" => $formId]); 
     ?>
 
     <?php 
@@ -73,7 +78,7 @@ DatePickerAsset::register($this);
                 'main'  => $model,
                 'ref'   => Simbolo::className()
             ],
-            "columns"   => [ "id" => "SIMB_ID", "text" => "SIMB_NOMBRE" ]
+            "columns"   => [ "id" => "SIMB_ID", "text" => "SIMB_NOMBRE" ],
         ]) 
     ?>
 
@@ -94,6 +99,8 @@ DatePickerAsset::register($this);
                 $('input[name*=\"REAC_FECHA_VENCIMIENTO\"]').datepicker({
                     format: 'yyyy-mm-dd',
                 });
+
+
             });"
         );
 ?>

@@ -2,19 +2,27 @@
 
 use yii\helpers\Html;
 
+use app\components\widgets\AlertDimissible;
 use app\assets\InventarioAsset;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Items */
 
-$this->title = 'Registrar item';
-$this->params['breadcrumbs'][] = ['label' => 'Items', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
-
+$this->title                    = 'Registrar item';
+$this->params['breadcrumbs'][]  = ['label' => 'Items', 'url' => ['index']];
+$this->params['breadcrumbs'][]  = $this->title;
+$returnUrl                      = isset($returnUrl) ? $returnUrl : '';
 InventarioAsset::register($this);
 ?>
 <div class="items-create content card">
+    <div class="row">
+        <div id="item-alert-spot" class="col-md-12">
+            <?php 
+                echo AlertDimissible::widget();
+            ?>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="well">
@@ -27,19 +35,19 @@ InventarioAsset::register($this);
             <div class="button-group">
                 <div class="text-center">
                     <a  class="btn btn-success btn-flat btn-app"
-                        data-role='form-loader' data-target="#form-cont" data-source="<?= Url::toRoute("/inventario/reactivo/loadform") ?>" >
+                        data-role='form-loader' data-target="#form-cont" data-source="<?= Url::toRoute(["/inventario/reactivo/loadform", "returnUrl" => $returnUrl ]) ?>" >
                         <i class="text-blue fa fa-hourglass-end"></i> <span class="hidden-xs">REACTIVO</span>
                     </a>
-                    <a class="btn btn-flat btn-app" data-role='form-loader' data-target="#form-cont" data-source="<?= Url::toRoute("/inventario/material/loadform") ?>" >
+                    <a class="btn btn-flat btn-app" data-role='form-loader' data-target="#form-cont" data-source="<?= Url::toRoute(["/inventario/material/loadform", "returnUrl" => $returnUrl ]) ?>" >
                         <i class="text-green fa fa-eyedropper"></i> <span class="hidden-xs">MATERIAL</span>
                     </a>
-                    <a class="btn btn-flat btn-app" data-role='form-loader' data-target="#form-cont" data-source="<?= Url::toRoute("/inventario/equipo/loadform") ?>" >
+                    <a class="btn btn-flat btn-app" data-role='form-loader' data-target="#form-cont" data-source="<?= Url::toRoute(["/inventario/equipo/loadform",  "returnUrl" => $returnUrl ]) ?>" >
                         <i class="text-red fa fa-laptop"></i> <span class="hidden-xs">EQUIPO</span>
                     </a>
-                    <a class="btn btn-flat btn-app" data-role='form-loader' data-target="#form-cont" data-source="<?= Url::toRoute("/inventario/herramienta/loadform") ?>">
+                    <a class="btn btn-flat btn-app" data-role='form-loader' data-target="#form-cont" data-source="<?= Url::toRoute(["/inventario/herramienta/loadform",  "returnUrl" => $returnUrl ]) ?>">
                         <i class="text-purple fa fa-gavel"></i> <span class="">HERRAMIENTA</span>
                     </a>
-                    <a class="btn btn-flat btn-app" data-role='form-loader' data-target="#form-cont" data-source="<?= Url::toRoute("/inventario/accesorio/loadform") ?>" >
+                    <a class="btn btn-flat btn-app" data-role='form-loader' data-target="#form-cont" data-source="<?= Url::toRoute(["/inventario/accesorio/loadform",  "returnUrl" => $returnUrl ]) ?>" >
                         <i class="fa fa-laptop"></i> <span class="">ACCESORIO</span>
                     </a>
                 </div>
@@ -49,7 +57,7 @@ InventarioAsset::register($this);
     <hr>
     <div class="row">
         <div id="form-cont" class="col-md-12">
-
+            
         </div>
     </div>
 </div>

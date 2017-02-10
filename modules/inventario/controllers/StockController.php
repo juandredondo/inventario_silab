@@ -4,10 +4,8 @@ namespace app\modules\inventario\controllers;
 
 use Yii;
 use app\models\Periodo;
-use app\modules\inventario\models\Stock;
-use app\modules\inventario\models\StockSearch;
-use app\modules\inventario\models\Flujo;
-use app\modules\inventario\models\TipoFlujo;
+use app\modules\inventario\models as InventoryModels; 
+use app\components\helpers\AlertHelper;
 
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -39,7 +37,7 @@ class StockController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new StockSearch();
+        $searchModel  = new InventoryModels\StockSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -68,25 +66,42 @@ class StockController extends Controller
     public function actionAdd()
     {
         
-        $stock = new Stock();
-        $flujo = new Flujo();
+        $stock = new InventoryModels\Stock();
+        $flujo = new InventoryModels\Flujo();
         $data  = Yii::$app->request->post();
+        
         if ($stock->load($data) ) 
         {
             if($data[ "manual-period" ] === "auto")
                 $stock->PERI_ID = Periodo::getCurrentPeriod()->PERI_ID;
-
+            
             if($stock->save()){
                 $flujo->STOC_ID         =  $stock->STOC_ID;
                 $flujo->FLUJ_CANTIDAD   =  $stock->STOC_CANTIDAD;
-                $flujo->TIFU_ID         =  TipoFlujo::Entrada;
+                $flujo->TIFU_ID         =  InventoryModels\TipoFlujo::Entrada;
 
                 if($flujo->save())
-                    return $this->redirect(['/inventario/inventario/view', 'id' => $stock->INVE_ID]);  
-            }
-            
-        }         
+                {
+                    if($data["is-expirable"] == true )
+                    {
+                        $vencimiento = new InventoryModels\StockExpirado([
+                            "FLUJ_ID"               => $flujo->FLUJ_ID,
+                            "STVE_FECHAVENCIMIENTO" => $data[ "StockExpirado" ][ "STVE_FECHAVENCIMIENTO" ]
+                        ]);
 
+                        if($vencimiento->save())
+                        {
+                            AlertHelper::success("Añadido a Stock!, este item es expirable por tanto se agrego a la pila FIFO");
+                        }
+                    }
+
+                    AlertHelper::success("Añadido a Stock!");
+
+                    return $this->redirect(['/inventario/inventario/view', 'id' => $stock->INVE_ID]);
+                }
+            }
+        }    
+        
         return $this->render('create', [
                 'stock' => $stock,
                 'flujo' => $flujo,

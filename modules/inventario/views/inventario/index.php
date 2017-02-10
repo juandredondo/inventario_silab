@@ -39,21 +39,6 @@ $this->params['breadcrumbs'][]  = $this->title;
                 }
                 
             ],
-            [
-                'attribute' => "Periodo Vigente",
-                'format'    => "html",
-                'value'     => function($model)
-                {
-                    $periodo = $model->periodo;
-                    if($periodo !== null)
-                        return $periodo->esVigente() ? 
-                                "<span class='label label-success'>VIGENTE (" . $model->periodo->alias . ")</span>": 
-                                "<span class='label label-warning'>CADUCADO (" . $model->periodo->alias . ")</span>";
-                    else
-                        return $periodo;
-                }
-            ],
-
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

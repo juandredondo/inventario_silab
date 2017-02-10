@@ -50,3 +50,9 @@ use app\modules\inventario\models\core\TipoItem;
 
         echo $tipoItemInput;
     ?>
+    <?php 
+        $this->registerJs( "
+            // - - - Initialize Select2 Plugin - - -
+                $('select').select2();
+        " )
+    ?>

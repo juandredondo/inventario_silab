@@ -177,6 +177,25 @@ class FlujoController extends Controller
         return $return;
     }
 
+    public function checkFlow($flow, $type = TipoFlujo::Salida, $allowExcess = false)
+    {
+        $return = [
+            "message" => "Extraccion del item correcta",
+            "data"    => [],
+            "status"  => 0
+        ];
+
+        $currentAmount  = $flow->stock->calculateAmount();
+        $calculated     = $flow->calculateWithAmount( $currentAmount );
+
+        if( $calculated[ "hasExcess" ] )
+        {
+            $return[ "message" ]    = "No se puede extraer, ya que hay un exceso de <%= excess %>";
+            $return[ "data" ]       = [ "excess" => $calculated[ "excess" ] ];
+            $return[ "status" ]     = -1; 
+        }
+    }
+
     public function actionAddEntry()
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
@@ -196,7 +215,7 @@ class FlujoController extends Controller
             
             if($model->save())
             {
-                if( $model->stock->item->isExpirable )
+                if( $model->isExpirable )
                 {
                     $vencimiento = new StockExpirado([
                         "FLUJ_ID"               => $model->FLUJ_ID,
@@ -237,5 +256,13 @@ class FlujoController extends Controller
         return [
             "result" => $flow->isExpirable
         ];
+    }
+
+    public function actionForward()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $session                    = Yii::$app->session;  
+        
+        return $session->getFlash('stock-data', [ "message" => "Jeanca was here!" ]);
     }
 }

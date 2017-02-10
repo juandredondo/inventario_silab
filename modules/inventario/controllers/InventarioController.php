@@ -80,9 +80,18 @@ class InventarioController extends Controller
         $request    = \Yii::$app->request;
         $data       = $request->post();
 
-        if ($model->load($data, 'Inventario') && $model->save()) 
+        if ($model->load($data, 'Inventario')) 
         {
-            return $this->redirect(['view', 'id' => $model->INVE_ID]);
+            $model->INVE_ESSINGLETON = isset($data["Inventario"][ "INVE_ESSINGLETON" ]);
+
+            if($model->INVE_ESSINGLETON)
+            {
+                $model->LABO_ID = null;
+            }
+
+            if($model->save())
+                return $this->redirect(['view', 'id' => $model->INVE_ID]);
+
         } 
         else 
         {
@@ -138,12 +147,17 @@ class InventarioController extends Controller
         $request    = \Yii::$app->request;
         $data       = $request->post();
         
-        if ($model->load($data, 'Inventario') && $model->save()) 
+        if ($model->load($data, 'Inventario')) 
         {
-            // Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            // echo \yii\helpers\Json::encode($model);
-            return $this->redirect(['view', 'id' => $model->INVE_ID]);
+            $model->INVE_ESSINGLETON = isset($data["Inventario"][ "INVE_ESSINGLETON" ]);
 
+            if($model->INVE_ESSINGLETON)
+            {
+                $model->LABO_ID = null;
+            }
+
+            if($model->save())
+                return $this->redirect(['view', 'id' => $model->INVE_ID]);
         } 
         else 
         {

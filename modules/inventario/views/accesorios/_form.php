@@ -14,11 +14,18 @@ use yii\widgets\ActiveForm;
     $isJustLoad         = (isset($isJustLoad))      ? $isJustLoad   : false;
     $item               = $model->item;
     $itemNoConsumible   = $model->parent;
-    $action             = Url::toRoute($model->isNewRecord ? "create" : "update");
+
+    $actionConfig   = [ $model->isNewRecord ? "create" : "update", "returnUrl" => ( isset($returnUrl) ?  $returnUrl : "" )];
+    
+    if( $model->id )
+        $actionConfig[ "id" ] = $model->id;
+
+    $action         = Url::toRoute( $actionConfig );
+
 ?>
 <div class="accesorios-form">
 
-    <?php $form = ActiveForm::begin(["action" => $action]); ?>
+    <?php $form = ActiveForm::begin(["action" => $action, "id" => "item-accesory-form"]); ?>
 
     <?php 
         require Yii::getAlias("@inventarioViews").'/item-no-consumible/_form-fields.php';

@@ -5,7 +5,7 @@ use yii\widgets\DetailView;
 use yii\bootstrap\Modal;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Url;
-
+use app\components\widgets\AlertDimissible;
 use kartik\grid\GridView;
 
 use app\modules\inventario\models\Stock;
@@ -13,12 +13,16 @@ use app\modules\inventario\models\Flujo;
 use app\modules\inventario\models\TipoFlujo;
 use app\modules\inventario\models\TipoItem;
 use app\modules\inventario\models\Unidad;
+
+use yii\helpers\Json;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Inventario */
 
-$this->title = $model->INVE_NOMBRE;
-$this->params['breadcrumbs'][] = ['label' => 'Inventarios', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title                    = $model->INVE_NOMBRE;
+$this->params['breadcrumbs'][]  = ['label' => 'Inventarios', 'url' => ['index']];
+$this->params['breadcrumbs'][]  = $this->title;
+$GLOBALS[ "laboratory-config" ] = $model->laboratorio->currentConfig;
 
 function checkPeriodo($model)
 {
@@ -33,6 +37,13 @@ function checkPeriodo($model)
 
 ?>
 <div class="inventario-view content card">
+    <div class="row">
+        <div id="item-alert-spot" class="col-md-12">
+            <?php 
+                echo AlertDimissible::widget();
+            ?>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <p>
@@ -52,12 +63,7 @@ function checkPeriodo($model)
                     'INVE_ID',
                     'nombre',
                     'alias',
-                    'descripcion',
-                    [
-                        'attribute' => "Periodo Vigente",
-                        'format'    => "html",
-                        'value'     => checkPeriodo($model)
-                    ],
+                    'descripcion'
                 ],
             ]) ?>
         </div>
@@ -83,7 +89,16 @@ function checkPeriodo($model)
                                 'value'     => function($model)
                                 {
                                     $und   =  Unidad::getItemUnity( $model->item->ITEM_ID );
-                                    $html  = '<div data-expirable="' . ($model->item->isExpirable ? "true" : "false") . '" data-stock="' . $model->STOC_ID . '" class="hoverable-tools"><div class="col-xs-7">
+                                    $datas = [
+                                        "expirable"     => $model->item->isExpirable ? "true" : "false",
+                                        "stock"         => $model->STOC_ID,
+                                        "amount"        => $model->calculateAmount(),
+                                        "stock-min"     => $GLOBALS[ "laboratory-config" ]->LACO_STOCKMIN,
+                                        "stock-max"     => $GLOBALS[ "laboratory-config" ]->LACO_STOCKMAX,
+                                        "consumible"    => Json::encode( $item->traverseInfo()->parent )
+                                        
+                                    ];
+                                    $html  = '<div ' . Html::renderTagAttributes( [ "data" => $datas ] ) . ' class="hoverable-tools"><div class="col-xs-7">
                                                     <span class="pull-left"><b>{cantidad}</b></span> <span class="pull-right">{unidad}</span>
                                                 </div>
                                                 <div class="col-xs-5">
@@ -95,7 +110,7 @@ function checkPeriodo($model)
 
                                     return str_replace( 
                                                 "{unidad}", $und,
-                                                str_replace("{cantidad}", $model->calculateAmount(), $html )
+                                                str_replace("{cantidad}", $datas[ "amount" ], $html )
                                            );
                                 }
                             ],

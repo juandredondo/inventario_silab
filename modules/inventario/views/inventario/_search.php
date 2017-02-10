@@ -33,14 +33,6 @@ use app\models\Periodo;
         ]
     ])  ?>
 
-    <?= DropDownWidget::widget([
-        'form'      => $form,
-        'model'     => [
-            "main"  => $model,
-            "ref"   => Periodo::className()
-        ],
-        "columns"   => [ "attribute" => 'PERI_ID', "id" => "id", "text" => "alias" ]
-    ])  ?>
 
     <? //$form->field($model, 'INVE_CANTIDAD') ?>
 
