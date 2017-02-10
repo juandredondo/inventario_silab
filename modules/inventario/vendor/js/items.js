@@ -69,6 +69,9 @@ silab.items.prototype.loadForm = function(params)
                     var contentForm     = $("[data-next-form]")             .html(
                             self.getFormContent(data)
                         );
+                    
+                    console.log( $("input[name*='item-return-url']").val() );
+
                     var contentHeight   = nextForm.addClass('height-auto')  .height();
 
                     nextForm.removeClass('height-auto').animate({ 
