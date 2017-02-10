@@ -4,6 +4,7 @@ namespace app\modules\inventario\models\core;
 
 use Yii;
 use app\components\core\IdentificableInterface;
+use app\config\SilabConfig;
 
 use app\modules\inventario\models\core\TipoItem;
 use app\modules\inventario\models\core\EstadoConsumible;
@@ -134,6 +135,12 @@ abstract class ItemBase extends \yii\db\ActiveRecord implements IdentificableInt
             $this->item             = new $baseClass;
             $this->item->tipoItemId = static::getType();
         }
+
+        if( TipoItem::getTypesById()[ static::getType() ][ "parent" ] == TipoItem::Consumible )
+        {
+            $this->parent->ITCO_MIN = SilabConfig::getCurrentConfig()->SILAB_STOCK_MIN;
+            $this->parent->ITCO_MAX = SilabConfig::getCurrentConfig()->SILAB_STOCK_MAX;
+        }
         
         parent::init();
     }
@@ -146,13 +153,17 @@ abstract class ItemBase extends \yii\db\ActiveRecord implements IdentificableInt
     public static function getByItemId($id)
     {
         $class 		= get_called_class();
-        $return 	= $class::find([ "ITEM_ID" => $id ])->with(static::getItemRelation()["relation"])->one();
+        $query      = $class::find()->joinWith(static::getItemRelation()["relation"])->where([ "ITEM_ID" => $id ]);
+        $sql        = $query->createCommand()->getRawSql();
+        $return 	= $query->one();
+        
         if($return != null)
         {
             $return->fillParents();
         }
         return $return;
     }
+
 
     // Este metodo se llama antes del metodo save();
     public function prepareSave($params = [])
@@ -315,6 +326,11 @@ abstract class ItemBase extends \yii\db\ActiveRecord implements IdentificableInt
     public function delete()
     {
         return $this->item->delete();
+    }
+
+    public function getIsExpirable()
+    {
+        return $this->item->isExpirable;
     }
 }
 

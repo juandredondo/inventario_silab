@@ -4,8 +4,7 @@ namespace app\modules\inventario\models\core;
 
 use Yii;
 use app\components\core\IdentificableInterface;
-use app\modules\inventario\models\Marca;
-use app\modules\inventario\models\Stock;
+use app\modules\inventario\models As InventoryModels;
 /**
  * This is the model class for table "TBL_ITEMS".
  *
@@ -43,7 +42,7 @@ class Items extends \yii\db\ActiveRecord implements IdentificableInterface
             [['MARC_ID', 'TIIT_ID'], 'integer'],
             [['ITEM_NOMBRE'], 'string', 'max' => 200],
             [['TIIT_ID'], 'exist', 'skipOnError' => true, 'targetClass' => TipoItem::className(), 'targetAttribute' => ['TIIT_ID' => 'TIIT_ID']],
-            [['MARC_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Marca::className(), 'targetAttribute' => ['MARC_ID' => 'MARC_ID']],
+            [['MARC_ID'], 'exist', 'skipOnError' => true, 'targetClass' => InventoryModels\Marca::className(), 'targetAttribute' => ['MARC_ID' => 'MARC_ID']],
             [['nombre', 'observacion'], 'safe']
         ];
     }
@@ -112,7 +111,7 @@ class Items extends \yii\db\ActiveRecord implements IdentificableInterface
      */
     public function getMarca()
     {
-        return $this->hasOne(Marca::className(), ['MARC_ID' => 'MARC_ID']);
+        return $this->hasOne(InventoryModels\Marca::className(), ['MARC_ID' => 'MARC_ID']);
     }
 
     /**
@@ -145,7 +144,7 @@ class Items extends \yii\db\ActiveRecord implements IdentificableInterface
      */
     public function getStocks()
     {
-        return $this->hasMany(Stock::className(), ['ITEM_ID' => 'ITEM_ID']);
+        return $this->hasMany(InventoryModels\Stock::className(), ['ITEM_ID' => 'ITEM_ID']);
     }
 
     /**
@@ -160,31 +159,12 @@ class Items extends \yii\db\ActiveRecord implements IdentificableInterface
     {
         $realId = 0;
 
-        switch($this->TipoItemId)
-        {
-            case TipoItem::Material:
-                $realId = Material::getByItemId($this->id)->id;
-            break;
+        $item = $this->traverseInfo();
 
-            case TipoItem::Equipo:
-                $realId = Equipo::getByItemId($this->id)->id;
-            break;
+        if(isset($item))
+            $realId = $item->id;
 
-            case TipoItem::Accesorio:
-                $realId = Accesorio::getByItemId($this->id)->id;
-            break;
-
-
-            case TipoItem::Herramienta:
-                $realId = Herramienta::getByItemId($this->id)->id;
-            break;
-
-            case TipoItem::Reactivo:
-                $realId = Reactivo::getByItemId($this->id)->id;
-            break;
-        }
-
-        return $this;
+        return $realId;
     }
 
     public function getIsExpirable()
@@ -194,5 +174,38 @@ class Items extends \yii\db\ActiveRecord implements IdentificableInterface
                                 ->addParams([ ":id" => $this->id ])
                                 ->scalar();
         return $isExpirable == 1 ? true: false;
+    }
+
+    /**
+    * Retorna la subclase en funcion del tipo de item
+    */
+    public function traverseInfo()
+    {
+        switch( $this->TIIT_ID )
+        {
+            case TipoItem::Reactivo:
+                return InventoryModels\Reactivo::getByItemId( $this->ITEM_ID );
+            break;
+
+            case TipoItem::Accesorio:
+                return InventoryModels\Accesorios::getByItemId( $this->ITEM_ID );
+            break;
+
+            case TipoItem::Material:
+                return InventoryModels\Material::getByItemId( $this->ITEM_ID );
+            break;
+
+            case TipoItem::Herramienta:
+                return InventoryModels\Herramienta::getByItemId( $this->ITEM_ID );
+            break;
+
+            case TipoItem::Equipo:
+                return InventoryModels\Equipo::getByItemId( $this->ITEM_ID );
+            break;
+
+            default: 
+                return null;
+            break;
+        }
     }
 }
