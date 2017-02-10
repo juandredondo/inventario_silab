@@ -1,9 +1,12 @@
 <?php
 use yii\helpers\Html;
-
+use app\assets\SliderRangeAsset;
+use app\assets\Select2Asset;
+use app\assets\JsStorageAsset;
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+JsStorageAsset::register($this);
 
 if (Yii::$app->controller->action->id === 'login') { 
 /**
@@ -22,8 +25,12 @@ if (Yii::$app->controller->action->id === 'login') {
         app\assets\AppAsset::register($this);
     }
     app\assets\MaterialIconsAsset::register($this);
+    Select2Asset::register($this);
+    SliderRangeAsset::register($this);
+
     dmstr\web\AdminLteAsset::register($this);
     
+
     $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed2010/adminlte/dist');
     ?>
     <?php $this->beginPage() ?>
