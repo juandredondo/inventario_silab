@@ -18,7 +18,7 @@ class InventarioSearch extends Inventario
     public function rules()
     {
         return [
-            [['INVE_ID', 'LABO_ID', 'PERI_ID'], 'integer'],
+            [['INVE_ID', 'LABO_ID'], 'integer'],
             [['INVE_CANTIDAD'], 'number'],
         ];
     }
@@ -61,8 +61,7 @@ class InventarioSearch extends Inventario
         $query->andFilterWhere([
             'INVE_ID'       => $this->INVE_ID,
             'LABO_ID'       => $this->LABO_ID,
-            'INVE_CANTIDAD' => $this->INVE_CANTIDAD,
-            'PERI_ID'       => $this->PERI_ID,
+            'INVE_CANTIDAD' => $this->INVE_CANTIDAD
         ]);
 
         return $dataProvider;

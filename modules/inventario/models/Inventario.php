@@ -38,15 +38,14 @@ class Inventario extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['INVE_PADRE', 'LABO_ID', 'PERI_ID'], 'integer'], 
-            [['LABO_ID', 'PERI_ID'], 'required'],
+            [['LABO_ID'], 'integer'], 
             [['INVE_CANTIDAD'], 'number'],
             [['INVE_NOMBRE'], 'string', 'max' => 200],
             [['INVE_DESCRIPCION'], 'string'],
+            [['INVE_ESSINGLETON'], 'boolean'], 
             [['INVE_ALIAS'], 'string', 'max' => 255],
             [['INVE_ALIAS'], 'unique'],
             [['LABO_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Laboratorio::className(), 'targetAttribute' => ['LABO_ID' => 'LABO_ID']],
-            [['PERI_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Periodo::className(), 'targetAttribute' => ['PERI_ID' => 'PERI_ID']],
         ];
     }
 
@@ -63,7 +62,7 @@ class Inventario extends \yii\db\ActiveRecord
             'INVE_CANTIDAD'     => 'CANTIDAD DE ITEMS',
             'INVE_PADRE'        => 'PADRE',
             'LABO_ID'           => 'LABORATORIO',
-            'PERI_ID'           => '# PERIODO #',
+            'INVE_ESSINGLETON'  => 'ES SINGLETON',
         ];
     }
 
@@ -126,14 +125,6 @@ class Inventario extends \yii\db\ActiveRecord
          $this->LABO_ID = $value;
     }
 
-    public function getPeriodoId() 
-    {
-        return $this->PERI_ID;
-    }
-    public function setPeriodoId($value = '') 
-    {
-         $this->PERI_ID = $value;
-    }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -143,13 +134,6 @@ class Inventario extends \yii\db\ActiveRecord
         return $this->hasOne(Laboratorio::className(), ['LABO_ID' => 'LABO_ID']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPeriodo()
-    {
-        return $this->hasOne(Periodo::className(), ['PERI_ID' => 'PERI_ID']);
-    }
 
     /**
      * @return \yii\db\ActiveQuery

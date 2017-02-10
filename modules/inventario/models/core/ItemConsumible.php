@@ -12,7 +12,8 @@ use app\components\core\LoadableActiveRecord;
  * @property integer $ITCO_ID
  * @property integer $ITEM_ID
  * @property integer $estadoConsumible_id
- *
+ * @property double $ITCO_MIN
+ * @property double $ITCO_MAX
  * @property TBLESTADOSCONSUMIBLE $estadoConsumible
  * @property TBLITEMS $iTEM
  * @property TBLMATERIALES[] $tBLMATERIALESs
@@ -34,8 +35,9 @@ class ItemConsumible extends LoadableActiveRecord implements IdentificableInterf
     public function rules()
     {
         return [
-            [['ITEM_ID', 'ESCO_ID'], 'required'],
+            [['ITEM_ID', 'ESCO_ID', 'ITCO_MIN'], 'required'],
             [['ITEM_ID', 'ESCO_ID'], 'integer'],
+            [['ITCO_MIN', 'ITCO_MAX'], 'number'],
             [['ESCO_ID'], 'exist', 'skipOnError' => true, 'targetClass' => EstadoConsumible::className(), 'targetAttribute' => ['ESCO_ID' => 'ESCO_ID']],
             [['ITEM_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Items::className(), 'targetAttribute' => ['ITEM_ID' => 'ITEM_ID']],
         ];
@@ -50,6 +52,8 @@ class ItemConsumible extends LoadableActiveRecord implements IdentificableInterf
             'ITCO_ID' => 'CONSUMIBLE',
             'ITEM_ID' => 'ID',
             'ESCO_ID' => 'ESTADO',
+            'ITCO_MIN' => 'MINIMAS',
+            'ITCO_MAX' => 'MAXIMAS',
         ];
     }
 

@@ -3,8 +3,10 @@
 namespace app\modules\inventario\models;
 
 use Yii;
+use app\models\Periodo;
 use app\models\Movimiento;
 use app\modules\inventario\models\Stock;
+use app\modules\inventario\models\TipoFlujo;
 
 /**
  * This is the model class for table "TBL_FLUJOS".
@@ -35,11 +37,12 @@ class Flujo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['FLUJ_CANTIDAD', 'STOC_ID'], 'required'],
+            [['FLUJ_CANTIDAD', 'STOC_ID', 'PERI_ID'], 'required'],
             [['FLUJ_CANTIDAD'], 'number'],
-            [['FLUJ_FECHA'], 'datetime'],
-            [['MOVI_ID', 'STOC_ID', 'TIFU_ID'], 'integer'],
+            [['MOVI_ID', 'STOC_ID', 'TIFU_ID', 'PERI_ID'], 'integer'],
+            [['FLUJ_FECHA'], 'safe'],
             [['MOVI_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Movimiento::className(), 'targetAttribute' => ['MOVI_ID' => 'MOVI_ID']],
+            [['PERI_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Periodo::className(), 'targetAttribute' => ['PERI_ID' => 'PERI_ID']],
             [['STOC_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Stock::className(), 'targetAttribute' => ['STOC_ID' => 'STOC_ID']],
             [['TIFU_ID'], 'exist', 'skipOnError' => true, 'targetClass' => TipoFlujo::className(), 'targetAttribute' => ['TIFU_ID' => 'TIFL_ID']],
         ];
@@ -57,6 +60,7 @@ class Flujo extends \yii\db\ActiveRecord
             'MOVI_ID'       => 'MOVIMIENTO',
             'STOC_ID'       => 'STOCK',
             'TIFU_ID'       => 'TIPO',
+            'PERI_ID'       => 'PERIODO',
         ];
     }
 
@@ -154,6 +158,11 @@ class Flujo extends \yii\db\ActiveRecord
     public function getTipoFlujo()
     {
         return $this->hasOne(TipoFlujo::className(), ['TIFL_ID' => 'TIFU_ID']);
+    }
+
+    public function getPeriodo()
+    {
+        return $this->hasOne(Periodo::className(), ['PERI_ID' => 'PERI_ID']);
     }
 
     /**

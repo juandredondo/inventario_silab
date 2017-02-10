@@ -4,6 +4,12 @@ namespace app\modules\inventario\models\views;
 
 use Yii;
 use app\modules\inventario\models\Stock;
+use app\modules\inventario\models\core\TipoItem;
+use app\modules\inventario\models\Material;
+use app\modules\inventario\models\Reactivo;
+use app\modules\inventario\models\Accesorios;
+use app\modules\inventario\models\Equipo;
+use app\modules\inventario\models\Herramienta;
 
 /**
  * This is the model class for table "vm_stocks_actuales".
@@ -60,5 +66,44 @@ class VStockActual extends Stock
             'TIIT_NOMBRE' => 'TIPO DE ITEM',
         ];
     }
+
+    public function fields()
+    {
+        $fields = parent::fields();
+        $fields[ "consumibleInfo" ] = "itemConsumibleInfo";
+
+        return $fields;
+    }
+
+   public function getItemConsumibleInfo()
+   {
+       if( $this->STOC_ESCONSUMIBLE )
+       {
+            switch( $this->TIIT_ID )
+            {
+                case TipoItem::Reactivo:
+                    return Reactivo::getByItemId( $this->ITEM_ID );
+                break;
+
+                case TipoItem::Accesorio:
+                    return Accesorios::getByItemId( $this->ITEM_ID );
+                break;
+
+                case TipoItem::Material:
+                    return Material::getByItemId( $this->ITEM_ID );
+                break;
+
+                case TipoItem::Herramienta:
+                    return Herramienta::getByItemId( $this->ITEM_ID );
+                break;
+
+                case TipoItem::Equipo:
+                    return Equipo::getByItemId( $this->ITEM_ID );
+                break;
+            }
+       }
+       else
+        return null;
+   }
 
 }

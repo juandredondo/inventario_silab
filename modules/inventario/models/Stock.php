@@ -5,6 +5,7 @@ namespace app\modules\inventario\models;
 use Yii;
 use app\modules\inventario\models\core\Items;
 use app\models\Periodo;
+use app\models\Laboratorio;
 /**
  * This is the model class for table "TBL_STOCK".
  *
@@ -12,10 +13,20 @@ use app\models\Periodo;
  * @property integer $ITEM_ID
  * @property integer $INVE_ID
  * @property double $STOC_CANTIDAD
+* @property integer $PERI_ID 
+* @property integer $CADU_ID 
+* @property boolean $STOC_ESCONSUMIBLE 
+* @property integer $LABO_ID 
+* @property double $STOC_MIN 
+* @property double $STOC_MAX 
  *
  * @property TBLFLUJOS[] $tBLFLUJOSs
  * @property TBLINVENTARIOS $iNVE
  * @property TBLITEMS $iTEM
+ * @property TBLPERIODOS $pERI 
+ * @property TBLCADUCIDADES $cADU 
+ * @property TBLLABORATORIOS $lABO 
+ * @property TBLSTOCKCONFIGS[] $tBLSTOCKCONFIGSs 
  */
 class Stock extends \yii\db\ActiveRecord
 {
@@ -35,13 +46,16 @@ class Stock extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['ITEM_ID', 'INVE_ID', 'STOC_CANTIDAD', 'PERI_ID'], 'required'],
-            [['ITEM_ID', 'INVE_ID', 'PERI_ID'], 'integer'],
-            [['STOC_CANTIDAD'], 'number'],
-            [['INVE_ID', 'ITEM_ID', 'PERI_ID'], 'unique', 'targetAttribute' => ['INVE_ID', 'ITEM_ID', 'PERI_ID'], 'message' => 'La combinacion ya existe.'],
-            [['INVE_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Inventario::className(), 'targetAttribute' => ['INVE_ID' => 'INVE_ID']],
-            [['ITEM_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Items::className(), 'targetAttribute' => ['ITEM_ID' => 'ITEM_ID']],
-            [['PERI_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Periodo::className(), 'targetAttribute' => ['PERI_ID' => 'PERI_ID']],
+           [['ITEM_ID', 'INVE_ID', 'STOC_CANTIDAD', 'PERI_ID', 'STOC_MIN'], 'required'],
+           [['ITEM_ID', 'INVE_ID', 'PERI_ID', 'CADU_ID', 'LABO_ID'], 'integer'],
+           [['STOC_CANTIDAD', 'STOC_MIN', 'STOC_MAX'], 'number'],
+           [['STOC_ESCONSUMIBLE'], 'boolean'],
+           [['INVE_ID', 'ITEM_ID', 'PERI_ID'], 'unique', 'targetAttribute' => ['INVE_ID', 'ITEM_ID', 'PERI_ID'], 'message' => 'Ya existe item en stock'],
+           [['INVE_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Inventario::className(), 'targetAttribute' => ['INVE_ID' => 'INVE_ID']],
+           [['ITEM_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Items::className(), 'targetAttribute' => ['ITEM_ID' => 'ITEM_ID']],
+           [['PERI_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Periodo::className(), 'targetAttribute' => ['PERI_ID' => 'PERI_ID']],
+           [['CADU_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Caducidad::className(), 'targetAttribute' => ['CADU_ID' => 'CADU_ID']],
+           [['LABO_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Laboratorio::className(), 'targetAttribute' => ['LABO_ID' => 'LABO_ID']],
         ];
     }
 
@@ -54,8 +68,13 @@ class Stock extends \yii\db\ActiveRecord
             'STOC_ID' => 'STOCK',
             'ITEM_ID' => 'ITEM',
             'INVE_ID' => 'INVENTARIO',
-            'STOC_CANTIDAD' => 'CANTIDAD',
-            'PERI_ID'       => 'PERIODO',
+            'STOC_CANTIDAD'     => 'CANTIDAD',
+            'PERI_ID'           => 'PERIODO',
+            'CADU_ID'           => 'VENCIMIENTO',
+            'STOC_ESCONSUMIBLE' => 'CATEGORIA',
+            'LABO_ID'           => 'LABORATORIO',
+            'STOC_MIN'          => 'MINIMAS',
+            'STOC_MAX'          => 'MAXIMAS',
         ];
     }
 
@@ -107,6 +126,27 @@ class Stock extends \yii\db\ActiveRecord
                 ->one();
 
         return $stock;
+   }
+
+   /**
+   * @return \yii\db\ActiveQuery
+    */
+   public function getCaducidad()
+   {
+       return $this->hasOne(Caducidad::className(), ['CADU_ID' => 'CADU_ID']);
+   }
+
+   public function getLaboratorio()
+   {
+       return $this->hasOne(Laboratorio::className(), ['LABO_ID' => 'LABO_ID']);
+   }
+
+   /**
+    * @return \yii\db\ActiveQuery
+    */
+   public function getCurrentConfig()
+   {
+       return $this->hasMany(TBLSTOCKCONFIGS::className(), ['STOC_ID' => 'STOC_ID']);
    }
 
    public function calculateAmount()

@@ -42,10 +42,10 @@ class StockExpirado extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'STVE_ID' => 'Stve  ID',
-            'FLUJ_ID' => 'Fluj  ID',
-            'STVE_VENCIDO' => 'Stve  Vencido',
-            'STVE_FECHAVENCIMIENTO' => 'Stve  Fechavencimiento',
+            'STVE_ID'               => 'ID',
+            'FLUJ_ID'               => 'FLUJO',
+            'STVE_VENCIDO'          => 'VENCIDO',
+            'STVE_FECHAVENCIMIENTO' => 'FECHA DE VENCIMIENTO',
         ];
     }
 }
