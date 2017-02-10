@@ -20,7 +20,8 @@
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "dmstr/yii2-adminlte-asset" : "2.*",
         "johnitvn/yii2-ajaxcrud": "*",
-        "machour/yii2-notifications": "@dev"
+        "machour/yii2-notifications": "@dev",
+        "bdelespierre/underscore": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
