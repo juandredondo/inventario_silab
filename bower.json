@@ -24,6 +24,7 @@
   ],
   "dependencies": {
     "underscore": "^1.8.3",
-    "seiyria-bootstrap-slider": "^9.7.0"
+    "seiyria-bootstrap-slider": "^9.7.0",
+    "js-storage": "^1.0.2"
   }
 }
