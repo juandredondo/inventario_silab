@@ -7,6 +7,11 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+use app\components\helpers\AlertHelper;
+
+use app\config\SilabConfig;
+use app\modules\inventario\models\core as InventoryModelsCore;
+
 class BaseItemController extends Controller
 {
     public $viewPath    = "@inventarioViews";
@@ -22,13 +27,45 @@ class BaseItemController extends Controller
         parent::init();
     }
 
-    public function actionLoadform()
+    public function actionLoadform($returnUrl = "")
     {
         $modelClass = $this->modelClass;
+        $model      = new $modelClass;
 
         return $this->renderAjax($this->viewPath. '/'. $this->viewName .'/create', [
-                'model' => new $modelClass
+                'model'     => $model,
+                'returnUrl' => $returnUrl
             ]);
+    }
+
+    public function setAlert($type, $message, $key = null)
+    {
+        switch($type)
+        {
+            case "success":
+                AlertHelper::success($message, $key);
+            break;
+
+            case "danger":
+                AlertHelper::danger($message, $key);
+            break;
+
+            case "warning":
+                AlertHelper::warning($message, $key);
+            break;
+
+            case "error":
+                AlertHelper::error($message, $key);
+            break;
+
+            case "info":
+                AlertHelper::info($message, $key);
+            break;
+
+            default:
+                AlertHelper::info($message, $key);
+            break;
+        }
     }
 }
 ?>
