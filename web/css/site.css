@@ -239,4 +239,12 @@ a.desc:after {
     opacity: 1;
 }
 
+.form-group span.select2.select2-container
+{
+    width: 100% !important;
+}
+
+.full-block {
+    display:block;
+}
 
