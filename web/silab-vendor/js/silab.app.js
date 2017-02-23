@@ -93,6 +93,7 @@ silab.basics = function() {
         bindLinkWithHash();
         getLaboratories();
         accordionToggle();
+        collapsableField();
     }
 
     function bindLinkWithHash()
@@ -192,6 +193,31 @@ silab.basics = function() {
                 me.data( 'next', targetCopy );
                 me.data( 'target', nextCopy );
 
+            }
+        }
+    }
+
+    function collapsableField() {
+        if( silab.needs() ) {
+            $("body").on( "click", '[data-collapsable-trigger]', collapseFieldHandler);
+
+            function collapseFieldHandler(e){
+                let me       = $(this);
+                let myData   = me.data();
+
+                let _default  = $(myData[ "defaultTarget" ] );
+                let formField = $( myData[ "formField" ] ); 
+
+                if( me.prop("checked") ) {
+                    _default.val( _default.data( "defaultOff" ) );
+                    formField.attr( "required", true );
+                }
+                else {
+                    _default.val( _default.data( "defaultValue" ) );
+                    formField.removeAttr( "required" );
+                }
+                
+                $(myData[ "href" ]).collapse( me.prop("checked") ? "show" : "hide" );
             }
         }
     }
