@@ -97,3 +97,20 @@
 {
     display: inline-block !important;
 }
+
+#inventory-spot {
+    position: relative;    
+    width: 100%;
+}
+
+#inventory-spot .layout-base {
+    position: relative;
+    width: 100%;
+}
+
+#inventory-spot .layout-overlay {
+    position: relative;
+    width: 100%;
+}
+
+

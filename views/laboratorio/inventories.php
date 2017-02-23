@@ -49,7 +49,7 @@ $this->params[ "count" ]            = count( $data[ "inventories" ] );
                             <tr data-row="<?= $inventory->INVE_ID ?>">
                                 <td><?= $inventory->INVE_NOMBRE ?> </td>
                                 <td><?= $inventory->INVE_DESCRIPCION ?> </td>
-                                <td><?= checkPeriodo($inventory) ?> </td>
+                                <td><? //checkPeriodo($inventory) ?> </td>
                                 <td><button data-parent="<?= $inventory->INVE_ID ?>" data-role="row-expander" class="btn btn-xs btn-default"><i class="fa fa-plus"></i></button></td>
                             </tr>  
                                     

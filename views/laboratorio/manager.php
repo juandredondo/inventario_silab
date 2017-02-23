@@ -6,11 +6,21 @@ use yii\widgets\DetailView;
 use yii\grid\GridView;
 use yii\data\ArrayDataProvider;
 
+use yii\helpers\Json;
+
 use app\assets\DataTablesAsset;
 use app\assets\LaboratoryAsset;
-$this->title = $data[ "laboratory" ]->LABO_NOMBRE;
-$GLOBALS["data"] = $data;
+
+$this->title             = $data[ "laboratory" ]->LABO_NOMBRE;
+$GLOBALS["data"]         = $data;
+$this->params[ "count" ] = count( $data[ "inventories" ] );
+// - - - - - - - - - - - - - - - -
+LaboratoryAsset::register( $this );
 ?>
+
+<script>
+    var inventories = <?= Json::encode($data[ "inventories" ]) ?>;
+</script>
 
 <div class="content card">
     <div class="row">
@@ -77,10 +87,19 @@ $GLOBALS["data"] = $data;
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12" id="inventories">
-                                        <?= $this->render("inventories",
+                                        <? /*$this->render("inventories",
                                         [
                                             'data' => $data
-                                        ]) ?>
+                                        ]) */?>
+
+                                        <section id="inventory-spot" class="content">
+                                            <div class="layout-base">
+                                            </div>
+                                            <div class="layout-overlay hide">
+                                                <a data-overlay-back href="#"><i class="material-icons">arrow_back</i></a>
+                                                <div data-content></div>
+                                            </div>
+                                        </section>
                                     </div>
                                 </div>
                             </div>
@@ -155,7 +174,4 @@ $GLOBALS["data"] = $data;
         </div>
     </div>
 </div>
-
-
-
 

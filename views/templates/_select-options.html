@@ -1,0 +1,25 @@
+<template id="template-normal-options">
+    <option></option>
+    <% _.each(models, function(model) { %>
+    <option value="<%= model.value %>"><%= model.text %></option>
+    <% }); %>
+</template>
+
+<template id="template-grouped-options">
+    <option></option>
+    <% _.each(models, function(model) { %>
+        <optgroup data-value="<%= model.value %>" label="<%= model.text %>">
+            <% if(model.children.length) {
+            _.each(model.children, function(child){ 
+            var parent = child.padre || -1;
+            %>
+            <option data-parent="<%= parent %>" value="<%= child.value %>"><%= child.text %></option>
+            <% });
+            } else { 
+            var parent = model.padre || -1; 
+            %>
+                <option data-parent="<%= parent %>" value="<%= model.value %>"><%= model.text %></option>
+            <% } %>
+        </optgroup>
+    <% }); %>
+</template>
