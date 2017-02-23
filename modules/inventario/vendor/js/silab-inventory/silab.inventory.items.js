@@ -17,10 +17,13 @@ function init()
             e.preventDefault();
             let me      = $(this);
 
+            silab.overlay.toggle( "load", "Cargando formulario..." );
+
             $(me.data("target"))
                 .fadeOut()
                 .load( me.data("source"), function(){
                     $(me.data("target")).fadeIn();
+                    silab.overlay.toggle( "load" );
                 }); 
         });
     }

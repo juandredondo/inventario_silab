@@ -28,7 +28,7 @@ else
                     </a>
                 </p>
                 <p class="text-center">
-                    <?= checkPeriodo($model) ?>
+                    <? //checkPeriodo($model) ?>
                 </p>
             </div>
             <div class="col-md-3 col-sm-3">

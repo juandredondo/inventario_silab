@@ -64,9 +64,6 @@ use yii\helpers\Url;
                     <p>
                         <?= $model->INVE_DESCRIPCION?>
                     </p>
-                    <p>
-                        <b>PERIODO:</b> <?= checkPeriodo($model) ?>
-                    </p>
                 </div>
             </div>
         </div><!-- /.box-body -->

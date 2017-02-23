@@ -95,7 +95,7 @@ function checkPeriodo($model)
                                         "amount"        => $model->calculateAmount(),
                                         "stock-min"     => $GLOBALS[ "laboratory-config" ]->LACO_STOCKMIN,
                                         "stock-max"     => $GLOBALS[ "laboratory-config" ]->LACO_STOCKMAX,
-                                        "consumible"    => Json::encode( $item->traverseInfo()->parent )
+                                        "consumible"    => Json::encode( $model->item->traverseInfo()->parent )
                                         
                                     ];
                                     $html  = '<div ' . Html::renderTagAttributes( [ "data" => $datas ] ) . ' class="hoverable-tools"><div class="col-xs-7">
@@ -148,7 +148,7 @@ function checkPeriodo($model)
                                 'class' => 'yii\grid\ActionColumn',
                                 'urlCreator' => function($action, $model, $key, $index) { 
                                         if($action == "delete")
-                                            return Url::to(["/inventario/stock/delete",'id'=>$key]);
+                                            return Url::to(["/inventario/stock/delete", 'id'=> $model->STOC_ID, 'fromInventory' => true]);
                                         else 
                                         {
                                             $item = strtolower( $model->item->tipoItem->TIIT_NOMBRE );

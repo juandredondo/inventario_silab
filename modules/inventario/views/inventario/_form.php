@@ -1,9 +1,12 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
+
 use app\components\widgets\DropDownWidget;
 
+use app\modules\inventario\models as InventoryModels;
 use app\models\Laboratorio;
 use app\models\Periodo;
 /* @var $this yii\web\View */
@@ -13,6 +16,35 @@ use app\models\Periodo;
     // - - - - - - - - - - - - - - - - - - - - -
     if($readOnly == null) {
         $readOnly = $model->INVE_ESSINGLETON;
+    }
+
+    function getIconsItem()
+    {
+        return [
+            InventoryModels\core\TipoItem::Consumible   => [
+                "icon" => "fa fa-spinner",
+                "color" => "danger"
+            ],
+            InventoryModels\core\TipoItem::NoConsumible => [ "icon" => "fa fa-circle-o-notch", "color" => "danger" ],
+            InventoryModels\core\TipoItem::Reactivo     => ["icon" => "fa fa-hourglass-end"],
+            InventoryModels\core\TipoItem::Reactivo     => ["icon" => "fa fa-hourglass-end"],
+            InventoryModels\core\TipoItem::Reactivo     => ["icon" => "fa fa-hourglass-end"],
+            InventoryModels\core\TipoItem::Material     => ["icon" => "fa fa-eyedropper"],
+            InventoryModels\core\TipoItem::Accesorio    => ["icon" => "fa fa-briefcase"],
+            InventoryModels\core\TipoItem::Equipo       => ["icon" => "fa fa-laptop"],
+            InventoryModels\core\TipoItem::Herramienta  => ["icon" => "fa fa-gavel"],
+            InventoryModels\core\TipoItem::ALL          => ["icon" => "fa fa-minus-square", "color" => "success"]
+        ];
+    }
+
+    function getTypeItems()
+    {
+        $types = [
+            [ "id" => -1, "name" => "TODOS"  ],
+        ];
+
+        $types = array_merge( $types, InventoryModels\core\TipoItem::getTypes() );
+        return $types; 
     }
 ?>
 
@@ -64,6 +96,48 @@ use app\models\Periodo;
             ]
         ]
     ])  ?>
+
+    <div class="well">
+        <div class="row">
+            <label class="contro-label">
+                <?= $model->getAttributeLabel('TIIT_ID' ) ?>
+            </label>
+        </div>
+
+        <div class="button-group">
+            <?php 
+                if(!isset($model->TIIT_ID))
+                    $model->TIIT_ID = InventoryModels\core\TipoItem::ALL;
+            ?>
+            <?= $form->field($model, 'TIIT_ID')
+                    ->radioList(
+                        ArrayHelper::map( getTypeItems(), "id", "name" ),
+                        [
+                            "class" => "text-center",
+                            "data" => [
+                                "toggle" => "buttons"
+                            ],
+                            "item" => function($index, $label, $name, $checked, $value)
+                            {
+                                $icons      = getIconsItem();
+                                $isParent   = $value == InventoryModels\core\TipoItem::Consumible || $value == InventoryModels\core\TipoItem::NoConsumible;
+                                $input      = "<input " . ( $checked ? "checked" : "" ) . " type='radio' value='" . $value . "' name='" . $name . "'>";
+                                $labelText  = "<i class='" . $icons[ $value ][ "icon" ] . "'></i><span class='hidden-xs'> " . $label . "</span>";                            
+                                
+                                if($value == -1)
+                                {
+                                    return "<label style='margin-right: 15px' class='" . ( $checked ? "active" : "" ) . " btn btn-danger' >" . $input . $labelText . "</label>";
+                                }
+
+                                return "<label class='" . ( $checked ? "active" : "" ) . " btn btn-" . ( $isParent ? "warning" : "default" ) . "' >" . $input . $labelText . "</label>";
+                            }
+                        ]
+                    )->label(false) ?>
+        </div>
+        <p>Limitar este inventario a uno de estos tipo items</p>
+    </div>
+
+    
     
     <input id="labo-id" name="Inventario[LABO_ID]" type="hidden" value="<?= $model->LABO_ID ?>">
       
