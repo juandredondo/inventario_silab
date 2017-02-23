@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-
+use app\components\core\IdentificableInterface;
 /**
  * This is the model class for table "TBL_SOLICITUDES".
  *
@@ -18,7 +18,7 @@ use Yii;
  * @property TBLESTADOSOLICITUD $eSSO
  * @property TBLTIPOSOLICITUD $tISO
  */
-class Solicitud extends \yii\db\ActiveRecord
+class Solicitud extends \yii\db\ActiveRecord implements IdentificableInterface
 {
     /**
      * @inheritdoc
@@ -49,26 +49,33 @@ class Solicitud extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'SOLI_ID' => 'Soli  ID',
-            'SOLI_FECHA' => 'Soli  Fecha',
-            'SOLI_CODIGO' => 'Soli  Codigo',
-            'TISO_ID' => 'Tiso  ID',
-            'ESSO_ID' => 'Esso  ID',
+            'SOLI_ID' => 'ID',
+            'SOLI_FECHA' => 'FECHA',
+            'SOLI_CODIGO' => 'CODIGO',
+            'TISO_ID' => 'TIPO',
+            'ESSO_ID' => 'ESTADO',
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTBLDETALLESOLICITUDESs()
-    {
-        return $this->hasMany(DetalleSolicitud::className(), ['STOC_ID' => 'SOLI_ID']);
+    public function getId() {
+        return $this->SOLI_ID;
+    }
+    public function setId($value = '') {
+         $this->SOLI_ID = $value;
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTBLMOVIMIENTOSs()
+    public function getDetalles()
+    {
+        return $this->hasMany(DetalleSolicitud::className(), ['SOLI_ID' => 'SOLI_ID']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMovimientos()
     {
         return $this->hasMany(Movimiento::className(), ['SOLID_ID' => 'SOLI_ID']);
     }
@@ -76,7 +83,7 @@ class Solicitud extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getESSO()
+    public function getEstado()
     {
         return $this->hasOne(EstadoSolicitud::className(), ['ESSO_ID' => 'ESSO_ID']);
     }
@@ -84,7 +91,7 @@ class Solicitud extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTISO()
+    public function getTipo()
     {
         return $this->hasOne(TipoSolicitud::className(), ['TISO_ID' => 'TISO_ID']);
     }

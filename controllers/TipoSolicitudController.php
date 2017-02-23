@@ -3,16 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\DetallePedido;
-use app\models\DetallePedidoSearch;
+use app\models\TipoSolicitud;
+use app\models\TipoSolicitudSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * DetallePedidoController implements the CRUD actions for DetallePedido model.
+ * TipoSolicitudController implements the CRUD actions for TipoSolicitud model.
  */
-class DetallePedidoController extends Controller
+class TipoSolicitudController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,12 +30,12 @@ class DetallePedidoController extends Controller
     }
 
     /**
-     * Lists all DetallePedido models.
+     * Lists all TipoSolicitud models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new DetallePedidoSearch();
+        $searchModel = new TipoSolicitudSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +45,7 @@ class DetallePedidoController extends Controller
     }
 
     /**
-     * Displays a single DetallePedido model.
+     * Displays a single TipoSolicitud model.
      * @param integer $id
      * @return mixed
      */
@@ -57,16 +57,16 @@ class DetallePedidoController extends Controller
     }
 
     /**
-     * Creates a new DetallePedido model.
+     * Creates a new TipoSolicitud model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new DetallePedido();
+        $model = new TipoSolicitud();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->DEPE_ID]);
+            return $this->redirect(['view', 'id' => $model->TISO_ID]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -75,7 +75,7 @@ class DetallePedidoController extends Controller
     }
 
     /**
-     * Updates an existing DetallePedido model.
+     * Updates an existing TipoSolicitud model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -85,7 +85,7 @@ class DetallePedidoController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->DEPE_ID]);
+            return $this->redirect(['view', 'id' => $model->TISO_ID]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -94,7 +94,7 @@ class DetallePedidoController extends Controller
     }
 
     /**
-     * Deletes an existing DetallePedido model.
+     * Deletes an existing TipoSolicitud model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -107,15 +107,15 @@ class DetallePedidoController extends Controller
     }
 
     /**
-     * Finds the DetallePedido model based on its primary key value.
+     * Finds the TipoSolicitud model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return DetallePedido the loaded model
+     * @return TipoSolicitud the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = DetallePedido::findOne($id)) !== null) {
+        if (($model = TipoSolicitud::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

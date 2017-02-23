@@ -4,13 +4,13 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model app\models\DetallePedido */
+/* @var $model app\models\EstadoSolicitud */
 
-$this->title = 'Create Detalle Pedido';
-$this->params['breadcrumbs'][] = ['label' => 'Detalle Pedidos', 'url' => ['index']];
+$this->title = 'Create Estado Solicitud';
+$this->params['breadcrumbs'][] = ['label' => 'Estado Solicituds', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="detalle-pedido-create">
+<div class="estado-solicitud-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

@@ -38,16 +38,16 @@ class TipoSolicitud extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'TISO_ID' => 'Tiso  ID',
-            'TISO_NOMBRE' => 'Tiso  Nombre',
+            'TISO_ID'     => 'ID',
+            'TISO_NOMBRE' => 'NOMBRE',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTBLSOLICITUDESs()
+    public function getSolicitudes()
     {
-        return $this->hasMany(TBLSOLICITUDES::className(), ['TISO_ID' => 'TISO_ID']);
+        return $this->hasMany(Solicitud::className(), ['TISO_ID' => 'TISO_ID']);
     }
 }

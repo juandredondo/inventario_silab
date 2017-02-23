@@ -33,7 +33,8 @@ class EstadoSolicitud extends \yii\db\ActiveRecord
     {
         return [
             [['ESSO_NOMBRE'], 'required'],
-            [['ESSO_NOMBRE', 'ESSO_ORDEN', 'ESSO_PARENT'], 'integer'],
+            [['ESSO_NOMBRE'], 'string'],
+            [['ESSO_ORDEN', 'ESSO_PARENT'], 'integer'],
             [['ESSO_PARENT'], 'exist', 'skipOnError' => true, 'targetClass' => EstadoSolicitud::className(), 'targetAttribute' => ['ESSO_PARENT' => 'ESSO_ID']],
         ];
     }
@@ -44,17 +45,17 @@ class EstadoSolicitud extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'ESSO_ID' => 'Esso  ID',
-            'ESSO_NOMBRE' => 'Esso  Nombre',
-            'ESSO_ORDEN' => 'Esso  Orden',
-            'ESSO_PARENT' => 'Esso  Parent',
+            'ESSO_ID' => 'ID',
+            'ESSO_NOMBRE' => 'ESTADO',
+            'ESSO_ORDEN' => 'ORDEN',
+            'ESSO_PARENT' => 'PADRE',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getESSOPARENT()
+    public function getParent()
     {
         return $this->hasOne(EstadoSolicitud::className(), ['ESSO_ID' => 'ESSO_PARENT']);
     }
@@ -62,7 +63,7 @@ class EstadoSolicitud extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getEstadoSolicituds()
+    public function getHijos()
     {
         return $this->hasMany(EstadoSolicitud::className(), ['ESSO_PARENT' => 'ESSO_ID']);
     }
@@ -70,8 +71,26 @@ class EstadoSolicitud extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTBLSOLICITUDESs()
+    public function getSolicitudes()
     {
         return $this->hasMany(TBLSOLICITUDES::className(), ['ESSO_ID' => 'ESSO_ID']);
+    }
+
+    public static function getInitState()
+    {
+        $minOrder   = static::find()->min('ESSO_ORDEN');
+        $state      = static::find()->where( [ "ESSO_ORDEN" => $minOrder ] )->one();
+
+        if ( !isset($state) ) {
+           $state = new EstadoSolicitud([             
+                "ESSO_NOMBRE" => "PENDIENTE",
+                "ESSO_ORDEN"  => 0,
+                "ESSO_PARENT"  => null
+            ]);
+
+           $state->save(); 
+        }
+
+        return $state;
     }
 }

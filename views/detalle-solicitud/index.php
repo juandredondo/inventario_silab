@@ -2,34 +2,35 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use yii\widgets\Pjax;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\DetallePedidoSearch */
+/* @var $searchModel app\DetalleSolicitudSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Detalle Pedidos';
+$this->title = 'Detalle Solicituds';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="detalle-pedido-index">
+<div class="detalle-solicitud-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Detalle Pedido', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Detalle Solicitud', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-    <?= GridView::widget([
+<?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'DEPE_ID',
-            'DEPE_CANTIDAD',
-            'PEDI_ID',
-            'ITEM_ID',
+            'DESO_ID',
+            'DESO_CANTIDAD',
+            'SOLI_ID',
+            'STOC_ID',
+            'DESO_VALIDO:boolean',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
-</div>
+<?php Pjax::end(); ?></div>

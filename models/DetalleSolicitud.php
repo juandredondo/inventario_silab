@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\components\core as AppCore;
 use app\modules\inventario\models as InventarioModels;
 /**
  * This is the model class for table "TBL_DETALLESOLICITUDES".
@@ -16,8 +17,10 @@ use app\modules\inventario\models as InventarioModels;
  * @property TBLSOLICITUDES $sTOC
  * @property TBLSTOCK $sTOC0
  */
-class DetalleSolicitud extends \yii\db\ActiveRecord
+class DetalleSolicitud extends \yii\db\ActiveRecord implements AppCore\IdentificableInterface
 {
+    const SCENARIO_ORDER    = 'order';
+    const SCENARIO_DEFAULT  = 'default';
     /**
      * @inheritdoc
      */
@@ -36,10 +39,44 @@ class DetalleSolicitud extends \yii\db\ActiveRecord
             [['SOLI_ID', 'STOC_ID'], 'required'],
             [['SOLI_ID', 'STOC_ID'], 'integer'],
             [['DESO_VALIDO'], 'boolean'],
-            [['STOC_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Solicitud::className(), 'targetAttribute' => ['STOC_ID' => 'SOLI_ID']],
+            [
+                ['SOLI_ID'], 'exist', 
+                'skipOnError'       => true, 
+                'targetClass'       => Solicitud::className(), 
+                'targetAttribute'   => ['STOC_ID' => 'SOLI_ID'], 
+                'on'                => self::SCENARIO_DEFAULT
+            ],
             [['STOC_ID'], 'exist', 'skipOnError' => true, 'targetClass' => InventarioModels\Stock::className(), 'targetAttribute' => ['STOC_ID' => 'STOC_ID']],
         ];
     }
+
+    public function getId() {
+        return $this->DESO_ID;
+    }
+    public function setId($value = '') {
+         $this->DESO_ID = $value;
+    }
+
+    public function setDefaultScenario() {
+         $this->scenario = self::SCENARIO_DEFAULT;
+    }
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[ self::SCENARIO_ORDER ]   = [ "DESO_CANTIDAD", "STOC_ID", "DESO_VALIDO" ];
+        $scenarios[ self::SCENARIO_DEFAULT ] = [ "DESO_CANTIDAD", "STOC_ID", "DESO_VALIDO", "SOLI_ID" ];
+
+        return $scenarios;
+    }
+
+    public function init() 
+    {
+        parent::init();
+        
+        $this->scenario = SELF::SCENARIO_ORDER;
+    }
+
 
     /**
      * @inheritdoc
@@ -47,20 +84,24 @@ class DetalleSolicitud extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'DESO_ID' => 'Deso  ID',
-            'DESO_CANTIDAD' => 'Deso  Cantidad',
-            'SOLI_ID' => 'Soli  ID',
-            'STOC_ID' => 'Stoc  ID',
-            'DESO_VALIDO' => 'Deso  Valido',
+            'DESO_ID' => 'ID',
+            'DESO_CANTIDAD' => 'CANTIDAD',
+            'SOLI_ID' => 'SOLICITUD',
+            'STOC_ID' => 'STOCK',
+            'DESO_VALIDO' => 'VALIDO',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getSTOC()
+    public function getSolicitud()
     {
         return $this->hasOne(Solicitud::className(), ['SOLI_ID' => 'STOC_ID']);
+    }
+
+    public function getItem() {
+        return $this->stock->item;
     }
 
     /**

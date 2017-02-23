@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Pedido;
+use app\models\Solicitud;
 
 /**
- * PedidosSearch represents the model behind the search form about `app\models\Pedido`.
+ * SolicitudSearch represents the model behind the search form about `app\models\Solicitud`.
  */
-class PedidosSearch extends Pedido
+class SolicitudSearch extends Solicitud
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class PedidosSearch extends Pedido
     public function rules()
     {
         return [
-            [['PEDI_ID', 'MOVI_ID'], 'integer'],
-            [['PEDI_FECHA', 'PEDI_CODIGO'], 'safe'],
+            [['SOLI_ID', 'TISO_ID', 'ESSO_ID'], 'integer'],
+            [['SOLI_FECHA', 'SOLI_CODIGO'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class PedidosSearch extends Pedido
      */
     public function search($params)
     {
-        $query = Pedido::find();
+        $query = Solicitud::find();
 
         // add conditions that should always apply here
 
@@ -59,12 +59,13 @@ class PedidosSearch extends Pedido
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'PEDI_ID' => $this->PEDI_ID,
-            'PEDI_FECHA' => $this->PEDI_FECHA,
-            'MOVI_ID' => $this->MOVI_ID,
+            'SOLI_ID' => $this->SOLI_ID,
+            'SOLI_FECHA' => $this->SOLI_FECHA,
+            'TISO_ID' => $this->TISO_ID,
+            'ESSO_ID' => $this->ESSO_ID,
         ]);
 
-        $query->andFilterWhere(['like', 'PEDI_CODIGO', $this->PEDI_CODIGO]);
+        $query->andFilterWhere(['like', 'SOLI_CODIGO', $this->SOLI_CODIGO]);
 
         return $dataProvider;
     }

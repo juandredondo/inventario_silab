@@ -4,19 +4,15 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Pedido */
+/* @var $model app\models\TipoSolicitud */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="pedido-form">
+<div class="tipo-solicitud-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'PEDI_FECHA')->textInput() ?>
-
-    <?= $form->field($model, 'PEDI_CODIGO')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'MOVI_ID')->textInput() ?>
+    <?= $form->field($model, 'TISO_NOMBRE')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
