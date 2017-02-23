@@ -28,7 +28,7 @@ class StockExpirado extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['FLUJ_ID', 'STVE_FECHAVENCIMIENTO'], 'required'],
+            [['FLUJ_ID', ], 'required'],
             [['FLUJ_ID'], 'integer'],
             [['STVE_VENCIDO'], 'boolean'],
             [['STVE_FECHAVENCIMIENTO'], 'safe'],

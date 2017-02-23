@@ -3,6 +3,7 @@
 namespace app\modules\inventario\models\views;
 
 use Yii;
+use app\components\core\ConsumibleInterface;
 use app\modules\inventario\models\Stock;
 use app\modules\inventario\models\core\TipoItem;
 use app\modules\inventario\models\Material;
@@ -24,7 +25,7 @@ use app\modules\inventario\models\Herramienta;
  * @property integer $TIIT_ID
  * @property string $TIIT_NOMBRE
  */
-class VStockActual extends Stock
+class VStockActual extends Stock implements ConsumibleInterface
 {
     /**
      * @inheritdoc
@@ -40,13 +41,20 @@ class VStockActual extends Stock
     public function rules()
     {
         return [
-            [['STOC_ID', 'ITEM_ID', 'INVE_ID', 'PERI_ID', 'TIIT_ID'], 'integer'],
+            [['STOC_ID', 'ITEM_ID', 'INVE_ID', 'PERI_ID', 'TIIT_ID', "STOC_MIN", "STOC_MAX"], 'integer'],
             [['ITEM_ID', 'INVE_ID', 'PERI_ID', 'ITEM_NOMBRE', 'TIIT_ID', 'TIIT_NOMBRE'], 'required'],
             [['STOC_CANTIDAD'], 'number'],
             [['STOC_ESCONSUMIBLE'], 'boolean'],
             [['ITEM_NOMBRE'], 'string', 'max' => 200],
             [['TIIT_NOMBRE'], 'string', 'max' => 45],
         ];
+    }
+
+    public function getIsConsumible() {
+        return $this->STOC_ESCONSUMIBLE;
+    }
+    public function setIsConsumible($value = '') {
+         $this->STOC_ESCONSUMIBLE = $value;
     }
 
     /**
@@ -61,6 +69,8 @@ class VStockActual extends Stock
             'STOC_CANTIDAD' => 'CANTIDAD EN STOCK',
             'PERI_ID' => 'PERIODO VIGENTE',
             'STOC_ESCONSUMIBLE' => 'CATEGORIA',
+            'STOC_MIN' => 'MIN',
+            'STOC_MAX' => 'MAX',
             'ITEM_NOMBRE' => 'NOMBRE',
             'TIIT_ID' => 'TIPO ID',
             'TIIT_NOMBRE' => 'TIPO DE ITEM',

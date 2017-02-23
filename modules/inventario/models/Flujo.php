@@ -37,7 +37,7 @@ class Flujo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['FLUJ_CANTIDAD', 'STOC_ID', 'PERI_ID'], 'required'],
+            [['FLUJ_CANTIDAD', 'STOC_ID'], 'required'],
             [['FLUJ_CANTIDAD'], 'number'],
             [['MOVI_ID', 'STOC_ID', 'TIFU_ID', 'PERI_ID'], 'integer'],
             [['FLUJ_FECHA'], 'safe'],
