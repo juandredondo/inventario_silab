@@ -4,18 +4,22 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
+use Underscore\Underscore as _;
 /* @var $this yii\web\View */
 /* @var $model app\models\Herramienta */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 <?php 
-    // variable para imprimir el boton tambien
+    // Flags de formato
     $submitButton       = (isset($submitButton))    ? $submitButton : true;  
     $isJustLoad         = (isset($isJustLoad))      ? $isJustLoad   : false;
+    $isAjax             = isset($isAjax) ? $isAjax : false;
+
     $item               = $model->item;
     $itemNoConsumible   = $model->parent;
-    
-    $actionConfig       = [ $model->isNewRecord ? "create" : "update", "returnUrl" => ( isset($returnUrl) ?  $returnUrl : "" )];
+
+    $actionName         = ( $model->isNewRecord ? "create" : "update" ) . ( $isAjax ? "-by-ajax" : "" );
+    $actionConfig       = [ $actionName, "returnUrl" => ( isset($returnUrl) ?  $returnUrl : "" )];
     
     if( $model->id )
         $actionConfig[ "id" ] = $model->id;
@@ -28,15 +32,15 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(["action" => $action, "id" => "item-tool-form"]); ?>
 
     <?php 
-        require Yii::getAlias("@inventarioViews").'/item-no-consumible/_form-fields.php';
-    ?>  
-    
-    <?= $form->field($model, 'HERR_CANTIDAD')->textInput() ?>
+        require Yii::getAlias("@inventarioViews").'/herramienta/_form-fields.php';
+    ?>
+
+    <? 
+        _::each($fields, function($i){ echo $i; });
+     ?>
 
     <?php if($submitButton): ?>
-        <div class="form-group">
-            <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-        </div>
+        <?= $this->render("@inventarioViews/items/_form-footer", [ "model" => $model ])?>
     <?php endIf; ?>
 
     <?php ActiveForm::end(); ?>

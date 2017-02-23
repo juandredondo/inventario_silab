@@ -77,14 +77,21 @@ class DropDownWidget extends Widget
             $options[ "class" ] = ["form-control", "select2"];
             $ref = new $model["ref"];
 
-            return Html::label( $ref->getAttributeLabel(
-                        isset($model["label"]) ? $model["label"] : $columns["text"]), 
-                        isset($model["name"])  ? $model["name"]  : $columns["attribute"] 
-                    ) . 
-                    Html::dropDownList ($columns["attribute"], null, 
+            $html =  "";
+            if( $label !== false ) {
+               $html .= Html::label( $label == "" ? $ref->getAttributeLabel(
+                            isset($model["label"]) ? $model["label"] : $columns["text"])
+                            : $label, 
+                            isset($model["name"])  ? $model["name"]  : $columns["attribute"] 
+                        ); 
+            }
+            
+            $html .= Html::dropDownList ($columns["attribute"], null, 
                             $data,
                             $options
                     );
+
+            return $html;
         }        
     }
 
@@ -93,8 +100,8 @@ class DropDownWidget extends Widget
         $result = [];
 
         foreach($items as $item) {
-            if(is_callable($callback)) {
-                $result[ $item->STOC_ID ] = call_user_func($callback, $item);
+            if( is_callable($callback) ) {
+                $result[ $item->id ] = call_user_func($callback, $item);
             }
         }
 

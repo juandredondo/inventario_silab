@@ -14,9 +14,8 @@ use app\modules\inventario\models\Modelo;
     <?php 
         if(!$isJustLoad && isset($item))
             require Yii::getAlias('@inventarioViews').'/items/_form-fields.php';
-    ?>
 
-    <?= DropDownWidget::widget(
+        $fields[ "itemNoConsumible-ESNC_ID" ] = DropDownWidget::widget(
             [
                 "form"  =>  $form,
                 "model" =>  [
@@ -28,10 +27,9 @@ use app\modules\inventario\models\Modelo;
                     "text"  =>  "ESNC_NOMBRE"
                 ]
             ]
-        ); 
-    ?>
-    
-    <?= DropDownWidget::widget(
+        );
+
+        $fields[ "itemNoConsumible-MODE_ID" ] = DropDownWidget::widget(
             [
                 "form"  =>  $form,
                 "model" =>  [
@@ -45,3 +43,4 @@ use app\modules\inventario\models\Modelo;
             ]
         ); 
     ?>
+

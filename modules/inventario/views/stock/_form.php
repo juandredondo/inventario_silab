@@ -5,9 +5,13 @@ use yii\helpers\Json;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
+use app\components\core\ExpirableInterface;
+use app\components\widgets\DropDownWidget;
+
 use app\modules\inventario\models\core\Items;
 use app\modules\inventario\models as InventoryModels;
 use app\models\Periodo;
+use app\models\Laboratorio;
 
 use app\assets\DatePickerAsset;
 DatePickerAsset::register($this);
@@ -15,8 +19,18 @@ DatePickerAsset::register($this);
 /* @var $this yii\web\View */
 /* @var $model app\models\Stock */
 /* @var $form yii\widgets\ActiveForm */
-$items          = Items::find()->all();
+$stock->INVE_ID = Yii::$app->request->get('id');
+
+// Items validos para el inventario
+$itemValidType  = $stock->inventario->TIIT_ID;
+// - - - - - - - - - - - - - - - - - - - - - - 
+$items          = Items::getItemsNotInStock( true )->where( [ "TIIT_ID" => $itemValidType ] )->all();
+// - - - - - - - - - - - - - - - - - - - - - - 
 $isExpirable    = $stock->item->isExpirable;
+
+$this->params[ "validFormItems" ] = InventoryModels\core\TipoItem::getTypesById( )[ 
+    isset($itemValidType) ? $itemValidType : InventoryModels\core\TipoItem::ALL  
+];
 
 function generateItemsList($model, $items)
 {
@@ -30,13 +44,19 @@ function generateItemsList($model, $items)
     $options    = ["<option></option>"];
         foreach($items as $item)
         {
+            $info = $item->traverseInfo();
             $optionsAttr = [
                 "value" => $item->id,
                 "data" => [
-                    "expirable" => $item->isExpirable,
-                    "subClass"  => Json::encode( $item->traverseInfo()->parent )
+                    "expirable"     => $item->isExpirable ? "true" : "false",
+                    "consumible"    => $info->isConsumible ? "true" : "false", 
+                    "subClass"      => Json::encode( $info->parent )
                 ]
             ];
+            
+            if($info instanceof ExpirableInterface)
+                $optionsAttr[ "data" ][ "expiration" ] = $info->expirationDate;
+
             $option = "<option {options}>{text}</option>";
             $option = str_replace("{options}", Html::renderTagAttributes( $optionsAttr ), $option );
             $option = str_replace("{text}", $item->ITEM_NOMBRE, $option );
@@ -60,21 +80,36 @@ function generateItemsList($model, $items)
     <input type="hidden" name="is-expirable" id="is-expirable" />
  	
      <?= $form->field($stock, 'INVE_ID')->textInput(
- 		['type'=>'hidden','readonly' => false, 'value' => Yii::$app->request->get('id')])->label(false) ?>
+ 		['type'=>'hidden','readonly' => false ])->label(false) ?>
 
+    <?php 
+        if($stock->inventario->isSingleton):
+    ?>
+        <?= DropDownWidget::widget([
+            "form"  =>  $form,
+            "model" =>  [
+                "main"  => $stock,
+                "ref"   => Laboratorio::className()
+            ],
+            "columns"   => [
+                "id"    =>  "LABO_ID",
+                "text"  =>  "LABO_NOMBRE"
+            ]
+        ]); ?>
+    <?php endIf; ?>
          
     <?= $form->field($stock, 'STOC_CANTIDAD')->textInput(['type' => 'number', "required" => true]) ?>
     <div class="row" style="font-size: 18px" >
         <div class="col-md-2 col-xs-4">
             <p>
                  <span class="label label-danger full-block">MINIMO <span id="min-amount" ></span> </span>
-                 <input type="hidden" name="stock-min" id="stock-min" />
+                 <input type="hidden" name="<?= Html::getInputName( $stock, 'STOC_MIN' ) ?>" id="stock-min" />
             </p>
         </div>
         <div class="col-md-2 col-xs-4 pull-right">
             <p>
                  <span class="label label-warning full-block">MAXIMO <span id="max-amount" ></span></span>
-                 <input type="hidden" name="stock-max" id="stock-max" />
+                 <input type="hidden" name="<?= Html::getInputName( $stock, 'STOC_MAX' ) ?>" id="stock-max" />
             </p>
         </div>
     </div>
@@ -92,10 +127,12 @@ function generateItemsList($model, $items)
                                     {input}
                                     </div>{hint}{error}'
                 ]
-            )->textInput([ "required" => false, "id" => "entry-expiration-date" ]);
+            )->textInput([ "aria-required" => false, "required" => false, "id" => "entry-expiration-date" ]);
+
         ?>   
     </section>
-
+    <input type="hidden" id="real-expiration-date" name="StockExpirado[FECHAVENCIMIENTO]">
+    
     <div class="checkbox">
         <label>
         <input  type="checkbox"
@@ -127,7 +164,7 @@ function generateItemsList($model, $items)
             ?>
         </div>
     </div>
-    
+   
 
     <div class="form-group">
         <?= Html::submitButton($stock->isNewRecord ? 'Agregar' : 'Actualizar', ['class' => $stock->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
@@ -141,11 +178,36 @@ function generateItemsList($model, $items)
     $this->registerJs("
         $(document).on('ready', main);
 
+        function processNewItem(data)
+        {
+            if(typeof data.model !== 'undefined')
+            {
+                // 1. add the new item to list and close the modal
+                var select = $('select[name*=\'ITEM_ID\']');
+                
+                if(data.model.item.ITEM_ID)
+                {
+                    silab.helpers.appendOption({
+                        select: select,
+                        selected: true,
+                        data: {
+                            'expirable': data.model.isExpirable,
+                            'consumible': data.model.isConsumible,
+                            'subClass': JSON.stringify( data.model.parent ),
+                            'expiration': data.model.FECHA_VENCIMIENTO
+                            },
+                        text: data.model.item.ITEM_NOMBRE,
+                        value: data.model.item.ITEM_ID
+                    });
+                }
+
+                console.log(data.model);
+            }
+        }
+
         function main()
         {
 
-            // - - - Initialize Select2 Plugin - - -
-            $('select').select2({placeholder: 'Seleccione un Item'});
             // - - - Initialize Datepicker Plugin
             $('input[name*=\"STVE_FECHAVENCIMIENTO\"]').datepicker({
                 format: 'yyyy-mm-dd',
@@ -156,7 +218,7 @@ function generateItemsList($model, $items)
                 
                 me.val( me.val() === 'auto' ? 'manual' : 'auto');
                 
-                $('#collapse-period').toggle();
+                $('#collapse-period').collapse('toggle');
             });
 
             $('select[name*=\'ITEM_ID\']').change(function(){
@@ -174,9 +236,15 @@ function generateItemsList($model, $items)
             {
                 var lS        = Storages.localStorage;
                 var selected  = selected || getSelectedData();
-                var expirable = selected.data().expirable;
+                var sdata     = selected.data();
 
-                expirable     = selected.data().expirable === 1 ? true : false;
+                var expirable       = sdata.expirable;
+                var expirationDate  = sdata.expiration;
+
+                var dateField  = $('input[name*=\"STVE_FECHAVENCIMIENTO\"]');
+                var realDField = $('#real-expiration-date');
+
+                expirable      = sdata.expirable ? true : false;
 
                 $('#flow-expirable').removeClass( expirable  ? 'hidden' : '' )
                                     .addClass   ( !expirable ? 'hidden' : '' )
@@ -186,6 +254,15 @@ function generateItemsList($model, $items)
 
                 // - - - save current expirable
                 lS.set('currentExpirable', expirable);
+
+                if(!_.isUndefined( expirationDate )) {
+                    dateField.val( expirationDate ).attr('disabled', true);
+                    realDField.val( expirationDate );
+                }
+                else {
+                    dateField.removeAttr('disabled', true).val('');
+                    realDField.val( '' );
+                }
 
                 setMinAndMax(selected);
             }
@@ -198,25 +275,40 @@ function generateItemsList($model, $items)
 
             function setMinAndMax(selected)
             {
-                let myData      = selected.data();
-                let amountField = $('[name*=\'CANTIDAD\']');
-
-                if(myData.expirable == 1)
+                let myData              = selected.data();
+                let amountField         = $('[name*=\'CANTIDAD\']');
+                let limitNoConsumible   = silab.consts.MAX_NOT_CONSUMIBLE;
+                
+                if(myData.consumible == 1)
                 {
                     // - - - Min and Max values
-                    $('#min-amount').text( myData.subclass.ITCO_MIN );
+                    $('#min-amount').text( myData.subclass.ITCO_MIN ).parent().show();
                     $('#stock-min').val( myData.subclass.ITCO_MIN );
                     // - - - - - - - - - - - - - - - - - - - - - - - -
-                    $('#max-amount').text( myData.subclass.ITCO_MAX );
+                    $('#max-amount').text( myData.subclass.ITCO_MAX ).parent().show();
                     $('#stock-max').val( myData.subclass.ITCO_MAX );
 
                     amountField.attr( 'min', myData.subclass.ITCO_MIN )
                     amountField.attr( 'max', myData.subclass.ITCO_MAX );
                 }
+                else if(myData.consumible == 0)
+                {
+                    // - - - Drop min and max values
+                    $('#min-amount').text( limitNoConsumible );
+                    $('#stock-min').val( limitNoConsumible );
+                    // - - - - - - - - - - - - - - - - - - - - - - - -
+                    $('#max-amount').text( limitNoConsumible );
+                    $('#stock-max').val( limitNoConsumible );
+
+                    amountField.attr( 'min', limitNoConsumible );
+                    amountField.attr( 'max', limitNoConsumible );
+                    amountField.val( limitNoConsumible );
+                }
             }
 
             showExpirationDateAndMinMax();
 
+            window.itemFormCallback = processNewItem;
         }
     ");
 ?>

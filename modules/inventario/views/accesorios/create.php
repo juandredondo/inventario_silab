@@ -18,7 +18,8 @@ $returnUrl                      = isset($returnUrl) ? $returnUrl : "";
         'returnUrl'     => $returnUrl,
         'submitButton'  => $submitButton,
         'formId'        => $formId,
-        'itemId'        => $itemId
+        'itemId'        => $itemId,
+        'isAjax'        => $isAjax
     ]) ?>
 
 </div>

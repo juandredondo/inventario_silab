@@ -4,7 +4,11 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
+use Underscore\Underscore as _;
+
+use app\components\ArrayHelperFilter;
 use app\components\widgets\DropDownWidget;
+
 use app\modules\inventario\models\Ubicacion;
 use app\modules\inventario\models\Unidad;
 use app\modules\inventario\models\Simbolo;
@@ -18,10 +22,13 @@ DatePickerAsset::register($this);
     // variable para imprimir el boton tambien
     $submitButton   = (isset($submitButton)) ? $submitButton : true;  
     $isJustLoad     = (isset($isJustLoad)) ? $isJustLoad : false;
+    $isAjax         = isset($isAjax) ? $isAjax : false;
+
     $item           = $model->item;
     $itemConsumible = $model->parent;
 
-    $actionConfig   = [ $model->isNewRecord ? "create" : "update", "returnUrl" => ( isset($returnUrl) ?  $returnUrl : "" )];
+    $actionName     = ( $model->isNewRecord ? "create" : "update" ) . ( $isAjax ? "-by-ajax" : "" );
+    $actionConfig   = [ $actionName, "returnUrl" => ( isset($returnUrl) ?  $returnUrl : "" )];
     
     if( $model->id )
         $actionConfig[ "id" ] = $model->id;
@@ -32,60 +39,23 @@ DatePickerAsset::register($this);
 
     <?php 
         $form = ($formId === null) ? ActiveForm::begin(["action" => $action, "id" => "item-reactive-form" ]) : ActiveForm::begin([ "id" => $formId]); 
+        require Yii::getAlias('@inventarioViews').'/reactivo/_form-fields.php';
     ?>
 
     <?php 
-        require Yii::getAlias("@inventarioViews").'/item-consumible/_form-fields.php';
-    ?>
+        $fields = ArrayHelperFilter::move($fields, [
+            "reactivo-REAC_CODIGO" => 1,
+            "reactivo-UNID_ID" => 4,
+            "reactivo-SIMB_ID" => 5,
+        ]);
 
-    <?= $form->field($model, 'REAC_CODIGO')->textInput(['maxlength' => true]) ?>
-
-    <?= DropDownWidget::widget([
-            'form'  => $form,
-            'model' => [
-                'main'  => $model,
-                'ref'   => Unidad::className()
-            ],
-            "columns"   => [ "id" => "UNID_ID", "text" => "UNID_NOMBRE" ]
-        ]) 
-    ?>
-
-    <?= $form->field($model, 'REAC_FECHA_VENCIMIENTO', 
-            [
-                "template" => '{label}<div class="input-group date">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                                {input}
-                                </div>{hint}{error}'
-            ]
-        )->textInput() 
-    ?>    
-    <?// $form->field($model, 'ITCO_ID')->textInput() ?>
-    <?// $form->field($model, 'CADU_ID')->textInput() ?>
-    <?= DropDownWidget::widget([
-            'form'  => $form,
-            'model' => [
-                'main'  => $model,
-                'ref'   => Ubicacion::className()
-            ],
-            "columns"   => [ "id" => "UBIC_ID", "text" => "UBIC_CODIGO" ]
-        ]) 
-    ?>
-    <?= DropDownWidget::widget([
-            'form'  => $form,
-            'model' => [
-                'main'  => $model,
-                'ref'   => Simbolo::className()
-            ],
-            "columns"   => [ "id" => "SIMB_ID", "text" => "SIMB_NOMBRE" ],
-        ]) 
+        _::each($fields, function($i){
+            echo $i;
+        })
     ?>
 
     <?php if($submitButton): ?>
-        <div class="form-group">
-            <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-        </div>
+        <?= $this->render("@inventarioViews/items/_form-footer", [ "model" => $model ])?>
     <?php endIf; ?>
 
     <?php ActiveForm::end(); ?>
@@ -99,7 +69,6 @@ DatePickerAsset::register($this);
                 $('input[name*=\"REAC_FECHA_VENCIMIENTO\"]').datepicker({
                     format: 'yyyy-mm-dd',
                 });
-
 
             });"
         );

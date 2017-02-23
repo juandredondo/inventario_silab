@@ -11,13 +11,15 @@ $this->params['breadcrumbs'][]  = ['label' => 'Reactivos', 'url' => ['index']];
 $this->params['breadcrumbs'][]  = $this->title;
 $returnUrl                      = isset($returnUrl) ? $returnUrl : "";
 ?>
+
 <div class="reactivo-create content card">
     <?= $this->render('_form', [
         'model'         => $model,
         'returnUrl'     => $returnUrl,
         'submitButton'  => $submitButton,
         'formId'        => $formId,
-        'itemId'        => $itemId
+        'itemId'        => $itemId,
+        'isAjax'        => $isAjax
     ]) ?>
 
 </div>

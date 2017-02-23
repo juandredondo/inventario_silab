@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use app\components\ArrayHelperFilter;
+use app\components\widgets\AlertDimissible;
 
 use app\modules\inventario\models\Caducidad;
 /* @var $this yii\web\View */
@@ -31,7 +32,13 @@ function checkCaducado($model)
 
 ?>
 <div class="reactivo-view content card">
-
+    <div class="row">
+        <div id="item-alert-spot" class="col-md-12">
+            <?php 
+                echo AlertDimissible::widget();
+            ?>
+        </div>
+    </div>
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->REAC_ID], ['class' => 'btn btn-primary btn-flat']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->REAC_ID], [

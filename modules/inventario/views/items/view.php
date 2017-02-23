@@ -14,9 +14,13 @@ $attributes = require (Yii::getAlias('@inventarioViews').'/items/_attributes.php
 
 ?>
 <div class="items-view content card">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
+    <div class="row">
+        <div id="item-alert-spot" class="col-md-12">
+            <?php 
+                echo AlertDimissible::widget();
+            ?>
+        </div>
+    </div>
     <p>
         <?= Html::a('Update', ['update', 'id' => $item->ITEM_ID], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $item->ITEM_ID], [

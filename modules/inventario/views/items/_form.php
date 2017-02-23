@@ -43,9 +43,8 @@ $formID = "items-form";
         </div>
     </div>
 
-    <div class="form-group">
-        <?= Html::submitButton($item->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
+    <?= $this->render("_form-footer", [ "model" => $item ])
+    ?>
     <?php ActiveForm::end(); ?>
 </div>
 

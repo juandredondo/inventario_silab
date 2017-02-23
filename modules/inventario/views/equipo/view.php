@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use app\components\ArrayHelperFilter;
+use app\components\widgets\AlertDimissible;
 /* @var $this yii\web\View */
 /* @var $model app\models\Equipo */
 
@@ -16,6 +17,14 @@ $attributes         = require (Yii::getAlias('@inventarioViews').'/item-no-consu
 
 ?>
 <div class="equipo-view  content card">
+    <div class="row">
+        <div id="item-alert-spot" class="col-md-12">
+            <?php 
+                echo AlertDimissible::widget();
+            ?>
+        </div>
+    </div>
+    
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->EQUI_ID], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->EQUI_ID], [

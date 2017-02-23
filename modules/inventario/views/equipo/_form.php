@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
+use Underscore\Underscore as _;
 /* @var $this yii\web\View */
 /* @var $model app\models\Equipo */
 /* @var $form yii\widgets\ActiveForm */
@@ -12,10 +13,13 @@ use yii\widgets\ActiveForm;
     // variable para imprimir el boton tambien
     $submitButton       = (isset($submitButton))    ? $submitButton : true;  
     $isJustLoad         = (isset($isJustLoad))      ? $isJustLoad   : false;
+    $isAjax             = isset($isAjax) ? $isAjax : false;
+
     $item               = $model->item;
     $itemNoConsumible   = $model->parent;
 
-    $actionConfig       = [ $model->isNewRecord ? "create" : "update", "returnUrl" => ( isset($returnUrl) ?  $returnUrl : "" )];
+    $actionName         = ( $model->isNewRecord ? "create" : "update" ) . ($isAjax ? "-by-ajax" : "");
+    $actionConfig       = [ $actionName, "returnUrl" => ( isset($returnUrl) ?  $returnUrl : "" )];
     
     if( $model->id )
         $actionConfig[ "id" ] = $model->id;
@@ -31,14 +35,19 @@ use yii\widgets\ActiveForm;
         require Yii::getAlias("@inventarioViews").'/item-no-consumible/_form-fields.php';
     ?>
 
-    <?= $form->field($model, 'EQUI_SERIAL')->textInput(['maxlength' => true]) ?>
+    <?php 
+        require Yii::getAlias("@inventarioViews").'/equipo/_form-fields.php';
+    ?>
+
+    <? 
+        _::each($fields, function($i){ echo $i; });
+     ?>
+
 
     <?// $form->field($model, 'ITNC_ID')->textInput() ?>
 
     <?php if($submitButton): ?>
-        <div class="form-group">
-            <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-        </div>
+        <?= $this->render("@inventarioViews/items/_form-footer", [ "model" => $model ])?>
     <?php endIf; ?>
 
     <?php ActiveForm::end(); ?>

@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use app\components\ArrayHelperFilter;
+use app\components\widgets\AlertDimissible;
 /* @var $this yii\web\View */
 /* @var $model app\models\Material */
 
@@ -16,9 +17,15 @@ $itemConsumible = $model->parent;
 $attributes = require (Yii::getAlias('@inventarioViews').'/item-consumible/_attributes.php');
 
 ?>
-<div class="material-view">
+<div class="material-view content card">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div class="row">
+        <div id="item-alert-spot" class="col-md-12">
+            <?php 
+                echo AlertDimissible::widget();
+            ?>
+        </div>
+    </div>
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->MATE_ID], ['class' => 'btn btn-primary']) ?>
