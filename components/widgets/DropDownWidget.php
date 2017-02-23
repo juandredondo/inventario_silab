@@ -8,6 +8,7 @@ use yii\helpers\ArrayHelper;
 class DropDownWidget extends Widget
 {
     public $prompt;
+    public $label = null;
     public $form;
     public $model;
     public $columns;
@@ -29,6 +30,7 @@ class DropDownWidget extends Widget
         
         $this->options =  ($this->options !== null) ? $this->options : [];
         $this->refData =  ($this->refData !== null) ? $this->refData : [];
+
     }
 
     public function run()
@@ -40,30 +42,35 @@ class DropDownWidget extends Widget
         $columns    = $this->columns;
         $options    = $this->options;
         $refData    = $this->refData;
+        $label      = $this->label;
+
+        $items      = (count($refData) > 0 ) ? $refData : $model[ "ref" ]::find()->all();
 
         if(isset($options))
             $options[ "prompt" ] = isset($options[ "propmt" ]) ? $options[ "prompt" ] : $prompt;
+        
         if(isset($columns))
         {
             if(!isset($columns["attribute"]))
                 $columns["attribute"] = $columns[ "id" ];
             
+            if(!isset($label))
+                $label = $model["main"]->getAttributeLabel($columns["id"]);
+
             if(isset($columns["id"]) && isset($columns["text"]))
-                $data = ArrayHelper::map(
-                (count($refData) > 0 ) ? $refData : $model[ "ref" ]::find()->all(), 
-                    $columns[ "id" ], 
-                    $columns[ "text" ]
-                );
+                $data = ArrayHelper::map($items, $columns[ "id" ], $columns[ "text" ] );
         }
 
-        
+        if(isset($options["options"]["dataManager"])) {
+            $options["options"] = $this->renderOptionsData($items, $options["options"]["dataManager"]);
+        }
 
         if(is_object($form))
         {
             return $form->field($model[ "main" ], $columns["attribute"])->dropDownList(
                     $data,
                     $options
-            );
+            )->label( $label );
         }
         else
         {  
@@ -81,6 +88,19 @@ class DropDownWidget extends Widget
         }        
     }
 
+    protected function renderOptionsData($items, $callback)
+    {
+        $result = [];
+
+        foreach($items as $item) {
+            if(is_callable($callback)) {
+                $result[ $item->STOC_ID ] = call_user_func($callback, $item);
+            }
+        }
+
+        return $result;
+
+    }
 }
 
 ?>
