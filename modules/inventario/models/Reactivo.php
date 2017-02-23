@@ -4,6 +4,7 @@ namespace app\modules\inventario\models;
 
 use Yii;
 use app\modules\inventario\models\core\ItemConsumible;
+use app\components\core\ExpirableInterface;
 /**
  * This is the model class for table "TBL_REACTIVOS".
  *
@@ -23,7 +24,7 @@ use app\modules\inventario\models\core\ItemConsumible;
  * @property TBLSIMBOLOS $sIMB
  * @property TBLUBICACIONES $uBIC
  */
-class Reactivo extends \app\modules\inventario\models\core\ItemBase
+class Reactivo extends \app\modules\inventario\models\core\ItemBase implements ExpirableInterface
 {
     protected static $parentIdProperty   = "ITCO_ID";
 
@@ -86,6 +87,16 @@ class Reactivo extends \app\modules\inventario\models\core\ItemBase
     public function setId($value = '') {
          $this->REAC_ID = $value;
     }
+
+    public function getExpirationDate()
+    {
+        return $this->REAC_FECHA_VENCIMIENTO;
+    }
+    public function setExpirationDate($value = '')
+    {
+        $this->REAC_FECHA_VENCIMIENTO = $value;
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
