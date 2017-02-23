@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+
+use app\components\core\IdentificableInterface;
 use app\modules\inventario\models\Inventario;
 /**
  * This is the model class for table "TBL_LABORATORIOS".
@@ -125,6 +127,11 @@ class Laboratorio extends \yii\db\ActiveRecord
         return $this->hasMany(Inventario::className(), ['LABO_ID' => 'LABO_ID']);
     }
 
+    public function getAllInventories()
+    {
+        return static::getInventariosById( $this->id );
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -151,8 +158,9 @@ class Laboratorio extends \yii\db\ActiveRecord
 
     public static function getInventariosById($id, $params = null)
     {
-        $query = Inventario::find()
-               ->where(["LABO_ID" => $id]);
+        $singletons = Inventario::getSingletons();
+        $query      = Inventario::find()
+                      ->where(["LABO_ID" => $id]);
 
         if(isset($params[ 'page' ]))
             $query->offset( $params[ 'page' ] - 1 );
@@ -160,7 +168,10 @@ class Laboratorio extends \yii\db\ActiveRecord
         if(isset($params[ 'per-page' ]))
             $query->limit( $params[ 'per-page' ] );
 
-        return $query->all();
+        $ownInventories = $query->all();
+        $all            = array_merge( $singletons, $ownInventories );
+
+        return $all;
     }
 
     public static function getInventariosByNombre($nombre, $params = null)

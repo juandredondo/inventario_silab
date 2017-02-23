@@ -227,7 +227,7 @@ class LaboratorioController extends Controller
         ];
         // 1. get the laboratory 
         $return[ 'laboratory' ]     = $this->findByIdOrName($id, $alias);
-        $return[ 'inventories' ]    = $return[ 'laboratory' ]->inventarios;
+        $return[ 'inventories' ]    = $return[ 'laboratory' ]->allInventories;
         $return[ 'functioners' ]    = $return[ 'laboratory' ]->funcionarios;
         $return[ 'config' ]         = $return[ 'laboratory' ]->currentConfig;
         return $this->render("manager", [
@@ -241,6 +241,11 @@ class LaboratorioController extends Controller
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
         return Laboratorio::find()->limit($page)->orderBy("LABO_NOMBRE")->all();
+    }
+
+    public function actionGetInventories($id = 0)
+    {
+        
     }
 
     public function actionSaveConfig($id = null)
