@@ -23,7 +23,9 @@ class TipoItem extends \yii\db\ActiveRecord
     const Material      = 4;
     const Equipo        = 5;
     const Accesorio     = 6;
-    const Herramienta   = 7;     
+    const Herramienta   = 7; 
+    // Constante para especificar todos los tipos de items    
+    const ALL           = -1;     
 
     public static $types = [ 
         "consumible"    => self::Consumible, 
@@ -51,34 +53,46 @@ class TipoItem extends \yii\db\ActiveRecord
     public static function getTypesById()
     {
         $types = [
+            self::ALL => [
+                'name'      => "TODOS",
+                'parent'    => null,
+                'id'        => self::ALL  
+            ],
             self::Consumible => [
                 'name'      => "CONSUMIBLE",
-                'parent'    => null
+                'parent'    => null,
+                'id'        => self::Consumible
             ],      
             self::NoConsumible => [
                 'name'      => "NOCONSUMIBLE",
-                'parent'    => null
+                'parent'    => null,
+                'id'        => self::NoConsumible
             ], 
             self::Reactivo => [
                 'name'      => "REACTIVO",
-                'parent'    => self::Consumible
+                'parent'    => self::Consumible,
+                'id'        => self::Reactivo                
             ], 
             self::Material => [
                 'name'      => "MATERIAL",
-                'parent'    => self::Consumible
+                'parent'    => self::Consumible,
+                'id'        => self::Material  
             ], 
             self::Equipo => [
                 'name'      => "EQUIPO",
-                'parent'    => self::NoConsumible
+                'parent'    => self::NoConsumible,
+                'id'        => self::Equipo  
             ], 
             self::Accesorio => [
                 'name'      => "ACCESORIO",
-                'parent'    => self::NoConsumible
+                'parent'    => self::NoConsumible,
+                'id'        => self::Accesorio  
             ], 
             self::Herramienta => [
                 'name'      => "HERRAMIENTA",
-                'parent'    => self::NoConsumible
-            ], 
+                'parent'    => self::NoConsumible,
+                'id'        => self::Herramienta  
+            ],  
         ];
 
         return $types;

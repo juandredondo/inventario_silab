@@ -3,6 +3,7 @@
 namespace app\modules\inventario\models;
 
 use Yii;
+use app\components\core as AppCore;
 use app\modules\inventario\models\core\Items;
 use app\modules\inventario\models\core\ItemConsumible;
 /**
@@ -14,7 +15,9 @@ use app\modules\inventario\models\core\ItemConsumible;
  *
  * @property TBLITEMSCONSUMIBLES $iTCO
  */
-class Material extends \app\modules\inventario\models\core\ItemBase
+class Material  extends \app\modules\inventario\models\core\ItemBase 
+                implements  AppCore\IdentificableInterface,
+                            AppCore\ConsumibleInterface
 {
     protected static $parentIdProperty   = "ITCO_ID";
     

@@ -332,6 +332,33 @@ abstract class ItemBase extends \yii\db\ActiveRecord implements IdentificableInt
     {
         return $this->item->isExpirable;
     }
+
+    public function getIsConsumible()
+    {
+        $parentType = TipoItem::getTypesById()[ static::getType() ];
+        
+        if($parentType[ "parent" ] != null)
+            return ( $parentType[ "parent" ] == TipoItem::Consumible );
+
+        return false;
+    }
+
+    public function fields()
+    {
+        $fields = parent::fields();
+        $fields = array_merge(
+            $fields,
+            [
+                "item",
+                "parent",
+                "isExpirable",
+                "isConsumible"
+            ]
+        );
+
+        return $fields;
+    }
+
 }
 
 

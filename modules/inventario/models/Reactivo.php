@@ -5,6 +5,8 @@ namespace app\modules\inventario\models;
 use Yii;
 use app\modules\inventario\models\core\ItemConsumible;
 use app\components\core\ExpirableInterface;
+use app\components\core\IdentificableInterface;
+use app\components\core\ConsumibleInterface;
 /**
  * This is the model class for table "TBL_REACTIVOS".
  *
@@ -24,7 +26,11 @@ use app\components\core\ExpirableInterface;
  * @property TBLSIMBOLOS $sIMB
  * @property TBLUBICACIONES $uBIC
  */
-class Reactivo extends \app\modules\inventario\models\core\ItemBase implements ExpirableInterface
+class Reactivo  extends \app\modules\inventario\models\core\ItemBase 
+                implements  ExpirableInterface, 
+                            IdentificableInterface,
+                            ConsumibleInterface
+
 {
     protected static $parentIdProperty   = "ITCO_ID";
 
@@ -97,6 +103,13 @@ class Reactivo extends \app\modules\inventario\models\core\ItemBase implements E
         $this->REAC_FECHA_VENCIMIENTO = $value;
     }
 
+    public function getIsConsumible() {
+        return true;
+    }
+    public function setIsConsumible($value = '') {
+         throw new Exception( "Propiedad de solo lectura" );
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -143,7 +156,7 @@ class Reactivo extends \app\modules\inventario\models\core\ItemBase implements E
     {
         if(parent::beforeSave($insert))
         {
-            $this->CADU_ID  = Caducidad::getCaducado( $this->REAC_FECHA_VENCIMIENTO )->CADU_ID;
+            $this->CADU_ID  = Caducidad::getCaducado( $this->expirationDate )->CADU_ID;
             return true;
         }
         else

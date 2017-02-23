@@ -37,7 +37,7 @@ class Items extends \yii\db\ActiveRecord implements IdentificableInterface
     public function rules()
     {
         return [
-            [['ITEM_NOMBRE',  'MARC_ID', 'TIIT_ID'], 'required'],
+            [['ITEM_NOMBRE', 'nombre', 'MARC_ID', 'TIIT_ID'], 'required'],
             [['ITEM_OBSERVACION'], 'string'],
             [['MARC_ID', 'TIIT_ID'], 'integer'],
             [['ITEM_NOMBRE'], 'string', 'max' => 200],
@@ -208,4 +208,14 @@ class Items extends \yii\db\ActiveRecord implements IdentificableInterface
             break;
         }
     }
+
+    public static function getItemsNotInStock($returnQuery = false)
+    {
+        $query = static::find()->from("vm_items_no_stock");
+        if(!$returnQuery)
+            return $query->all();
+        else 
+            return $query;
+    }
+
 }
