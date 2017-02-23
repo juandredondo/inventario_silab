@@ -9,6 +9,11 @@ function isActive($action, $controller)
     return $yC->id == $controller && $yC->action->id == $action ? "active" : "";
 }
 
+$this->registerJs(
+    "
+        $('select').select2({ placeholder: 'Seleccione una opcion' });
+    "
+);
 ?>
 <div class="content-wrapper">
     <?php 

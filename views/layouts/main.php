@@ -44,12 +44,28 @@ if (Yii::$app->controller->action->id === 'login') {
         <?php $this->head() ?>
         <script id="templates" type="text/template">
             <templates>
-                <?= require(Yii::getAlias("@app") . "/views/templates/_alert-dimissible.html") ?>
+                <?php require(Yii::getAlias("@app") . "/views/templates/_alert-dimissible.html") ?>
+                <?php require(Yii::getAlias("@app") . "/views/templates/_spinner-cubic.html") ?>
+                <?php require(Yii::getAlias("@app") . "/views/templates/_select-options.html") ?>
             </templates>
         </script>
     </head>
+
     <body class="hold-transition skin-yellow sidebar-mini layout-boxed" data-domain="<?= \yii\helpers\Url::base()?>">
     <?php $this->beginBody() ?>
+
+    <div id="overlay-block" class="overlay hide">
+        <div class="overlay-content">
+            <section data-process class="hide">
+                <?php require(Yii::getAlias("@app") . "/views/templates/_spinner-cubic.html") ?>
+            </section>
+            <section data-load class="hide">
+                <div class="spinner"></div>
+            </section>
+            <p data-message class="text-center text-white"></p>
+        </div>
+    </div>
+
     <div class="wrapper">
 
         <?= 
