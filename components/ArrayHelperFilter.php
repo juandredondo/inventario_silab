@@ -6,7 +6,7 @@ use Yii;
 use yii\helpers\ArrayHelper;
 
 /**
-* Set de helpers que extienden la clase ArrayHelper, para filtrado y extraccion
+* Set de helpers que extienden la clase ArrayHelper, para filtrado, swap y extraccion
 * @author Jeancarlo Fontalvo
 * @since 1.0
 */
@@ -84,6 +84,88 @@ class ArrayHelperFilter extends ArrayHelper
         
         return $arr;
     }
+
+    public static function swap($array, $swaps)
+    {
+        $arr    = [];
+        $keys   = array_keys( $array );
+        $vals   = array_values( $array );
+
+        foreach($swaps as $origin => $destiny )
+        {
+            $originPos  = array_search($origin, $keys);
+            $destinyPos = array_search($destiny, $keys);
+
+            $tempKey               = $keys[ $originPos ];
+            $tempVal               = $vals[ $originPos ];
+
+            $keys[ $originPos ]    = $keys[ $destinyPos ];
+            $vals[ $originPos ]    = $vals[ $destinyPos ];
+
+            $keys[ $destinyPos ]    = $tempKey;
+            $vals[ $destinyPos ]    = $tempVal;
+        }
+
+        $arr = array_combine($keys, $vals);
+
+        return $arr;
+    }
+
+    public static function swapByIndex($array, $positions)
+    {
+        $arr    = [];
+        $keys   = array_keys( $array );
+        $vals   = array_values( $array );
+
+        foreach($positions as $key => $index )
+        {
+            $originPos  = array_search($key, $keys);
+            $destinyPos = $index;
+
+            $tempKey               = $keys[ $originPos ];
+            $tempVal               = $vals[ $originPos ];
+
+            $keys[ $originPos ]    = $keys[ $destinyPos ];
+            $vals[ $originPos ]    = $vals[ $destinyPos ];
+
+            $keys[ $destinyPos ]    = $tempKey;
+            $vals[ $destinyPos ]    = $tempVal;
+        }
+
+        $arr = array_combine($keys, $vals);
+
+        return $arr;
+    }
+
+    public static function move($array, $positions)
+    {
+        $arr    = [];
+        $keys   = array_keys( $array );
+        $vals   = array_values( $array );
+        
+        foreach($positions as $key => $index )
+        {
+            $originPos      = array_search($key, $keys);
+            $destinyPos     = $index;
+           
+            $movedKeys      = [];
+            $movedValues    = [];
+    
+            $tempKey        = array_splice($keys, $originPos, 1);
+            $tempVal        = array_splice($vals, $originPos, 1);
+
+            $movedKeys      = array_splice($keys, $destinyPos, count($keys), $tempKey );
+            $movedValues    = array_splice($vals, $destinyPos, count($vals), $tempVal );
+            
+            $keys           = array_merge( $keys, $movedKeys );
+            $vals           = array_merge( $vals, $movedValues );
+
+        }
+
+        $arr = array_combine($keys, $vals);
+
+        return $arr;
+    } 
 
 }
 
