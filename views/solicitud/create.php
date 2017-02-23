@@ -10,12 +10,14 @@ $this->title = 'Create Solicitud';
 $this->params['breadcrumbs'][] = ['label' => 'Solicituds', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="solicitud-create">
-
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="solicitud-create content card">
 
     <?= $this->render('_form', [
         'model' => $model,
+        'items' => $items,
+        'detailItems' => $detailItems,
+        'searchModel' => $searchModel,
+        'dataProvider' => $dataProvider,
     ]) ?>
 
 </div>
