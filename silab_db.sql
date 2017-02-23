@@ -36,15 +36,6 @@ CREATE TABLE `TBL_ACCESORIOS` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `TBL_ACCESORIOS`
---
-
-LOCK TABLES `TBL_ACCESORIOS` WRITE;
-/*!40000 ALTER TABLE `TBL_ACCESORIOS` DISABLE KEYS */;
-/*!40000 ALTER TABLE `TBL_ACCESORIOS` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `TBL_AUDITORIALOG`
 --
 
@@ -66,15 +57,6 @@ CREATE TABLE `TBL_AUDITORIALOG` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `TBL_AUDITORIALOG`
---
-
-LOCK TABLES `TBL_AUDITORIALOG` WRITE;
-/*!40000 ALTER TABLE `TBL_AUDITORIALOG` DISABLE KEYS */;
-/*!40000 ALTER TABLE `TBL_AUDITORIALOG` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `TBL_CADUCIDADES`
 --
 
@@ -89,16 +71,6 @@ CREATE TABLE `TBL_CADUCIDADES` (
   PRIMARY KEY (`CADU_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_CADUCIDADES`
---
-
-LOCK TABLES `TBL_CADUCIDADES` WRITE;
-/*!40000 ALTER TABLE `TBL_CADUCIDADES` DISABLE KEYS */;
-INSERT INTO `TBL_CADUCIDADES` VALUES (1,'VIGENTE',50,NULL),(2,'PROXIMO A VENCER',1,50),(3,'VENCIDO',-1,0);
-/*!40000 ALTER TABLE `TBL_CADUCIDADES` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `TBL_COORDINADORES`
@@ -117,16 +89,6 @@ CREATE TABLE `TBL_COORDINADORES` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `TBL_COORDINADORES`
---
-
-LOCK TABLES `TBL_COORDINADORES` WRITE;
-/*!40000 ALTER TABLE `TBL_COORDINADORES` DISABLE KEYS */;
-INSERT INTO `TBL_COORDINADORES` VALUES (1,1),(2,3);
-/*!40000 ALTER TABLE `TBL_COORDINADORES` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `TBL_DETALLESOLICITUDES`
 --
 
@@ -142,19 +104,10 @@ CREATE TABLE `TBL_DETALLESOLICITUDES` (
   PRIMARY KEY (`DESO_ID`),
   KEY `FK_DETALLESOLICITUDES_STOC_ID_idx` (`STOC_ID`),
   KEY `FK_DETALLESOLICITUDES_SOLI_ID_idx` (`SOLI_ID`),
-  CONSTRAINT `FK_DETALLESOLICITUDES_SOLI_ID` FOREIGN KEY (`STOC_ID`) REFERENCES `TBL_SOLICITUDES` (`SOLI_ID`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `FK_DETALLESOLICITUDES_SOLI_ID` FOREIGN KEY (`SOLI_ID`) REFERENCES `TBL_SOLICITUDES` (`SOLI_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_DETALLESOLICITUDES_STOC_ID` FOREIGN KEY (`STOC_ID`) REFERENCES `TBL_STOCK` (`STOC_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_DETALLESOLICITUDES`
---
-
-LOCK TABLES `TBL_DETALLESOLICITUDES` WRITE;
-/*!40000 ALTER TABLE `TBL_DETALLESOLICITUDES` DISABLE KEYS */;
-/*!40000 ALTER TABLE `TBL_DETALLESOLICITUDES` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `TBL_EDIFICIOS`
@@ -172,16 +125,6 @@ CREATE TABLE `TBL_EDIFICIOS` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `TBL_EDIFICIOS`
---
-
-LOCK TABLES `TBL_EDIFICIOS` WRITE;
-/*!40000 ALTER TABLE `TBL_EDIFICIOS` DISABLE KEYS */;
-INSERT INTO `TBL_EDIFICIOS` VALUES (1,'BLOQUE SILAB','BLOQ-SILAB');
-/*!40000 ALTER TABLE `TBL_EDIFICIOS` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `TBL_EQUIPOS`
 --
 
@@ -195,17 +138,8 @@ CREATE TABLE `TBL_EQUIPOS` (
   PRIMARY KEY (`EQUI_ID`),
   KEY `fk_equipos_itemCualitativo_id_idx` (`ITNC_ID`),
   CONSTRAINT `fk_equipos_itemCualitativo_id` FOREIGN KEY (`ITNC_ID`) REFERENCES `TBL_ITEMSNOCONSUMIBLES` (`ITNC_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_EQUIPOS`
---
-
-LOCK TABLES `TBL_EQUIPOS` WRITE;
-/*!40000 ALTER TABLE `TBL_EQUIPOS` DISABLE KEYS */;
-/*!40000 ALTER TABLE `TBL_EQUIPOS` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `TBL_ESTADOSCONSUMIBLE`
@@ -224,16 +158,6 @@ CREATE TABLE `TBL_ESTADOSCONSUMIBLE` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `TBL_ESTADOSCONSUMIBLE`
---
-
-LOCK TABLES `TBL_ESTADOSCONSUMIBLE` WRITE;
-/*!40000 ALTER TABLE `TBL_ESTADOSCONSUMIBLE` DISABLE KEYS */;
-INSERT INTO `TBL_ESTADOSCONSUMIBLE` VALUES (1,'AGOTADO',-1,0),(2,'REPONER',1,50),(3,'MINIMAS',51,100),(4,'SUFICIENTE',101,-1);
-/*!40000 ALTER TABLE `TBL_ESTADOSCONSUMIBLE` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `TBL_ESTADOSNOCONSUMIBLE`
 --
 
@@ -249,16 +173,6 @@ CREATE TABLE `TBL_ESTADOSNOCONSUMIBLE` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `TBL_ESTADOSNOCONSUMIBLE`
---
-
-LOCK TABLES `TBL_ESTADOSNOCONSUMIBLE` WRITE;
-/*!40000 ALTER TABLE `TBL_ESTADOSNOCONSUMIBLE` DISABLE KEYS */;
-INSERT INTO `TBL_ESTADOSNOCONSUMIBLE` VALUES (1,'BUENO','GOOD'),(2,'DAÑADO','WARNING'),(3,'AGOTADO','DANGER');
-/*!40000 ALTER TABLE `TBL_ESTADOSNOCONSUMIBLE` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `TBL_ESTADOSOLICITUD`
 --
 
@@ -267,23 +181,14 @@ DROP TABLE IF EXISTS `TBL_ESTADOSOLICITUD`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `TBL_ESTADOSOLICITUD` (
   `ESSO_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `ESSO_NOMBRE` int(11) NOT NULL,
+  `ESSO_NOMBRE` varchar(45) NOT NULL,
   `ESSO_ORDEN` int(11) DEFAULT NULL,
   `ESSO_PARENT` int(11) DEFAULT NULL,
   PRIMARY KEY (`ESSO_ID`),
   KEY `REF_ESTADOSOLICITUD_ESSO_PARENT_idx` (`ESSO_PARENT`),
   CONSTRAINT `REF_ESTADOSOLICITUD_ESSO_PARENT` FOREIGN KEY (`ESSO_PARENT`) REFERENCES `TBL_ESTADOSOLICITUD` (`ESSO_ID`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_ESTADOSOLICITUD`
---
-
-LOCK TABLES `TBL_ESTADOSOLICITUD` WRITE;
-/*!40000 ALTER TABLE `TBL_ESTADOSOLICITUD` DISABLE KEYS */;
-/*!40000 ALTER TABLE `TBL_ESTADOSOLICITUD` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `TBL_FACTURAS`
@@ -302,19 +207,10 @@ CREATE TABLE `TBL_FACTURAS` (
   PRIMARY KEY (`FACT_ID`),
   KEY `fk_facturas_provedor_id_idx` (`PROV_ID`),
   KEY `FK_FACTURAS_PEDI_ID_idx` (`PEDI_ID`),
-  CONSTRAINT `FK_FACTURAS_PEDI_ID` FOREIGN KEY (`PEDI_ID`) REFERENCES `tbl_solicitudes` (`SOLI_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_FACTURAS_PEDI_ID` FOREIGN KEY (`PEDI_ID`) REFERENCES `TBL_PEDIDOS` (`SOLI_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_facturas_provedor_id` FOREIGN KEY (`PROV_ID`) REFERENCES `TBL_PROVEDORES` (`PROV_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_FACTURAS`
---
-
-LOCK TABLES `TBL_FACTURAS` WRITE;
-/*!40000 ALTER TABLE `TBL_FACTURAS` DISABLE KEYS */;
-/*!40000 ALTER TABLE `TBL_FACTURAS` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `TBL_FLUJOS`
@@ -330,7 +226,7 @@ CREATE TABLE `TBL_FLUJOS` (
   `STOC_ID` int(11) NOT NULL,
   `TIFU_ID` int(11) DEFAULT NULL,
   `FLUJ_FECHA` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `PERI_ID` int(11) NOT NULL,
+  `PERI_ID` int(11) DEFAULT NULL,
   PRIMARY KEY (`FLUJ_ID`),
   KEY `FK_FLUJOS_STOC_ID_idx` (`STOC_ID`),
   KEY `FK_FLUJOS_TIFU_ID_idx` (`TIFU_ID`),
@@ -340,17 +236,8 @@ CREATE TABLE `TBL_FLUJOS` (
   CONSTRAINT `FK_FLUJOS_PERI_ID` FOREIGN KEY (`PERI_ID`) REFERENCES `TBL_PERIODOS` (`PERI_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_FLUJOS_STOC_ID` FOREIGN KEY (`STOC_ID`) REFERENCES `TBL_STOCK` (`STOC_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_FLUJOS_TIFU_ID` FOREIGN KEY (`TIFU_ID`) REFERENCES `TBL_TIPOFLUJO` (`TIFL_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_FLUJOS`
---
-
-LOCK TABLES `TBL_FLUJOS` WRITE;
-/*!40000 ALTER TABLE `TBL_FLUJOS` DISABLE KEYS */;
-/*!40000 ALTER TABLE `TBL_FLUJOS` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -378,58 +265,9 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `silab_db`.`TBL_FLUJOS_AFTER_INSERT` AFTER INSERT ON `TBL_FLUJOS` FOR EACH ROW
-BEGIN
-	DECLARE amount 			DOUBLE;
-	SET 	amount 			= calculateStockAmount(NEW.STOC_ID);
-    
-    -- Update the stock amount with the new Stock
-    UPDATE 	TBL_STOCK
-		SET	STOC_CANTIDAD 	= amount
-    WHERE 	STOC_ID 		= NEW.STOC_ID;
-    
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `silab_db`.`TBL_FLUJOS_BEFORE_UPDATE` BEFORE UPDATE ON `TBL_FLUJOS` FOR EACH ROW
 BEGIN
 	SET NEW.PERI_ID = IF( NEW.PERI_ID IS NULL, getCurrentPeriod(), NEW.PERI_ID );
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `silab_db`.`TBL_FLUJOS_AFTER_UPDATE` AFTER UPDATE ON `TBL_FLUJOS` FOR EACH ROW
-BEGIN
-	DECLARE amount 			DOUBLE;
-	SET 	amount 			= calculateStockAmount(NEW.STOC_ID);
-    
-    -- Update the stock amount with the new Stock
-    UPDATE 	TBL_STOCK
-		SET	STOC_CANTIDAD 	= amount
-    WHERE 	STOC_ID 		= NEW.STOC_ID;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -458,16 +296,6 @@ CREATE TABLE `TBL_FUNCIONALABORATORIO` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `TBL_FUNCIONALABORATORIO`
---
-
-LOCK TABLES `TBL_FUNCIONALABORATORIO` WRITE;
-/*!40000 ALTER TABLE `TBL_FUNCIONALABORATORIO` DISABLE KEYS */;
-INSERT INTO `TBL_FUNCIONALABORATORIO` VALUES (1,1,1,1);
-/*!40000 ALTER TABLE `TBL_FUNCIONALABORATORIO` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `TBL_FUNCIONARIOS`
 --
 
@@ -484,16 +312,6 @@ CREATE TABLE `TBL_FUNCIONARIOS` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `TBL_FUNCIONARIOS`
---
-
-LOCK TABLES `TBL_FUNCIONARIOS` WRITE;
-/*!40000 ALTER TABLE `TBL_FUNCIONARIOS` DISABLE KEYS */;
-INSERT INTO `TBL_FUNCIONARIOS` VALUES (1,2);
-/*!40000 ALTER TABLE `TBL_FUNCIONARIOS` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `TBL_GENEROS`
 --
 
@@ -506,16 +324,6 @@ CREATE TABLE `TBL_GENEROS` (
   PRIMARY KEY (`GENE_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_GENEROS`
---
-
-LOCK TABLES `TBL_GENEROS` WRITE;
-/*!40000 ALTER TABLE `TBL_GENEROS` DISABLE KEYS */;
-INSERT INTO `TBL_GENEROS` VALUES (1,'FEMENINO'),(2,'MASCULINO');
-/*!40000 ALTER TABLE `TBL_GENEROS` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `TBL_HERRAMIENTAS`
@@ -531,17 +339,8 @@ CREATE TABLE `TBL_HERRAMIENTAS` (
   PRIMARY KEY (`HERR_ID`),
   KEY `fk_herramienta_itemCualitativo_id_idx` (`ITNC_ID`),
   CONSTRAINT `fk_herramienta_itemCualitativo_id` FOREIGN KEY (`ITNC_ID`) REFERENCES `TBL_ITEMSNOCONSUMIBLES` (`ITNC_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_HERRAMIENTAS`
---
-
-LOCK TABLES `TBL_HERRAMIENTAS` WRITE;
-/*!40000 ALTER TABLE `TBL_HERRAMIENTAS` DISABLE KEYS */;
-/*!40000 ALTER TABLE `TBL_HERRAMIENTAS` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `TBL_INVENTARIOS`
@@ -558,22 +357,15 @@ CREATE TABLE `TBL_INVENTARIOS` (
   `INVE_CANTIDAD` float DEFAULT NULL COMMENT 'Cantidad de Elementos Actuales',
   `LABO_ID` int(11) DEFAULT NULL,
   `INVE_ESSINGLETON` bit(1) NOT NULL DEFAULT b'0',
+  `TIIT_ID` int(11) DEFAULT NULL,
   PRIMARY KEY (`INVE_ID`),
   UNIQUE KEY `INVE_ALIAS_UNIQUE` (`INVE_ALIAS`),
   KEY `fk_inventarios_laboratorio_id_idx` (`LABO_ID`),
+  KEY `FK_INVENTARIOS_TIIT_ID_idx` (`TIIT_ID`),
+  CONSTRAINT `FK_INVENTARIOS_TIIT_ID` FOREIGN KEY (`TIIT_ID`) REFERENCES `TBL_TIPOSITEMS` (`TIIT_ID`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_inventarios_laboratorio_id` FOREIGN KEY (`LABO_ID`) REFERENCES `TBL_LABORATORIOS` (`LABO_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_INVENTARIOS`
---
-
-LOCK TABLES `TBL_INVENTARIOS` WRITE;
-/*!40000 ALTER TABLE `TBL_INVENTARIOS` DISABLE KEYS */;
-INSERT INTO `TBL_INVENTARIOS` VALUES (2,'MATERIALES','Materiales para el laboratorio de Biologia','materiales',NULL,NULL,''),(6,'REACTIVOS','REACTVIOS DE BIOLOGIA','reactivos',NULL,NULL,''),(7,'EQUIPOS','EQUIPOS BIOLIGICOS','equipos',NULL,NULL,''),(8,'ACCESORIOS','Accesorios para SILAB IONIC','accesorios',NULL,NULL,''),(9,'HERRAMIENTAS','Herramientas, y utensilios  para los laboratorios en SILAB IONIC','herramientas',NULL,NULL,'');
-/*!40000 ALTER TABLE `TBL_INVENTARIOS` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -646,15 +438,6 @@ CREATE TABLE `TBL_INVENTARIOSCOMPARTIDOS` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `TBL_INVENTARIOSCOMPARTIDOS`
---
-
-LOCK TABLES `TBL_INVENTARIOSCOMPARTIDOS` WRITE;
-/*!40000 ALTER TABLE `TBL_INVENTARIOSCOMPARTIDOS` DISABLE KEYS */;
-/*!40000 ALTER TABLE `TBL_INVENTARIOSCOMPARTIDOS` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `TBL_ITEMS`
 --
 
@@ -672,18 +455,8 @@ CREATE TABLE `TBL_ITEMS` (
   KEY `FK_ITEMS_TIIT_ID_idx` (`TIIT_ID`),
   CONSTRAINT `FK_ITEMS_TIIT_ID` FOREIGN KEY (`TIIT_ID`) REFERENCES `TBL_TIPOSITEMS` (`TIIT_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_items_marca_id` FOREIGN KEY (`MARC_ID`) REFERENCES `TBL_MARCAS` (`MARC_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_ITEMS`
---
-
-LOCK TABLES `TBL_ITEMS` WRITE;
-/*!40000 ALTER TABLE `TBL_ITEMS` DISABLE KEYS */;
-INSERT INTO `TBL_ITEMS` VALUES (29,'Manganeso Sulfatoso','',1,3),(30,'1-Hexanol','',8,3),(31,'Aceite de Imersión ','',8,3),(32,'Acetona','',8,3),(33,'Acido Acetico 100%','',8,3);
-/*!40000 ALTER TABLE `TBL_ITEMS` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `TBL_ITEMSCONSUMIBLES`
@@ -703,18 +476,8 @@ CREATE TABLE `TBL_ITEMSCONSUMIBLES` (
   KEY `fk_items_cuantitativos_estadoCuantitativo_id_idx` (`ESCO_ID`),
   CONSTRAINT `fk_items_cuantitativos_estadoCuantitativo_id` FOREIGN KEY (`ESCO_ID`) REFERENCES `TBL_ESTADOSCONSUMIBLE` (`ESCO_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_items_cuantitativos_item_id` FOREIGN KEY (`ITEM_ID`) REFERENCES `TBL_ITEMS` (`ITEM_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_ITEMSCONSUMIBLES`
---
-
-LOCK TABLES `TBL_ITEMSCONSUMIBLES` WRITE;
-/*!40000 ALTER TABLE `TBL_ITEMSCONSUMIBLES` DISABLE KEYS */;
-INSERT INTO `TBL_ITEMSCONSUMIBLES` VALUES (15,29,4,50,2000),(16,30,4,50,3000),(17,31,3,80,300),(18,32,3,20,3000),(19,33,1,450,550);
-/*!40000 ALTER TABLE `TBL_ITEMSCONSUMIBLES` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -756,17 +519,8 @@ CREATE TABLE `TBL_ITEMSNOCONSUMIBLES` (
   CONSTRAINT `fk_items_cualitativos_estadoCualitativo_id` FOREIGN KEY (`ESNC_ID`) REFERENCES `TBL_ESTADOSNOCONSUMIBLE` (`ESNC_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_items_cualitativos_item_id` FOREIGN KEY (`ITEM_ID`) REFERENCES `TBL_ITEMS` (`ITEM_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_items_cualitativos_modelo_id` FOREIGN KEY (`MODE_ID`) REFERENCES `TBL_MODELO` (`MODE_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_ITEMSNOCONSUMIBLES`
---
-
-LOCK TABLES `TBL_ITEMSNOCONSUMIBLES` WRITE;
-/*!40000 ALTER TABLE `TBL_ITEMSNOCONSUMIBLES` DISABLE KEYS */;
-/*!40000 ALTER TABLE `TBL_ITEMSNOCONSUMIBLES` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `TBL_LABORATORIOCONFIGS`
@@ -794,16 +548,6 @@ CREATE TABLE `TBL_LABORATORIOCONFIGS` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `TBL_LABORATORIOCONFIGS`
---
-
-LOCK TABLES `TBL_LABORATORIOCONFIGS` WRITE;
-/*!40000 ALTER TABLE `TBL_LABORATORIOCONFIGS` DISABLE KEYS */;
-INSERT INTO `TBL_LABORATORIOCONFIGS` VALUES (4,5,40,500,1,NULL,10,NULL);
-/*!40000 ALTER TABLE `TBL_LABORATORIOCONFIGS` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `TBL_LABORATORIOS`
 --
 
@@ -828,16 +572,6 @@ CREATE TABLE `TBL_LABORATORIOS` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `TBL_LABORATORIOS`
---
-
-LOCK TABLES `TBL_LABORATORIOS` WRITE;
-/*!40000 ALTER TABLE `TBL_LABORATORIOS` DISABLE KEYS */;
-INSERT INTO `TBL_LABORATORIOS` VALUES (1,'LAB BIOLOGIA',0,1,1,2),(2,'LAB LUDOTECA',0,1,1,1);
-/*!40000 ALTER TABLE `TBL_LABORATORIOS` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `TBL_LOGTIPO`
 --
 
@@ -850,15 +584,6 @@ CREATE TABLE `TBL_LOGTIPO` (
   PRIMARY KEY (`LOTI_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_LOGTIPO`
---
-
-LOCK TABLES `TBL_LOGTIPO` WRITE;
-/*!40000 ALTER TABLE `TBL_LOGTIPO` DISABLE KEYS */;
-/*!40000 ALTER TABLE `TBL_LOGTIPO` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `TBL_MARCAS`
@@ -875,16 +600,6 @@ CREATE TABLE `TBL_MARCAS` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `TBL_MARCAS`
---
-
-LOCK TABLES `TBL_MARCAS` WRITE;
-/*!40000 ALTER TABLE `TBL_MARCAS` DISABLE KEYS */;
-INSERT INTO `TBL_MARCAS` VALUES (1,'CASPI LABS'),(2,'MARXWOLL'),(3,'DOPENGANGER'),(4,'HEWLETT PACKARD'),(5,'SAMSUNG'),(6,'BLACK AND DECKER'),(7,'WOODCORPS'),(8,'SIN MARCA');
-/*!40000 ALTER TABLE `TBL_MARCAS` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `TBL_MATERIALES`
 --
 
@@ -898,17 +613,8 @@ CREATE TABLE `TBL_MATERIALES` (
   PRIMARY KEY (`MATE_ID`),
   KEY `fk_materiales_itemCualitativo_id_idx` (`ITCO_ID`),
   CONSTRAINT `fk_materiales_itemCualitativo_id` FOREIGN KEY (`ITCO_ID`) REFERENCES `TBL_ITEMSCONSUMIBLES` (`ITCO_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_MATERIALES`
---
-
-LOCK TABLES `TBL_MATERIALES` WRITE;
-/*!40000 ALTER TABLE `TBL_MATERIALES` DISABLE KEYS */;
-/*!40000 ALTER TABLE `TBL_MATERIALES` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `TBL_MODELO`
@@ -924,16 +630,6 @@ CREATE TABLE `TBL_MODELO` (
   PRIMARY KEY (`MODE_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_MODELO`
---
-
-LOCK TABLES `TBL_MODELO` WRITE;
-/*!40000 ALTER TABLE `TBL_MODELO` DISABLE KEYS */;
-INSERT INTO `TBL_MODELO` VALUES (1,'SIN MODELO',1);
-/*!40000 ALTER TABLE `TBL_MODELO` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `TBL_MOVIMIENTOS`
@@ -955,15 +651,6 @@ CREATE TABLE `TBL_MOVIMIENTOS` (
   CONSTRAINT `FK_MOVIMIENTOS_TIMO_ID` FOREIGN KEY (`TIMO_ID`) REFERENCES `TBL_TIPOMOVIMIENTOS` (`TIMO_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_MOVIMIENTOS`
---
-
-LOCK TABLES `TBL_MOVIMIENTOS` WRITE;
-/*!40000 ALTER TABLE `TBL_MOVIMIENTOS` DISABLE KEYS */;
-/*!40000 ALTER TABLE `TBL_MOVIMIENTOS` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `TBL_PERFILESROLES`
@@ -989,16 +676,6 @@ CREATE TABLE `TBL_PERFILESROLES` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `TBL_PERFILESROLES`
---
-
-LOCK TABLES `TBL_PERFILESROLES` WRITE;
-/*!40000 ALTER TABLE `TBL_PERFILESROLES` DISABLE KEYS */;
-INSERT INTO `TBL_PERFILESROLES` VALUES (1,2,1,2),(2,2,2,NULL);
-/*!40000 ALTER TABLE `TBL_PERFILESROLES` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `TBL_PERIODOS`
 --
 
@@ -1012,16 +689,6 @@ CREATE TABLE `TBL_PERIODOS` (
   PRIMARY KEY (`PERI_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_PERIODOS`
---
-
-LOCK TABLES `TBL_PERIODOS` WRITE;
-/*!40000 ALTER TABLE `TBL_PERIODOS` DISABLE KEYS */;
-INSERT INTO `TBL_PERIODOS` VALUES (1,1,'2016-01-01'),(2,2,'2016-07-01'),(3,1,'2015-01-01'),(4,2,'2015-07-01'),(5,1,'2017-01-01'),(6,2,'2017-07-01');
-/*!40000 ALTER TABLE `TBL_PERIODOS` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `TBL_PERMISOS`
@@ -1041,16 +708,6 @@ CREATE TABLE `TBL_PERMISOS` (
   CONSTRAINT `REF_PERMISOS_PERM_PADRE` FOREIGN KEY (`PERM_PADRE`) REFERENCES `TBL_PERMISOS` (`PERM_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_PERMISOS`
---
-
-LOCK TABLES `TBL_PERMISOS` WRITE;
-/*!40000 ALTER TABLE `TBL_PERMISOS` DISABLE KEYS */;
-INSERT INTO `TBL_PERMISOS` VALUES (1,'index','rol','admin',2),(2,'all','rol','admin',NULL);
-/*!40000 ALTER TABLE `TBL_PERMISOS` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `TBL_PERSONAS`
@@ -1074,16 +731,6 @@ CREATE TABLE `TBL_PERSONAS` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `TBL_PERSONAS`
---
-
-LOCK TABLES `TBL_PERSONAS` WRITE;
-/*!40000 ALTER TABLE `TBL_PERSONAS` DISABLE KEYS */;
-INSERT INTO `TBL_PERSONAS` VALUES (1,'LOIDA HORTENCIA GIMENEZ GOMEZ',1552487524,1,1),(2,'PAOLO G. HERNANDEZ',11584621,2,1),(3,'ANGELICA HORTIZ',11825448,1,1);
-/*!40000 ALTER TABLE `TBL_PERSONAS` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `TBL_PROVEDORES`
 --
 
@@ -1097,15 +744,6 @@ CREATE TABLE `TBL_PROVEDORES` (
   PRIMARY KEY (`PROV_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_PROVEDORES`
---
-
-LOCK TABLES `TBL_PROVEDORES` WRITE;
-/*!40000 ALTER TABLE `TBL_PROVEDORES` DISABLE KEYS */;
-/*!40000 ALTER TABLE `TBL_PROVEDORES` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `TBL_REACTIVOS`
@@ -1134,18 +772,8 @@ CREATE TABLE `TBL_REACTIVOS` (
   CONSTRAINT `fk_reactivos_itemCuantitativo_id` FOREIGN KEY (`ITCO_ID`) REFERENCES `TBL_ITEMSCONSUMIBLES` (`ITCO_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_reactivos_simbolo_id` FOREIGN KEY (`SIMB_ID`) REFERENCES `TBL_SIMBOLOS` (`SIMB_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_reactivos_ubicacion_id` FOREIGN KEY (`UBIC_ID`) REFERENCES `TBL_UBICACIONES` (`UBIC_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_REACTIVOS`
---
-
-LOCK TABLES `TBL_REACTIVOS` WRITE;
-/*!40000 ALTER TABLE `TBL_REACTIVOS` DISABLE KEYS */;
-INSERT INTO `TBL_REACTIVOS` VALUES (8,'460307','2020-01-01',15,1,1,1,3),(9,'483007','2020-01-01',16,1,1,1,3),(10,'482957','2020-06-11',17,1,1,2,3),(11,'TR0423','2020-01-17',18,1,1,3,3),(12,'340402','2020-01-01',19,2,1,3,3);
-/*!40000 ALTER TABLE `TBL_REACTIVOS` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `TBL_ROLES`
@@ -1161,16 +789,6 @@ CREATE TABLE `TBL_ROLES` (
   PRIMARY KEY (`ROL_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_ROLES`
---
-
-LOCK TABLES `TBL_ROLES` WRITE;
-/*!40000 ALTER TABLE `TBL_ROLES` DISABLE KEYS */;
-INSERT INTO `TBL_ROLES` VALUES (1,'COORDINADOR',1),(2,'ADMINISTRADOR',2),(3,'FUNCIONARIO',3),(4,'DOCENTE',4);
-/*!40000 ALTER TABLE `TBL_ROLES` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `TBL_SILABCONFIGS`
@@ -1194,16 +812,6 @@ CREATE TABLE `TBL_SILABCONFIGS` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `TBL_SILABCONFIGS`
---
-
-LOCK TABLES `TBL_SILABCONFIGS` WRITE;
-/*!40000 ALTER TABLE `TBL_SILABCONFIGS` DISABLE KEYS */;
-INSERT INTO `TBL_SILABCONFIGS` VALUES (1,1,1,'SILAB IONIC',50,3000,5,'2017-02-03 17:12:41');
-/*!40000 ALTER TABLE `TBL_SILABCONFIGS` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `TBL_SIMBOLOS`
 --
 
@@ -1217,16 +825,6 @@ CREATE TABLE `TBL_SIMBOLOS` (
   PRIMARY KEY (`SIMB_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_SIMBOLOS`
---
-
-LOCK TABLES `TBL_SIMBOLOS` WRITE;
-/*!40000 ALTER TABLE `TBL_SIMBOLOS` DISABLE KEYS */;
-INSERT INTO `TBL_SIMBOLOS` VALUES (1,'NOCIVO','NC'),(2,'CORROSIVO','CRR'),(3,'IRRITANTE','IRR'),(4,'INFLAMABLE','INF'),(5,'LIGERO','LGR'),(6,'TOXICO','TXC'),(7,'RIESGO NULO','RGNL'),(8,'TOXICO - INFLAMABLE','TXC-INF'),(9,'NOCIVO - PELIGRO PARA AMBIENTE','NCV-PAMB');
-/*!40000 ALTER TABLE `TBL_SIMBOLOS` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `TBL_SOLICITUDES`
@@ -1246,17 +844,8 @@ CREATE TABLE `TBL_SOLICITUDES` (
   KEY `FK_SOLICTUDES_TISO_ID_idx` (`TISO_ID`),
   CONSTRAINT `FK_SOLICITUDES_ESSO_ID` FOREIGN KEY (`ESSO_ID`) REFERENCES `TBL_ESTADOSOLICITUD` (`ESSO_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_SOLICITUDES_TISO_ID` FOREIGN KEY (`TISO_ID`) REFERENCES `TBL_TIPOSOLICITUD` (`TISO_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_SOLICITUDES`
---
-
-LOCK TABLES `TBL_SOLICITUDES` WRITE;
-/*!40000 ALTER TABLE `TBL_SOLICITUDES` DISABLE KEYS */;
-/*!40000 ALTER TABLE `TBL_SOLICITUDES` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `TBL_STOCK`
@@ -1274,10 +863,9 @@ CREATE TABLE `TBL_STOCK` (
   `CADU_ID` int(11) DEFAULT NULL,
   `STOC_ESCONSUMIBLE` bit(1) DEFAULT NULL,
   `LABO_ID` int(11) DEFAULT NULL,
-  `STOC_MIN` double NOT NULL,
+  `STOC_MIN` double DEFAULT NULL,
   `STOC_MAX` double DEFAULT NULL,
   PRIMARY KEY (`STOC_ID`),
-  UNIQUE KEY `UNIQUE_ITEMSSTOCK_ITEM_INVE` (`INVE_ID`,`ITEM_ID`,`PERI_ID`),
   KEY `FK_ITEMSSTOCK_ITEM_ID_idx` (`ITEM_ID`),
   KEY `FK_ITEMSSTOCK_INVE_ID_idx` (`INVE_ID`),
   KEY `FK_ITEMSSTOCK_PERI_ID_idx` (`PERI_ID`),
@@ -1288,17 +876,8 @@ CREATE TABLE `TBL_STOCK` (
   CONSTRAINT `FK_ITEMSSTOCK_PERI_ID` FOREIGN KEY (`PERI_ID`) REFERENCES `TBL_PERIODOS` (`PERI_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_ITEMSSTOC_CADU_ID` FOREIGN KEY (`CADU_ID`) REFERENCES `TBL_CADUCIDADES` (`CADU_ID`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FK_ITEMSSTOC_LABO_ID` FOREIGN KEY (`LABO_ID`) REFERENCES `TBL_LABORATORIOS` (`LABO_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_STOCK`
---
-
-LOCK TABLES `TBL_STOCK` WRITE;
-/*!40000 ALTER TABLE `TBL_STOCK` DISABLE KEYS */;
-/*!40000 ALTER TABLE `TBL_STOCK` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -1312,7 +891,14 @@ DELIMITER ;;
 BEGIN
 
     DECLARE isSingleton BIT;
+    DECLARE isConsumible BIT;
+
+	IF( alreadyInStock(NEW.ITEM_ID, NEW.INVE_ID, NEW.LABO_ID) = 1 ) THEN
+		SET @msg = concat('1062: Ya existe en stock del laboratorio, el item ' );
+        SIGNAL SQLSTATE '23000' SET MESSAGE_TEXT = @msg;
+    END IF; 
     
+    SET isConsumible = isConsumible(NEW.ITEM_ID);
     -- Let's check is this sweetie is single 
     SET isSingleton = isSingletonInventory( NEW.INVE_ID );
     
@@ -1320,11 +906,11 @@ BEGIN
     
     -- Check if the inventory is singleto and the laboratory isn't null
     IF( isSingletonInventory( NEW.INVE_ID ) = 1 AND NEW.LABO_ID IS NULL ) THEN 
-		SET @msg = concat('ERROR_TRIGGER: El Inventario ''', getInventoryName( NEW.INVE_ID ), ''' es singlento, por tanto, los stocks deben especificar la localizacion del laboratorio' );
+		SET @msg = concat('ERROR_TRIGGER: El Inventario ''', getInventoryName( NEW.INVE_ID ), ''' es singlenton, por tanto, los stocks deben especificar la localizacion del laboratorio' );
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @msg;
 	
     -- Single?
-    ELSEIF( isSingleton = 1 AND NEW.LABO_ID IS NOT NULL ) THEN
+    ELSEIF( isSingleton = 1 AND NEW.LABO_ID IS NOT NULL AND isConsumible = 1 ) THEN
 		-- 1. Need you so badly!
 		IF( NEW.STOC_MIN IS NULL ) THEN
 			SET NEW.STOC_MIN = defaultStockMaxByLaboratory(LABO_ID);
@@ -1354,7 +940,14 @@ DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `silab_db`.`TBL_STOCK_BEFORE_UPDATE` BEFORE UPDATE ON `TBL_STOCK` FOR EACH ROW
 BEGIN
 	DECLARE isSingleton BIT;
+    DECLARE isConsumible BIT;
     
+    IF( alreadyInStock(NEW.ITEM_ID, NEW.INVE_ID, NEW.LABO_ID) = 1 ) THEN
+		SET @msg = concat('1062: Ya existe en stock del laboratorio, el item ' );
+        SIGNAL SQLSTATE '23000' SET MESSAGE_TEXT = @msg;
+    END IF; 
+    
+    SET isConsumible = isConsumible(NEW.ITEM_ID);
     -- Let's check is this sweetie is single 
     SET isSingleton = isSingletonInventory( NEW.INVE_ID );
     
@@ -1362,11 +955,11 @@ BEGIN
     
     -- Check if the inventory is singleto and the laboratory isn't null
     IF( isSingletonInventory( NEW.INVE_ID ) = 1 AND NEW.LABO_ID IS NULL ) THEN 
-		SET @msg = concat('ERROR_TRIGGER: El Inventario ''', getInventoryName( NEW.INVE_ID ), ''' es singleton, por tanto, los stocks deben especificar la localizacion del laboratorio' );
+		SET @msg = concat('ERROR_TRIGGER: El Inventario ''', getInventoryName( NEW.INVE_ID ), ''' es singlenton, por tanto, los stocks deben especificar la localizacion del laboratorio' );
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @msg;
 	
     -- Single?
-    ELSEIF( isSingleton = 1 AND NEW.LABO_ID IS NOT NULL ) THEN
+    ELSEIF( isSingleton = 1 AND NEW.LABO_ID IS NOT NULL AND isConsumible = 1 ) THEN
 		-- 1. Need you so badly!
 		IF( NEW.STOC_MIN IS NULL ) THEN
 			SET NEW.STOC_MIN = defaultStockMaxByLaboratory(LABO_ID);
@@ -1399,17 +992,8 @@ CREATE TABLE `TBL_STOCKVENCIMIENTOS` (
   PRIMARY KEY (`STVE_ID`),
   KEY `FK_STOCKVENCIMIENTO_FLUJ_ID_idx` (`FLUJ_ID`),
   CONSTRAINT `FK_STOCKVENCIMIENTO_FLUJ_ID` FOREIGN KEY (`FLUJ_ID`) REFERENCES `TBL_FLUJOS` (`FLUJ_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_STOCKVENCIMIENTOS`
---
-
-LOCK TABLES `TBL_STOCKVENCIMIENTOS` WRITE;
-/*!40000 ALTER TABLE `TBL_STOCKVENCIMIENTOS` DISABLE KEYS */;
-/*!40000 ALTER TABLE `TBL_STOCKVENCIMIENTOS` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -1495,16 +1079,6 @@ CREATE TABLE `TBL_TIPOFLUJO` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `TBL_TIPOFLUJO`
---
-
-LOCK TABLES `TBL_TIPOFLUJO` WRITE;
-/*!40000 ALTER TABLE `TBL_TIPOFLUJO` DISABLE KEYS */;
-INSERT INTO `TBL_TIPOFLUJO` VALUES (1,'ENTRADA',1),(2,'SALIDA',-1);
-/*!40000 ALTER TABLE `TBL_TIPOFLUJO` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `TBL_TIPOIDENTIFICACIONES`
 --
 
@@ -1517,16 +1091,6 @@ CREATE TABLE `TBL_TIPOIDENTIFICACIONES` (
   PRIMARY KEY (`TIID_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_TIPOIDENTIFICACIONES`
---
-
-LOCK TABLES `TBL_TIPOIDENTIFICACIONES` WRITE;
-/*!40000 ALTER TABLE `TBL_TIPOIDENTIFICACIONES` DISABLE KEYS */;
-INSERT INTO `TBL_TIPOIDENTIFICACIONES` VALUES (1,'CEDULA'),(2,'TARJETA DE IDENTIDAD');
-/*!40000 ALTER TABLE `TBL_TIPOIDENTIFICACIONES` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `TBL_TIPOLABORATORIOS`
@@ -1543,16 +1107,6 @@ CREATE TABLE `TBL_TIPOLABORATORIOS` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `TBL_TIPOLABORATORIOS`
---
-
-LOCK TABLES `TBL_TIPOLABORATORIOS` WRITE;
-/*!40000 ALTER TABLE `TBL_TIPOLABORATORIOS` DISABLE KEYS */;
-INSERT INTO `TBL_TIPOLABORATORIOS` VALUES (1,'DOCENCIA'),(2,'INVESTIGACION');
-/*!40000 ALTER TABLE `TBL_TIPOLABORATORIOS` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `TBL_TIPOMOVIMIENTOS`
 --
 
@@ -1566,15 +1120,6 @@ CREATE TABLE `TBL_TIPOMOVIMIENTOS` (
   UNIQUE KEY `TIMO_NOMBRE_UNIQUE` (`TIMO_NOMBRE`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_TIPOMOVIMIENTOS`
---
-
-LOCK TABLES `TBL_TIPOMOVIMIENTOS` WRITE;
-/*!40000 ALTER TABLE `TBL_TIPOMOVIMIENTOS` DISABLE KEYS */;
-/*!40000 ALTER TABLE `TBL_TIPOMOVIMIENTOS` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `TBL_TIPOSITEMS`
@@ -1594,16 +1139,6 @@ CREATE TABLE `TBL_TIPOSITEMS` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `TBL_TIPOSITEMS`
---
-
-LOCK TABLES `TBL_TIPOSITEMS` WRITE;
-/*!40000 ALTER TABLE `TBL_TIPOSITEMS` DISABLE KEYS */;
-INSERT INTO `TBL_TIPOSITEMS` VALUES (1,'CONSUMIBLE',NULL),(2,'NOCONSUMIBLE',NULL),(3,'REACTIVO',1),(4,'MATERIAL',1),(5,'EQUIPO',2),(6,'ACCESORIO',2),(7,'HERRAMIENTA',2);
-/*!40000 ALTER TABLE `TBL_TIPOSITEMS` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `TBL_TIPOSOLICITUD`
 --
 
@@ -1614,17 +1149,8 @@ CREATE TABLE `TBL_TIPOSOLICITUD` (
   `TISO_ID` int(11) NOT NULL AUTO_INCREMENT,
   `TISO_NOMBRE` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`TISO_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_TIPOSOLICITUD`
---
-
-LOCK TABLES `TBL_TIPOSOLICITUD` WRITE;
-/*!40000 ALTER TABLE `TBL_TIPOSOLICITUD` DISABLE KEYS */;
-/*!40000 ALTER TABLE `TBL_TIPOSOLICITUD` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `TBL_UBICACIONES`
@@ -1643,16 +1169,6 @@ CREATE TABLE `TBL_UBICACIONES` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `TBL_UBICACIONES`
---
-
-LOCK TABLES `TBL_UBICACIONES` WRITE;
-/*!40000 ALTER TABLE `TBL_UBICACIONES` DISABLE KEYS */;
-INSERT INTO `TBL_UBICACIONES` VALUES (1,1,1,'A1'),(2,1,2,'B1');
-/*!40000 ALTER TABLE `TBL_UBICACIONES` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `TBL_UNIDADES`
 --
 
@@ -1666,16 +1182,6 @@ CREATE TABLE `TBL_UNIDADES` (
   PRIMARY KEY (`UNID_ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `TBL_UNIDADES`
---
-
-LOCK TABLES `TBL_UNIDADES` WRITE;
-/*!40000 ALTER TABLE `TBL_UNIDADES` DISABLE KEYS */;
-INSERT INTO `TBL_UNIDADES` VALUES (1,'M','Metro (M)'),(2,'Kg','Kilogramo (Kg)'),(3,'g','Gramo (g)');
-/*!40000 ALTER TABLE `TBL_UNIDADES` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `TBL_USUARIOS`
@@ -1701,16 +1207,6 @@ CREATE TABLE `TBL_USUARIOS` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `TBL_USUARIOS`
---
-
-LOCK TABLES `TBL_USUARIOS` WRITE;
-/*!40000 ALTER TABLE `TBL_USUARIOS` DISABLE KEYS */;
-INSERT INTO `TBL_USUARIOS` VALUES (1,'loida','202cb962ac59075b964b07152d234b70',1,'7baee7d86b4149f38711355eca1c21ac',1,1),(2,'angel18','14e1b600b1fd579f47433b88e8d85291',1,'YxhXvtNfGf7Qc9hHXtF8cDDaWnzZA7tA',3,1);
-/*!40000 ALTER TABLE `TBL_USUARIOS` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `migration`
 --
 
@@ -1723,16 +1219,6 @@ CREATE TABLE `migration` (
   PRIMARY KEY (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `migration`
---
-
-LOCK TABLES `migration` WRITE;
-/*!40000 ALTER TABLE `migration` DISABLE KEYS */;
-INSERT INTO `migration` VALUES ('m000000_000000_base',1485093199),('m151008_162401_create_notification_table',1485093218),('m160921_171124_alter_notification_table',1485093221);
-/*!40000 ALTER TABLE `migration` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `notification`
@@ -1752,16 +1238,6 @@ CREATE TABLE `notification` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `notification`
---
-
-LOCK TABLES `notification` WRITE;
-/*!40000 ALTER TABLE `notification` DISABLE KEYS */;
-INSERT INTO `notification` VALUES (1,'empty_items','1','warning',1,1,'2017-01-22 10:25:08'),(2,'empty_items','2','warning',1,1,'2017-01-22 10:26:07'),(3,'empty_items','3','warning',1,1,'2017-01-22 10:37:25'),(4,'empty_items','2','warning',1,1,'2017-01-22 11:24:08'),(5,'empty_items','2','warning',1,1,'2017-01-22 12:11:04'),(6,'empty_items','2','warning',1,1,'2017-01-22 18:09:53');
-/*!40000 ALTER TABLE `notification` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Temporary view structure for view `vm_coordinadores_laboratorios`
@@ -1900,6 +1376,25 @@ SET character_set_client = utf8;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Temporary view structure for view `vm_items_no_stock`
+--
+
+DROP TABLE IF EXISTS `vm_items_no_stock`;
+/*!50001 DROP VIEW IF EXISTS `vm_items_no_stock`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `vm_items_no_stock` AS SELECT 
+ 1 AS `ITEM_ID`,
+ 1 AS `ITEM_NOMBRE`,
+ 1 AS `ITEM_OBSERVACION`,
+ 1 AS `MARC_ID`,
+ 1 AS `MARC_NOMBRE`,
+ 1 AS `TIIT_ID`,
+ 1 AS `TIIT_NOMBRE`,
+ 1 AS `TIIT_PADRE`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Temporary view structure for view `vm_singletons_inventories`
 --
 
@@ -1914,7 +1409,8 @@ SET character_set_client = utf8;
  1 AS `INVE_ALIAS`,
  1 AS `INVE_CANTIDAD`,
  1 AS `LABO_ID`,
- 1 AS `INVE_ESSINGLETON`*/;
+ 1 AS `INVE_ESSINGLETON`,
+ 1 AS `TIIT_ID`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -1931,6 +1427,9 @@ SET character_set_client = utf8;
  1 AS `INVE_ID`,
  1 AS `STOC_CANTIDAD`,
  1 AS `PERI_ID`,
+ 1 AS `STOC_MIN`,
+ 1 AS `STOC_MAX`,
+ 1 AS `LABO_ID`,
  1 AS `STOC_ESCONSUMIBLE`,
  1 AS `ITEM_NOMBRE`,
  1 AS `TIIT_ID`,
@@ -1982,6 +1481,47 @@ SET character_set_client = @saved_cs_client;
 --
 -- Dumping routines for database 'silab_db'
 --
+/*!50003 DROP FUNCTION IF EXISTS `alreadyInStock` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` FUNCTION `alreadyInStock`(_item_id INT, inventory_id INT, laboratory_id INT) RETURNS int(11)
+BEGIN
+	/**
+    * @description Checks the constrait if there's already a combination
+    * @author Jeancarlo Fontalvo
+    * @param item_id the Item Id to check
+    * @param inventaory_id the Inventory Id to check
+    * @param laboratory_id the Laboratory Id to check 
+    */
+	DECLARE already BIT;
+    DECLARE laboratory INT;
+    
+    IF( isSingletonInventory(inventory_id) = 1 ) THEN
+		IF( EXISTS( SELECT INVE_ID FROM vm_stocks_actuales WHERE ITEM_ID = _item_id AND LABO_ID = laboratory_id ) ) THEN
+			SET already = 1;        
+        ELSE
+			SET already = 0;
+		END IF;
+    ELSEIF( EXISTS( SELECT INVE_ID FROM vm_stocks_actuales WHERE ITEM_ID = _item_id AND INVE_ID = inventory_id ) ) THEN
+        SET already = 1; 
+	ELSE 
+		SET already = 0;
+    END IF;
+    
+RETURN already;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP FUNCTION IF EXISTS `calculateStockAmount` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -2537,6 +2077,25 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `checkItem` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `checkItem`(item INT, laboratory_id INT)
+BEGIN
+	 SELECT *  FROM TBL_STOCK WHERE ITEM_ID = item AND LABO_ID = laboratory_id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `fieldExists` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -2857,6 +2416,24 @@ DELIMITER ;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
+-- Final view structure for view `vm_items_no_stock`
+--
+
+/*!50001 DROP VIEW IF EXISTS `vm_items_no_stock`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `vm_items_no_stock` AS select `vm_items`.`ITEM_ID` AS `ITEM_ID`,`vm_items`.`ITEM_NOMBRE` AS `ITEM_NOMBRE`,`vm_items`.`ITEM_OBSERVACION` AS `ITEM_OBSERVACION`,`vm_items`.`MARC_ID` AS `MARC_ID`,`vm_items`.`MARC_NOMBRE` AS `MARC_NOMBRE`,`vm_items`.`TIIT_ID` AS `TIIT_ID`,`vm_items`.`TIIT_NOMBRE` AS `TIIT_NOMBRE`,`vm_items`.`TIIT_PADRE` AS `TIIT_PADRE` from `vm_items` where (not(`vm_items`.`ITEM_ID` in (select `vm_stocks_actuales`.`ITEM_ID` from `vm_stocks_actuales`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `vm_singletons_inventories`
 --
 
@@ -2869,7 +2446,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vm_singletons_inventories` AS select `INV`.`INVE_ID` AS `INVE_ID`,`INV`.`INVE_NOMBRE` AS `INVE_NOMBRE`,`INV`.`INVE_DESCRIPCION` AS `INVE_DESCRIPCION`,`INV`.`INVE_ALIAS` AS `INVE_ALIAS`,`INV`.`INVE_CANTIDAD` AS `INVE_CANTIDAD`,`INV`.`LABO_ID` AS `LABO_ID`,`INV`.`INVE_ESSINGLETON` AS `INVE_ESSINGLETON` from `tbl_inventarios` `INV` where (`INV`.`INVE_ESSINGLETON` = 1) */;
+/*!50001 VIEW `vm_singletons_inventories` AS select `INV`.`INVE_ID` AS `INVE_ID`,`INV`.`INVE_NOMBRE` AS `INVE_NOMBRE`,`INV`.`INVE_DESCRIPCION` AS `INVE_DESCRIPCION`,`INV`.`INVE_ALIAS` AS `INVE_ALIAS`,`INV`.`INVE_CANTIDAD` AS `INVE_CANTIDAD`,`INV`.`LABO_ID` AS `LABO_ID`,`INV`.`INVE_ESSINGLETON` AS `INVE_ESSINGLETON`,`INV`.`TIIT_ID` AS `TIIT_ID` from `tbl_inventarios` `INV` where (`INV`.`INVE_ESSINGLETON` = 1) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -2887,7 +2464,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vm_stocks_actuales` AS select `ST`.`STOC_ID` AS `STOC_ID`,`ST`.`ITEM_ID` AS `ITEM_ID`,`ST`.`INVE_ID` AS `INVE_ID`,`CALCULATESTOCKAMOUNT`(`ST`.`STOC_ID`) AS `STOC_CANTIDAD`,`ST`.`PERI_ID` AS `PERI_ID`,`ST`.`STOC_ESCONSUMIBLE` AS `STOC_ESCONSUMIBLE`,`IT`.`ITEM_NOMBRE` AS `ITEM_NOMBRE`,`IT`.`TIIT_ID` AS `TIIT_ID`,`TI`.`TIIT_NOMBRE` AS `TIIT_NOMBRE` from ((`tbl_stock` `ST` join `tbl_items` `IT` on((`ST`.`ITEM_ID` = `IT`.`ITEM_ID`))) join `tbl_tipositems` `TI` on((`IT`.`TIIT_ID` = `TI`.`TIIT_ID`))) where (`ST`.`PERI_ID` = `GETCURRENTPERIOD`()) */;
+/*!50001 VIEW `vm_stocks_actuales` AS select `ST`.`STOC_ID` AS `STOC_ID`,`ST`.`ITEM_ID` AS `ITEM_ID`,`ST`.`INVE_ID` AS `INVE_ID`,`CALCULATESTOCKAMOUNT`(`ST`.`STOC_ID`) AS `STOC_CANTIDAD`,`ST`.`PERI_ID` AS `PERI_ID`,`ST`.`STOC_MIN` AS `STOC_MIN`,`ST`.`STOC_MAX` AS `STOC_MAX`,`ST`.`LABO_ID` AS `LABO_ID`,`ST`.`STOC_ESCONSUMIBLE` AS `STOC_ESCONSUMIBLE`,`IT`.`ITEM_NOMBRE` AS `ITEM_NOMBRE`,`IT`.`TIIT_ID` AS `TIIT_ID`,`TI`.`TIIT_NOMBRE` AS `TIIT_NOMBRE` from ((`tbl_stock` `ST` join `tbl_items` `IT` on((`ST`.`ITEM_ID` = `IT`.`ITEM_ID`))) join `tbl_tipositems` `TI` on((`IT`.`TIIT_ID` = `TI`.`TIIT_ID`))) where (`ST`.`PERI_ID` = `GETCURRENTPERIOD`()) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -2937,4 +2514,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-02-09 22:26:54
+-- Dump completed on 2017-02-22 23:41:28
