@@ -22,7 +22,7 @@ use app\modules\inventario\models\Inventario;
  * @property TBLCOORDINADORES $cOOR
  * @property TBLEDIFICIOS $eDIF
  */
-class Laboratorio extends \yii\db\ActiveRecord
+class Laboratorio extends \yii\db\ActiveRecord implements IdentificableInterface
 {
     /**
      * @inheritdoc

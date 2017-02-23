@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\components\core\IdentificableInterface;
 use app\modules\inventario\models\core\TipoItem;
 /**
  * This is the model class for table "TBL_LABORATORIOCONFIGS".
@@ -16,7 +17,7 @@ use app\modules\inventario\models\core\TipoItem;
  * @property integer $LACO_MAXINVENTARIOS
  * @property string $LACO_EXTRADATA
  */
-class LaboratorioConfig extends \yii\db\ActiveRecord
+class LaboratorioConfig extends \yii\db\ActiveRecord implements IdentificableInterface
 {
     /**
      * @inheritdoc
@@ -56,6 +57,27 @@ class LaboratorioConfig extends \yii\db\ActiveRecord
             'LACO_MAXINVENTARIOS'   => 'N° INVENTARIOS MAXIMOS',
             'LACO_EXTRADATA'        => 'METADATOS',
         ];
+    }
+
+    public function getId() {
+        return $this->LACO_ID;
+    }
+    public function setId($value = '') {
+         $this->LACO_ID = $value;
+    }
+
+    public function getMin() {
+        return $this->LACO_STOCKMIN;
+    }
+    public function setMin($value = '') {
+         $this->LACO_STOCKMIN = $value;
+    }
+
+    public function getMax() {
+        return $this->LACO_STOCKMAX;
+    }
+    public function setMax($value = '') {
+         $this->LACO_STOCKMAX = $value;
     }
 
     public function init()
