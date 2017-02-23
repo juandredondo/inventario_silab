@@ -5,7 +5,7 @@ namespace app\modules\inventario\controllers;
 use Yii;
 use app\modules\inventario\models\Herramienta;
 use app\modules\inventario\models\HerramientaSearch;
-use app\components\core\controllers\BaseItemController;
+use app\modules\inventario\controllers\core\BaseItemController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -16,20 +16,7 @@ class HerramientaController extends BaseItemController
 {
     public $modelClass = "app\modules\inventario\models\Herramienta";
     public $viewName   = "herramienta";
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
+    
 
     /**
      * Lists all Herramienta models.
@@ -57,65 +44,6 @@ class HerramientaController extends BaseItemController
 
         return $this->render('view', [
             'model' => $modelClass::getByItemId($id),
-        ]);
-    }
-
-    /**
-     * Creates a new Herramienta model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $herramienta    = new Herramienta();
-        $data           = Yii::$app->request->post();
-
-        if($data != null && 
-                $herramienta->item->load($data, 'Items') &&
-                    $herramienta->parent->load($data, 'ItemNoConsumible') &&
-                        $herramienta->load($data, 'Herramienta')
-          )
-        {            
-            if($herramienta->validate())
-            {              
-                $herramienta->save();
-                return $this->redirect(['view', 'id' => $herramienta->item->id]);
-            }
-        }
-        
-        return $this->render('/herramienta/create', [
-                'model'          => $herramienta
-            ]);
-    }
-
-    /**
-     * Updates an existing Herramienta model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-        $herramienta    = $this->findModel($id);
-        $data           = Yii::$app->request->post();
-
-        if($data != null && 
-                $herramienta->item->load($data, 'Items') &&
-                    $herramienta->parent->load($data, 'ItemNoConsumible') &&
-                        $herramienta->load($data, 'Herramienta')
-          )
-        {            
-            if($herramienta->validate())
-            {              
-                $herramienta->save();
-                return $this->redirect(['view', 'id' => $herramienta->item->id]);
-            }
-        }
-        
-        return $this->render('/herramienta/update', [
-            //'item'           => $herramienta->item,
-            //'itemConsumible' => $herramienta->parent,
-            'model'          => $herramienta
         ]);
     }
 

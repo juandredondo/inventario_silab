@@ -54,7 +54,7 @@ class InventarioController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView($id, $partial = false)
     {
         $dataProvider = new ActiveDataProvider([
                             'query' => VStockActual::find()->where(['INVE_ID' => $id]),
@@ -62,11 +62,20 @@ class InventarioController extends Controller
                                 'pageSize' => 4,
                             ],
                         ]);
+        $render = "";
 
-        return $this->render('view', [
-            'model'         => $this->findModel($id),
-            'dataProvider'  => $dataProvider
-        ]);
+        if(!$partial)
+            $render = $this->render('view', [
+                'model'         => $this->findModel($id),
+                'dataProvider'  => $dataProvider
+            ]);
+        else 
+            $render = $this->renderAjax('view', [
+                'model'         => $this->findModel($id),
+                'dataProvider'  => $dataProvider
+            ]);
+
+        return $render;
     }
 
     /**
@@ -156,8 +165,11 @@ class InventarioController extends Controller
                 $model->LABO_ID = null;
             }
 
-            if($model->save())
-                return $this->redirect(['view', 'id' => $model->INVE_ID]);
+            if($model->validate())
+            {
+                if($model->save())
+                    return $this->redirect(['view', 'id' => $model->INVE_ID]);
+            }
         } 
         else 
         {

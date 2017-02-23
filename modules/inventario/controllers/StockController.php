@@ -37,7 +37,7 @@ class StockController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel  = new InventoryModels\StockSearch();
+        $searchModel  = new InventoryModels\views\StockActualSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -58,6 +58,11 @@ class StockController extends Controller
         ]);
     }
 
+    public function actionInitializeInventory($id)
+    {
+        $data = Yii::$app->request->post();
+    }
+
     /**
      * Creates a new Stock model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -66,40 +71,49 @@ class StockController extends Controller
     public function actionAdd()
     {
         
-        $stock = new InventoryModels\Stock();
-        $flujo = new InventoryModels\Flujo();
-        $data  = Yii::$app->request->post();
-        
+        $stock      = new InventoryModels\Stock();
+        $flujo      = new InventoryModels\Flujo();
+        $data       = Yii::$app->request->post();
+        $message    = "Añadido a Stock!";
+
         if ($stock->load($data) ) 
         {
             if($data[ "manual-period" ] === "auto")
                 $stock->PERI_ID = Periodo::getCurrentPeriod()->PERI_ID;
             
-            if($stock->save()){
-                $flujo->STOC_ID         =  $stock->STOC_ID;
-                $flujo->FLUJ_CANTIDAD   =  $stock->STOC_CANTIDAD;
-                $flujo->TIFU_ID         =  InventoryModels\TipoFlujo::Entrada;
+            try {
 
-                if($flujo->save())
-                {
-                    if($data["is-expirable"] == true )
+                if($stock->save()){
+                    $flujo->STOC_ID         =  $stock->STOC_ID;
+                    $flujo->FLUJ_CANTIDAD   =  $stock->STOC_CANTIDAD;
+                    $flujo->TIFU_ID         =  InventoryModels\TipoFlujo::Entrada;
+                    $flujo->PERI_ID         =  $stock->PERI_ID;
+
+                    if($flujo->save())
                     {
-                        $vencimiento = new InventoryModels\StockExpirado([
-                            "FLUJ_ID"               => $flujo->FLUJ_ID,
-                            "STVE_FECHAVENCIMIENTO" => $data[ "StockExpirado" ][ "STVE_FECHAVENCIMIENTO" ]
-                        ]);
-
-                        if($vencimiento->save())
+                        if($data["is-expirable"] == "true" )
                         {
-                            AlertHelper::success("Añadido a Stock!, este item es expirable por tanto se agrego a la pila FIFO");
+                            $vencimiento = new InventoryModels\StockExpirado([
+                                "FLUJ_ID"               => $flujo->FLUJ_ID,
+                                "STVE_FECHAVENCIMIENTO" => $data[ "StockExpirado" ][ "FECHAVENCIMIENTO" ]
+                            ]);
+
+                            if($vencimiento->save())
+                            {
+                                $message = "Añadido a Stock!, este item es expirable por tanto se agrego a la pila FIFO";
+                            }
                         }
+
+                        AlertHelper::success($message);
+
+                        return $this->redirect(['/inventario/inventario/view', 'id' => $stock->INVE_ID]);
                     }
-
-                    AlertHelper::success("Añadido a Stock!");
-
-                    return $this->redirect(['/inventario/inventario/view', 'id' => $stock->INVE_ID]);
                 }
+            
+            } catch (\yii\db\Exception $e) {
+                AlertHelper::danger("Opps!" . $e->name );
             }
+            
         }    
         
         return $this->render('create', [
@@ -152,9 +166,11 @@ class StockController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Stock::findOne($id)) !== null) {
+        if (($model = InventoryModels\Stock::findOne($id)) !== null) {
             return $model;
-        } else {
+        } 
+        else 
+        {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
@@ -162,5 +178,9 @@ class StockController extends Controller
     public function actiongetEmptyItems()
     {
         return \app\modules\inventario\models\Stock::getEmptyItems();
+    }
+
+    public function actionAddItemsToStock() {
+        
     }
 }

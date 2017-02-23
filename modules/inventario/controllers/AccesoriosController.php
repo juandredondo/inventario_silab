@@ -5,7 +5,7 @@ namespace app\modules\inventario\controllers;
 use Yii;
 use app\modules\inventario\models\Accesorios;
 use app\modules\inventario\models\AccesoriosSearch;
-use app\components\core\controllers\BaseItemController;
+use app\modules\inventario\controllers\core\BaseItemController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -15,21 +15,8 @@ use yii\filters\VerbFilter;
 class AccesoriosController extends BaseItemController
 {
     public $modelClass = "app\modules\inventario\models\Accesorios";
-    public $viewName   = "accesorio";
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
+    public $viewName   = "accesorios";
+    
 
     /**
      * Lists all Accesorios models.
@@ -60,65 +47,7 @@ class AccesoriosController extends BaseItemController
         ]);
     }
 
-    /**
-     * Creates a new Accesorios model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $accesorio  = new Accesorios();
-        $data       = Yii::$app->request->post();
-
-        if($data != null && 
-                $accesorio->item->load($data, 'Items') &&
-                    $accesorio->parent->load($data, 'ItemNoConsumible') &&
-                        $accesorio->load($data, 'Accesorios')
-          )
-        {            
-            if($accesorio->validate())
-            {              
-                $accesorio->save();
-                return $this->redirect(['view', 'id' => $accesorio->item->id]);
-            }
-        }
-        
-        return $this->render('/accesorios/create', [
-                'model'          => $accesorio
-            ]);
-    }
-
-    /**
-     * Updates an existing Accesorios model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-        $accesorio  = $this->findModel($id);
-        $data       = Yii::$app->request->post();
-
-        if($data != null && 
-                $accesorio->item->load($data, 'Items') &&
-                    $accesorio->parent->load($data, 'ItemNoConsumible') &&
-                        $accesorio->load($data, 'Accesorios')
-          )
-        {            
-            if($accesorio->validate())
-            {              
-                $accesorio->save();
-                return $this->redirect(['view', 'id' => $accesorio->item->id]);
-            }
-        }
-        
-        return $this->render('/material/update', [
-            //'item'           => $accesorio->item,
-            //'itemConsumible' => $accesorio->parent,
-            'model'          => $accesorio
-        ]);
-    }
-
+    
     /**
      * Deletes an existing Accesorios model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

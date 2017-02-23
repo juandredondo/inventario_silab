@@ -5,7 +5,7 @@ namespace app\modules\inventario\controllers;
 use Yii;
 use app\modules\inventario\models\Equipo;
 use app\modules\inventario\models\EquipoSearch;
-use app\components\core\controllers\BaseItemController;
+use app\modules\inventario\controllers\core\BaseItemController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -16,20 +16,7 @@ class EquipoController extends BaseItemController
 {
     public $modelClass = "app\modules\inventario\models\Equipo";
     public $viewName   = "equipo";
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
+    
 
     /**
      * Lists all Equipo models.
@@ -60,65 +47,7 @@ class EquipoController extends BaseItemController
         ]);
     }
 
-    /**
-     * Creates a new Equipo model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $equipo   = new Equipo();
-        $data     = Yii::$app->request->post();
-
-        if($data != null && 
-                $equipo->item->load($data, 'Items') &&
-                    $equipo->parent->load($data, 'ItemNoConsumible') &&
-                        $equipo->load($data, 'Equipo')
-          )
-        {            
-            
-            if($equipo->validate())
-            {              
-                $equipo->save();
-                return $this->redirect(['view', 'id' => $equipo->item->id]);
-            }
-        }
-        
-        return $this->render('/equipo/create', [
-                'model'          => $equipo
-            ]);
-    }
-
-    /**
-     * Updates an existing Equipo model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-        $equipo = $this->findModel($id);
-
-        $data     = Yii::$app->request->post();
-
-        if($data != null && 
-                $equipo->item->load($data, 'Items') &&
-                    $equipo->parent->load($data, 'ItemNoConsumible') &&
-                        $equipo->load($data, 'Equipo')
-          )
-        {            
-            
-            if($equipo->validate())
-            {              
-                $equipo->save();
-                return $this->redirect(['view', 'id' => $equipo->item->id]);
-            }
-        }
-        
-        return $this->render('/equipo/update', [
-            'model'          => $equipo
-        ]);
-    }
+    
 
     /**
      * Deletes an existing Equipo model.

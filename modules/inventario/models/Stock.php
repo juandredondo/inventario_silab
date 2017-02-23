@@ -3,7 +3,9 @@
 namespace app\modules\inventario\models;
 
 use Yii;
+use app\components\core\IdentificableInterface;
 use app\modules\inventario\models\core\Items;
+use app\modules\inventario\models as InventoryModels;
 use app\models\Periodo;
 use app\models\Laboratorio;
 /**
@@ -28,7 +30,7 @@ use app\models\Laboratorio;
  * @property TBLLABORATORIOS $lABO 
  * @property TBLSTOCKCONFIGS[] $tBLSTOCKCONFIGSs 
  */
-class Stock extends \yii\db\ActiveRecord
+class Stock extends \yii\db\ActiveRecord implements IdentificableInterface
 {
     // Algoritmos para el calculo 
     public $calculador;
@@ -72,7 +74,7 @@ class Stock extends \yii\db\ActiveRecord
             'PERI_ID'           => 'PERIODO',
             'CADU_ID'           => 'VENCIMIENTO',
             'STOC_ESCONSUMIBLE' => 'CATEGORIA',
-            'LABO_ID'           => 'LABORATORIO',
+            'LABO_ID'           => 'LOCALIZACION',
             'STOC_MIN'          => 'MINIMAS',
             'STOC_MAX'          => 'MAXIMAS',
         ];
@@ -83,6 +85,10 @@ class Stock extends \yii\db\ActiveRecord
     }
     public function setId($value = '') {
          $this->STOC_ID = $value;
+    }
+
+    public function getIsConsumible() {
+        return $this->STOC_ESCONSUMIBLE;
     }
 
     /**
@@ -141,14 +147,6 @@ class Stock extends \yii\db\ActiveRecord
        return $this->hasOne(Laboratorio::className(), ['LABO_ID' => 'LABO_ID']);
    }
 
-   /**
-    * @return \yii\db\ActiveQuery
-    */
-   public function getCurrentConfig()
-   {
-       return $this->hasMany(TBLSTOCKCONFIGS::className(), ['STOC_ID' => 'STOC_ID']);
-   }
-
    public function calculateAmount()
    {
        // flujos del stock
@@ -185,6 +183,99 @@ class Stock extends \yii\db\ActiveRecord
        $stocks   = $db->queryAll();
 
        return $stocks;
+   }
+
+   /**
+   * Registra un item en inventario (stock), en un laboratorio particular.
+   * @param ItemBase|integer $item El item que se registrara en stock. Si se especifica su id, 
+   * se buscará su modelo activo
+   * @param ActiveRecord|integer $laboratory El laboratorio que se le asigna el item
+   * @param ActiveRecord|integer $inventory  El inventario donde se guardara el item. Si no se especifica 
+   * se inferencia en los inventarios singleton y de acuerdo al tipo del item
+   */
+   public static function registerItemWithLaboratory($item, $laboratory, $inventory = null, $stockParams = [], $saveFlow = false ) 
+   {
+
+
+        $item       = is_numeric($item)         ? Items::findOne($item)         : $item;
+        $laboratory = is_numeric($laboratory)   ? Laboratorio::findOne($laboratory)   : $laboratory;
+        
+        $result     = [
+            "message" => "Opps! no se pudo registrar en stock",
+            "status"  => -1,
+            "data"    => null
+        ];
+
+        if( isset($item) && isset($laboratory) ) {
+
+            $inventory = isset($inventory) ? $inventory : InventoryModels\Inventario::getInventory(
+                $laboratory->id,
+                $inventory,
+                $item->TIIT_ID
+            );
+
+            $stock   = new Stock($stockParams);
+
+            $stock->ITEM_ID         = $item->id;
+            $stock->INVE_ID         = $inventory->id;
+            $stock->STOC_CANTIDAD   = 0;
+
+            if($inventory->isSingleton) {
+                $stock->LABO_ID = $laboratory->id;
+            }
+            
+            $stock->PERI_ID = Periodo::getCurrentPeriod()->PERI_ID;
+
+            if ( $stock->validate() ) 
+            {
+                try {
+                    $stockSaved = $stock->save();
+
+                    if( $stockSaved ) {
+                        $result[ "message" ] = "Añadido a Stock!";
+                        $result[ "status" ]  = 0;
+                    }
+
+                    if( $saveFlow && $stockSaved ) {
+
+                        $flujo->STOC_ID         =  $stock->STOC_ID;
+                        $flujo->FLUJ_CANTIDAD   =  $stock->STOC_CANTIDAD;
+                        $flujo->TIFU_ID         =  InventoryModels\TipoFlujo::Entrada;
+                        $flujo->PERI_ID         =  $stock->PERI_ID;
+
+                        if($flujo->save())
+                        {
+                            if( $item->isExpirable )
+                            {
+                                $realInfo = $item->traverseInfo();
+
+                                $vencimiento = new InventoryModels\StockExpirado([
+                                    "FLUJ_ID"               => $flujo->FLUJ_ID,
+                                    "STVE_FECHAVENCIMIENTO" => $realInfo->expirationDate
+                                ]);
+
+                                if($vencimiento->save())
+                                {
+                                    $result[ "message" ] = "Añadido a Stock!, este item es expirable por tanto se agrego a la pila FIFO";
+                                    $result[ "status" ]  = 0;
+                                }
+                            }
+                            
+                        }
+                    }
+                
+                } catch (\yii\db\Exception $e) {
+                $result[ "message" ] = "Oops! se ha producido un errror";
+                $result[ "status" ]  = -1;
+                }
+                
+            }
+            else 
+            {
+                $result[ "data" ] = $stock->getErrors();
+            }
+        }
+        return $result;  
    }
 
 }

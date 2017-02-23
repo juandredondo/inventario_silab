@@ -228,15 +228,14 @@ class FlujoController extends Controller
 
                 return $return;
             }
+
         } 
-        else 
-        {
-            $return[ "data" ]       = $model->getErrors();
-            $return[ "message" ]    = "No se pudo extraer, hay errores";
-            $return[ "status" ]     = -1; 
-        }
+        $return[ "data" ]       = $model->getErrors();
+        $return[ "message" ]    = "No se pudo extraer, hay errores";
+        $return[ "status" ]     = -1; 
 
         return $return;
+
     }
 
     public function beforeAction($action) 

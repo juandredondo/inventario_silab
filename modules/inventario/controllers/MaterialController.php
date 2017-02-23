@@ -5,7 +5,7 @@ namespace app\modules\inventario\controllers;
 use Yii;
 use app\modules\inventario\models\Material;
 use app\modules\inventario\models\MaterialSearch;
-use app\components\core\controllers\BaseItemController;
+use app\modules\inventario\controllers\core\BaseItemController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -16,20 +16,7 @@ class MaterialController extends BaseItemController
 {
     public $modelClass = "app\modules\inventario\models\Material";
     public $viewName   = "material";
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
+    
 
     /**
      * Lists all Material models.
@@ -60,67 +47,7 @@ class MaterialController extends BaseItemController
         ]);
     }
 
-    /**
-     * Creates a new Material model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {        
-        $material   = new \app\modules\inventario\models\Material();
-        $data       = Yii::$app->request->post();
-
-        if($data != null && 
-                $material->item->load($data, 'Items') &&
-                    $material->parent->load($data, 'ItemConsumible') &&
-                        $material->load($data, 'Material')
-          )
-        {            
-            
-            if($material->validate())
-            {              
-                $material->save();
-                return $this->redirect(['view', 'id' => $material->item->id]);
-            }
-        }
-        
-        return $this->render('/material/create', [
-                'model'          => $material
-            ]);
-    }
-
-    /**
-     * Updates an existing Material model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-        $material       = $this->findModel($id);
-        //$material->fillParents();
-        $data       = Yii::$app->request->post();
-
-        if($data != null && 
-                $material->item->load($data, 'Items') &&
-                    $material->parent->load($data, 'ItemConsumible') &&
-                        $material->load($data, 'Material')
-        )
-        {            
-            if($material->validate())
-            {              
-                $material->save();
-                return $this->redirect(['view', 'id' => $material->item->id]);
-            }
-        }
-        
-        return $this->render('/material/update', [
-            //'item'           => $material->item,
-            //'itemConsumible' => $material->parent,
-            'model'          => $material
-        ]);
-    }
-
+    
     /**
      * Deletes an existing Material model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
