@@ -83,6 +83,16 @@ class Material  extends \app\modules\inventario\models\core\ItemBase
     {
          $this->MATE_ID = $value;
     }
+    
+    public function getIsConsumible()
+    {
+        return true;
+    }
+
+    public function setIsConsumible($value='')
+    {
+        throw new Exception("No se ha implementado");
+    }
 
     /**
      * @return \yii\db\ActiveQuery
