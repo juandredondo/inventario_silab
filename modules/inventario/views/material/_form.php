@@ -37,15 +37,13 @@ use app\components\ArrayHelperFilter;
         require Yii::getAlias("@inventarioViews").'/material/_form-fields.php';
     ?>
 
-    <? 
+    <?php 
         $fields = ArrayHelperFilter::move($fields, [
             "material-MATE_MEDIDA" => 2
         ]);
 
         _::each($fields, function($i){ echo $i; });
      ?>
-
-    <?// $form->field($model, 'ITCO_ID')->textInput() ?>
     
     <?php if($submitButton): ?>
         <?= $this->render("@inventarioViews/items/_form-footer", [ "model" => $model ])?>

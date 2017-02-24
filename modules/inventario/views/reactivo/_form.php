@@ -17,8 +17,7 @@ use app\modules\inventario\models\Simbolo;
 /* @var $form yii\widgets\ActiveForm */
 use app\assets\DatePickerAsset;
 DatePickerAsset::register($this);
-?>
-<?php 
+
     // variable para imprimir el boton tambien
     $submitButton   = (isset($submitButton)) ? $submitButton : true;  
     $isJustLoad     = (isset($isJustLoad)) ? $isJustLoad : false;
@@ -35,10 +34,11 @@ DatePickerAsset::register($this);
 
     $action         = Url::toRoute( $actionConfig );
 ?>
+
 <div class="reactivo-form">
 
     <?php 
-        $form = ($formId === null) ? ActiveForm::begin(["action" => $action, "id" => "item-reactive-form" ]) : ActiveForm::begin([ "id" => $formId]); 
+        $form = (!isset( $formId )) ? ActiveForm::begin(["action" => $action, "id" => "item-reactive-form" ]) : ActiveForm::begin([ "id" => $formId, "action" => $action]); 
         require Yii::getAlias('@inventarioViews').'/reactivo/_form-fields.php';
     ?>
 

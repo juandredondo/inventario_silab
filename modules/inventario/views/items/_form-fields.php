@@ -4,6 +4,9 @@ use app\components\widgets\DropDownWidget;
 use app\modules\inventario\models\Marca;
 use app\models\Laboratorio;
 use app\modules\inventario\models\core\TipoItem;
+
+
+
 ?>
 
     <div class="row">
@@ -11,9 +14,10 @@ use app\modules\inventario\models\core\TipoItem;
         </div>
     </div>
 
-    <? 
+    <?php
+        
         $tipoItemInput = "";
-
+        
         if(isset($item->TIIT_ID)) 
         {
             $tipoItemInput = $form->field($item, 'TIIT_ID')->textInput(["type" => "hidden"])->label(false);

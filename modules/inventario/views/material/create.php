@@ -10,6 +10,8 @@ $this->title                    = 'Create Material';
 $this->params['breadcrumbs'][]  = ['label' => 'Materials', 'url' => ['index']];
 $this->params['breadcrumbs'][]  = $this->title;
 $returnUrl                      = isset($returnUrl) ? $returnUrl : "";
+$submitButton                   = isset($submitButton) || $submitButton = true;
+$formId                         = isset($formId) ? $formId : null;
 ?>
 <div class="material-create content card">
 
@@ -18,7 +20,6 @@ $returnUrl                      = isset($returnUrl) ? $returnUrl : "";
         'returnUrl'     => $returnUrl,
         'submitButton'  => $submitButton,
         'formId'        => $formId,
-        'itemId'        => $itemId,
         'isAjax'        => $isAjax
     ]) ?>
 

@@ -10,6 +10,8 @@ $this->title                    = 'Create Equipo';
 $this->params['breadcrumbs'][]  = ['label' => 'Equipos', 'url' => ['index']];
 $this->params['breadcrumbs'][]  = $this->title;
 $returnUrl                      = isset($returnUrl) ? $returnUrl : "";
+$submitButton                   = isset($submitButton) || $submitButton = false;
+$formId                         = isset($formId) ? $formId : null;
 ?>
 <div class="equipo-create  content card">
 
