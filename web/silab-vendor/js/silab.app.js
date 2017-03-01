@@ -29,8 +29,15 @@ silab.itemsIcons = {
     reactive    :   "fa fa-hourglass-end",
     materials   :   "fa fa-eyedropper",
     teams       :   "fa fa-laptop",
-    tools       :   "fa fa-gavel"
+    tools       :   "fa fa-gavel",
+    accesories  :   "fa fa-laptop",
 }
+
+silab.itemsIcons.reactivo       = silab.itemsIcons.reactive;
+silab.itemsIcons.material       = silab.itemsIcons.materials;
+silab.itemsIcons.equipo         = silab.itemsIcons.teams;
+silab.itemsIcons.herramienta    = silab.itemsIcons.tools;
+silab.itemsIcons.accesorio      = silab.itemsIcons.accesories;
 
 silab.consts = {
     MAX_NOT_CONSUMIBLE : 1
