@@ -142,7 +142,8 @@ silab.laboratory.renderInventories = function(params) {
                     isCaducated: "<span class='label label-success'>VIGENTE</span>",
                     itemsCount: 15,
                     entriesCount: 15,
-                    outsCount: 0
+                    outsCount: 0,
+                    laboratoryId : window.laboratoryId
                 },
                 data: {
                     link: [
