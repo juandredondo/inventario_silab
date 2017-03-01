@@ -281,6 +281,14 @@ section[data-item-type] {
     font-size: 20px;
 }
 
+.collapse.width {
+    height: auto;
+    -webkit-transition: width 0.35s ease;
+    -moz-transition: width 0.35s ease;
+    -o-transition: width 0.35s ease;
+    transition: width 0.35s ease;
+}
+
 /*
  Loader Spinner cube grid
 */
