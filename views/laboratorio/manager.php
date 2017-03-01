@@ -19,6 +19,8 @@ LaboratoryAsset::register( $this );
 ?>
 
 <script>
+    var laboratoryId = <?= $data[ "laboratory" ]->LABO_ID; ?>
+
     var inventories = <?= Json::encode($data[ "inventories" ]) ?>;
 </script>
 
@@ -115,7 +117,7 @@ LaboratoryAsset::register( $this );
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="button-group">
-                                    <?= Html::a('Agregar Funcionarios', ['funcionario-laboratorio/create', 'idLaboratorio' => $model->LABO_ID], ['class' => 'btn btn-success']) ?>
+                                    <?= Html::a('Agregar Funcionarios', ['funcionario-laboratorio/create', 'idLaboratorio' => $data[ "laboratory" ]->LABO_ID], ['class' => 'btn btn-success']) ?>
                                 </div>
                             </div>
                         </div>
