@@ -11,8 +11,8 @@ function isActive($action, $controller)
 
 $this->registerJs(
     "
-        $('select').select2({ placeholder: 'Seleccione una opcion' });
-    "
+        $('select:not(.x-select2)').select2({ placeholder: 'Seleccione una opcion' });
+    "    
 );
 ?>
 <div class="content-wrapper">
