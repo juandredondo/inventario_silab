@@ -15,6 +15,7 @@ function init()
     {
         $("body").on("click", "a[ data-role='form-loader' ][  data-source ]", function(e){
             e.preventDefault();
+            e.stopPropagation();
             let me      = $(this);
 
             silab.overlay.toggle( "load", "Cargando formulario..." );
