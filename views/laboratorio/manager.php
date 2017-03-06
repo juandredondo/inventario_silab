@@ -37,10 +37,8 @@ LaboratoryAsset::register( $this );
             'edificio.EDIF_NOMBRE',
             'coordinador.persona.PERS_NOMBRE',
             'tipolaboratorio.TILA_NOMBRE',
-
         ],
     ]) ?>
-
     <div class="row">
         <div class="col-md-12">
             <div class="nav-tabs-custom">
@@ -81,27 +79,19 @@ LaboratoryAsset::register( $this );
                                             else if($alias !== "")
                                                 $aliasOrId = [ 'key'   => "alias", 'value' => $alias ];
                                         ?>
-                                        <?= Html::a('<i class="icon-bottom material-icons md-18">view_module</i>', ['', $aliasOrId[ "key" ] => $aliasOrId[ "value" ] , 'view_mode' => "card"], ['class' => 'btn btn-default']) ?>
-                                        <?= Html::a('<i class="icon-bottom material-icons md-18">view_list</i>', ['', $aliasOrId[ "key" ] => $aliasOrId[ "value" ], 'view_mode' => "list"], ['class' => 'btn btn-default']) ?>                      
+                                         <?= Html::a('<i class="icon-bottom material-icons md-18">view_module</i>', ['', $aliasOrId[ "key" ] => $aliasOrId[ "value" ] , 'view_mode' => "card"], ['class' => 'btn btn-default']) ?>
+                                        <?= Html::a('<i class="icon-bottom material-icons md-18">view_list</i>', ['', $aliasOrId[ "key" ] => $aliasOrId[ "value" ], 'view_mode' => "list"], ['class' => 'btn btn-default']) ?> 
                                         </div>
                                     </div>
                                     
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12" id="inventories">
-                                        <? /*$this->render("inventories",
-                                        [
-                                            'data' => $data
-                                        ]) */?>
-
-                                        <section id="inventory-spot" class="content">
-                                            <div class="layout-base">
-                                            </div>
-                                            <div class="layout-overlay hide">
-                                                <a data-overlay-back href="#"><i class="material-icons">arrow_back</i></a>
-                                                <div data-content></div>
-                                            </div>
-                                        </section>
+                                        <?php echo $this->render("inventories",
+                                            [
+                                                'data' => $data
+                                            ]) 
+                                        ?>
                                     </div>
                                 </div>
                             </div>
