@@ -209,10 +209,18 @@ class Items extends \yii\db\ActiveRecord implements IdentificableInterface
         }
     }
 
-    public static function getItemsNotInStock($returnQuery = false)
+    public static function getItemsNotInStock($inventory = null, $laboratory = null, $returnQuery = false)
     {
-        $query = static::find()->from("vm_items_no_stock");
-        if(!$returnQuery)
+        $from  = isset($inventory) ? "vm_items" : "vm_items_no_stock";
+        // - - - - - - - - - - - - - - - - - - - - - - - - 
+        $query = static::find()->from( $from );
+
+        if( is_numeric( $inventory ) ) {
+            $query->andWhere( "alreadyInStock(ITEM_ID, :inventory, :laboratory) = 0" )
+                  ->addParams([ ":inventory" => $inventory, ":laboratory" => is_numeric( $laboratory ) ? $laboratory : null ]);
+        }
+
+        if( !$returnQuery )
             return $query->all();
         else 
             return $query;
