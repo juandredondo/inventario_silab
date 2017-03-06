@@ -25,19 +25,44 @@ silab.colors = [
     "maroon",
 ];
 
-silab.itemsIcons = {
-    reactive    :   "fa fa-hourglass-end",
-    materials   :   "fa fa-eyedropper",
-    teams       :   "fa fa-laptop",
-    tools       :   "fa fa-gavel",
-    accesories  :   "fa fa-laptop",
+silab.itemsTypes = {
+     consumible    : {
+         text : "Consumible",
+         value: 1,
+         icon : "fa fa-hourglass-end"
+     },
+     noconsumible  : {
+         text : "No Consumible",
+         value: 2,
+         icon : "fa fa-hourglass-end"
+     },
+     reactivo      : {
+         text : "Reactivo",
+         value: 3,
+         icon : "fa fa-hourglass-end"
+     },
+     material      : {
+         text : "Material",
+         value: 4,
+         icon : "fa fa-eyedropper"
+     },
+     equipo        : {
+         text : "Equipo",
+         value: 5,
+         icon : "fa fa fa-laptop"
+     },
+     accesorio     : {
+         text : "Accesorio",
+         value: 6,
+         icon : "fa fa-laptop"
+     },
+     herramienta   : {
+         text : "Herramienta",
+         value: 7,
+         icon : "fa fa-gavel"
+     }
 }
 
-silab.itemsIcons.reactivo       = silab.itemsIcons.reactive;
-silab.itemsIcons.material       = silab.itemsIcons.materials;
-silab.itemsIcons.equipo         = silab.itemsIcons.teams;
-silab.itemsIcons.herramienta    = silab.itemsIcons.tools;
-silab.itemsIcons.accesorio      = silab.itemsIcons.accesories;
 
 silab.consts = {
     MAX_NOT_CONSUMIBLE : 1
@@ -442,10 +467,13 @@ silab.ajaxStart = function(handler)
     handler();
 }
 
-silab.submitForm = function(form, data)
+silab.submitForm = function(form, data, config)
 {
     var me          = getForm(form);
     var dataToSend  = data;
+    var config      = config || {
+        "alert-spot" : ".alert-spot"
+    };
 
     function getForm(form)
     {
@@ -478,6 +506,13 @@ silab.submitForm = function(form, data)
             
             displayAlert(data);
 
+            // - - - Executar la accion de refrescado o redireccion - - -
+            if( !_.isUndefined( data.action ) ) {
+                setTimeout(function() {
+                    window.location[ data.action.type ]( data.action.value );                            
+                }, 2000);
+            }
+
             reset(e.data.form);
         }
 
@@ -490,13 +525,13 @@ silab.submitForm = function(form, data)
 
             parent.animate({ scrollTop: 0 }, 'slow');
             
-            silab.helpers.addAlert('#item-alert-spot', data, true);
+            silab.helpers.addAlert( config[ "alert-spot" ], data, true);
                 
             if( typeof window.itemFormCallback !== 'undefined' )
             {
                 window.itemFormCallback( data );
-            }
-                                    
+            }                
+
         }
 
         return false;
