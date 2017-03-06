@@ -54,24 +54,30 @@ class InventarioController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id, $partial = false)
+    public function actionView($id, $partial = false, $laboratory = "")
     {
+        $model        = $this->findModel($id);
+        $query        = VStockActual::getInventoryStock($id, $laboratory, true);
         $dataProvider = new ActiveDataProvider([
-                            'query' => VStockActual::find()->where(['INVE_ID' => $id]),
+                            'query' => $query,
                             'pagination' => [
                                 'pageSize' => 4,
                             ],
                         ]);
-        $render = "";
+        $render       = "";
+
+        if( is_numeric($laboratory) ) {
+            $model->LABO_ID = $laboratory;
+        }
 
         if(!$partial)
             $render = $this->render('view', [
-                'model'         => $this->findModel($id),
+                'model'         => $model,
                 'dataProvider'  => $dataProvider
             ]);
         else 
             $render = $this->renderAjax('view', [
-                'model'         => $this->findModel($id),
+                'model'         => $model,
                 'dataProvider'  => $dataProvider
             ]);
 

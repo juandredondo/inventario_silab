@@ -4,7 +4,8 @@ namespace app\modules\inventario\controllers;
 
 use Yii;
 use app\models\Periodo;
-use app\modules\inventario\models as InventoryModels; 
+use app\modules\inventario\models   as InventoryModels; 
+use app\components                  as AppComponents;
 use app\components\helpers\AlertHelper;
 
 use yii\web\Controller;
@@ -68,13 +69,18 @@ class StockController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionAdd()
+    public function actionAdd($inventory = "", $laboratory = "")
     {
         
         $stock      = new InventoryModels\Stock();
         $flujo      = new InventoryModels\Flujo();
         $data       = Yii::$app->request->post();
         $message    = "Añadido a Stock!";
+
+        $return     = [
+            "redirect" => ['/inventario/inventario/view' ]
+        ];
+
 
         if ($stock->load($data) ) 
         {
@@ -105,8 +111,14 @@ class StockController extends Controller
                         }
 
                         AlertHelper::success($message);
+                        
+                        $return[ "redirect" ][ "id" ] = $stock->INVE_ID;
 
-                        return $this->redirect(['/inventario/inventario/view', 'id' => $stock->INVE_ID]);
+                        if($stock->inventario->isSingleton) {
+                            $return[ "redirect" ][ "laboratory" ] = $stock->LABO_ID;
+                        }
+
+                        return $this->redirect( $return[ "redirect" ] );
                     }
                 }
             
@@ -120,6 +132,77 @@ class StockController extends Controller
                 'stock' => $stock,
                 'flujo' => $flujo,
             ]);
+    }
+
+    /**
+     * Creates a new Stock model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionAddByAjax($inventory = "", $laboratory = "", $redirect = "")
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        
+        $stock          = new InventoryModels\Stock();
+        $flujo          = new InventoryModels\Flujo();
+        $data           = Yii::$app->request->post();
+        $hasRedirect    = $redirect != "";
+        
+        // - - - Resultado para ajax - - - 
+        $result     = AppComponents\AjaxResult::create();
+      
+        if ($stock->load($data) ) 
+        {
+            if($data[ "manual-period" ] === "auto")
+                $stock->PERI_ID = Periodo::getCurrentPeriod()->PERI_ID;
+            
+            try {
+
+                if($stock->save()){
+                    $flujo->STOC_ID         =  $stock->STOC_ID;
+                    $flujo->FLUJ_CANTIDAD   =  $stock->STOC_CANTIDAD;
+                    $flujo->TIFU_ID         =  InventoryModels\TipoFlujo::Entrada;
+                    $flujo->PERI_ID         =  $stock->PERI_ID;
+
+                    if($flujo->save())
+                    {
+                        $result->message("Añadido a Stock!")
+                               ->status( AppComponents\AjaxResult::STATUS_OK );
+
+                        if($data["is-expirable"] == "true" )
+                        {
+                            $vencimiento = new InventoryModels\StockExpirado([
+                                "FLUJ_ID"               => $flujo->FLUJ_ID,
+                                "STVE_FECHAVENCIMIENTO" => $data[ "StockExpirado" ][ "FECHAVENCIMIENTO" ]
+                            ]);
+
+                            if($vencimiento->save())
+                            {
+                                $result->message("Añadido a Stock!, este item es expirable por tanto se agrego a la pila FIFO");
+                            }
+                            else {
+                                $result->status( AppComponents\AjaxResult::STATUS_WARNING )
+                                       ->message( "Se registro en Stock, pero no en expiracion" );
+                            }
+                        }
+
+                        $result->action( $hasRedirect ? 
+                                            AppComponents\AjaxResult::ACTION_REDIRECT : 
+                                            AppComponents\AjaxResult::ACTION_REFRESH,  
+                                        $hasRedirect ?  Url::toRoute([ $redirect ]) : null 
+                                );
+
+                    }
+                }
+            
+            } catch (\yii\db\Exception $e) {
+                $result->status( AppComponents\AjaxResult::STATUS_BAD )
+                       ->message( "Oops! hubo un error en el proceso." );
+            }
+            
+        }    
+        
+        return $result;
     }
 
     /**
@@ -175,7 +258,7 @@ class StockController extends Controller
         }
     }
 
-    public function actiongetEmptyItems()
+    public function actionGetEmptyItems()
     {
         return \app\modules\inventario\models\Stock::getEmptyItems();
     }

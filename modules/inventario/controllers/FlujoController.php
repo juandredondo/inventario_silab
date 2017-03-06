@@ -136,7 +136,7 @@ class FlujoController extends Controller
 
         $model          = new Flujo();
         $data           = Yii::$app->request->post();
-        $allowExcess    = $data[ "allowExcess" ];
+        $allowExcess    = isset($data[ "allowExcess" ]) ? $data[ "allowExcess" ] : false;
         $return = [
             "message" => "Extraccion del item correcta",
             "data"    => [],
