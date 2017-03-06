@@ -116,4 +116,15 @@ class VStockActual extends Stock implements ConsumibleInterface
         return null;
    }
 
+   public static function getInventoryStock($inventory, $laboratory = null, $returnQuery = false )
+   {
+        $query        = VStockActual::find()->where(['INVE_ID' => $inventory]);
+        
+        if( is_numeric($laboratory) ) {
+            $query->andWhere([ "LABO_ID" => $laboratory ]);
+        }
+
+        return $returnQuery ? $query : $query->all();
+   }
+
 }
