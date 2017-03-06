@@ -1,28 +1,40 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\DetailView;
 use yii\bootstrap\Modal;
 use yii\data\ActiveDataProvider;
-use yii\helpers\Url;
-use app\components\widgets\AlertDimissible;
-use kartik\grid\GridView;
 
-use app\modules\inventario\models\Stock;
+use yii\helpers\Html;
+use yii\helpers\Json;
+use yii\helpers\Url;
+
+use yii\widgets\DetailView;
+use yii\widgets\Pjax;
+
+use app\components\widgets\AlertDimissible;
 use app\modules\inventario\models\Flujo;
+use app\modules\inventario\models\Stock;
 use app\modules\inventario\models\TipoFlujo;
 use app\modules\inventario\models\TipoItem;
 use app\modules\inventario\models\Unidad;
 
-use yii\helpers\Json;
+use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Inventario */
 
 $this->title                    = $model->INVE_NOMBRE;
-$this->params['breadcrumbs'][]  = ['label' => 'Inventarios', 'url' => ['index']];
-$this->params['breadcrumbs'][]  = $this->title;
-$GLOBALS[ "laboratory-config" ] = $model->laboratorio->currentConfig;
+if( $model->isSingleton && isset($model->LABO_ID) ) {
+    $this->params['breadcrumbs'][]  = ['label' => 'Inventarios', 'url' => ['index']];
+    $this->params['breadcrumbs'][]  = $this->title;
+}
+else 
+{
+    $this->params['breadcrumbs'][]  = ['label' => 'Inventarios', 'url' => ['index']];
+    $this->params['breadcrumbs'][]  = $this->title;
+}
+
+if( isset($model->LABO_ID) )
+    $GLOBALS[ "laboratory-config" ] = $model->laboratorio->currentConfig;
 
 function checkPeriodo($model)
 {
@@ -70,95 +82,103 @@ function checkPeriodo($model)
 
         <div class="col-md-12">
             <h3>Items del inventario</h3>
-            <?= Html::a('<i class="icon-bottom material-icons md-18">add</i> <span class="hidden-xs"></span>', 
-                    ['stock/add', 'id' => $model->INVE_ID], 
-                    ['class' => 'btn btn-primary btn-flat']
+            <?= Html::a('<i class="icon-bottom material-icons md-18">add</i> <span class="hidden-xs"></span>',
+                    ["#"], 
+                    [
+                        'class'         => 'btn btn-primary btn-flat',
+                        "data-toggle"   => "modal", 
+                        "data-target"   => "#add-stock" 
+                    ]
                 ) 
             ?>
-            <div class="box">
-                <?=  GridView::widget([
-                        'dataProvider' => $dataProvider,
-                                'columns' => [
-                            ['class' => 'yii\grid\SerialColumn'],
-                            'ITEM_ID',
-                            'ITEM_NOMBRE',
-                            'item.marca.MARC_NOMBRE',
-                            [
-                                'attribute' => 'STOC_CANTIDAD',
-                                'format'    => 'raw',
-                                'value'     => function($model)
-                                {
-                                    $und   =  Unidad::getItemUnity( $model->item->ITEM_ID );
-                                    $datas = [
-                                        "expirable"     => $model->item->isExpirable ? "true" : "false",
-                                        "stock"         => $model->STOC_ID,
-                                        "amount"        => $model->calculateAmount(),
-                                        "stock-min"     => $GLOBALS[ "laboratory-config" ]->LACO_STOCKMIN,
-                                        "stock-max"     => $GLOBALS[ "laboratory-config" ]->LACO_STOCKMAX,
-                                        "consumible"    => Json::encode( $model->item->traverseInfo()->parent )
-                                        
-                                    ];
-                                    $html  = '<div ' . Html::renderTagAttributes( [ "data" => $datas ] ) . ' class="hoverable-tools"><div class="col-xs-7">
-                                                    <span class="pull-left"><b>{cantidad}</b></span> <span class="pull-right">{unidad}</span>
-                                                </div>
-                                                <div class="col-xs-5">
-                                                    <div class="tools btn-group-vertical" role="group">
-                                                        <a href="#" data-flow="' . TipoFlujo::Entrada . '" data-toggle="modal" data-target="#flow-modal" class="text-green"><i class="icon-bottom material-icons md-24">add_circle</i></a>
-                                                        <a href="#" data-flow="' . TipoFlujo::Salida . '" data-toggle="modal" data-target="#flow-modal" class="text-red"><i class="icon-bottom material-icons md-24">remove_circle</i></a>
+            <?php Pjax::begin(["id" => "pjax-inventory-stock", 'timeout' => 100000]); ?>     
+                <div class="box">
+                    <?=  GridView::widget([
+                            'dataProvider' => $dataProvider,
+                                    'columns' => [
+                                ['class' => 'yii\grid\SerialColumn'],
+                                'ITEM_ID',
+                                'ITEM_NOMBRE',
+                                'item.marca.MARC_NOMBRE',
+                                [
+                                    'attribute' => 'STOC_CANTIDAD',
+                                    'format'    => 'raw',
+                                    'value'     => function($model)
+                                    {
+                                        $und   =  Unidad::getItemUnity( $model->item->ITEM_ID );
+                                        $datas = [
+                                            "expirable"     => $model->item->isExpirable ? "true" : "false",
+                                            "stock"         => $model->STOC_ID,
+                                            "amount"        => $model->STOC_CANTIDAD,
+                                            "stock-min"     => $model->STOC_MIN,
+                                            "stock-max"     => $model->STOC_MAX,
+                                            "consumible"    => Json::encode( $model->item->traverseInfo()->parent )
+                                            
+                                        ];
+                                        $html  = '<div ' . Html::renderTagAttributes( [ "data" => $datas ] ) . ' class="hoverable-tools"><div class="col-xs-7">
+                                                        <span class="pull-left"><b>{cantidad}</b></span> <span class="pull-right">{unidad}</span>
                                                     </div>
-                                                </div></div>';   
+                                                    <div class="col-xs-5">
+                                                        <div class="tools btn-group-vertical" role="group">
+                                                            <a href="#" data-flow="' . TipoFlujo::Entrada . '" data-toggle="modal" data-target="#flow-modal" class="text-green"><i class="icon-bottom material-icons md-24">add_circle</i></a>
+                                                            <a href="#" data-flow="' . TipoFlujo::Salida . '" data-toggle="modal" data-target="#flow-modal" class="text-red"><i class="icon-bottom material-icons md-24">remove_circle</i></a>
+                                                        </div>
+                                                    </div></div>';   
 
-                                    return str_replace( 
-                                                "{unidad}", $und,
-                                                str_replace("{cantidad}", $datas[ "amount" ], $html )
-                                           );
-                                }
+                                        return str_replace( 
+                                                    "{unidad}", $und,
+                                                    str_replace("{cantidad}", $datas[ "amount" ], $html )
+                                            );
+                                    }
+                                ],
+                                'periodo.PERI_FECHA',
+                                [
+                                    'attribute' => 'STOC_ESCONSUMIBLE',
+                                    'value'     => function($model)
+                                    {
+                                        return $model->STOC_ESCONSUMIBLE ? "CONSUMIBLE" : "NO CONSUMIBLE";
+                                    }
+                                ],
+                                
+                                [
+                                    'class'     => 'kartik\grid\ExpandRowColumn',
+                                    'value'     => function($model, $key, $index, $column){
+                                        return GridView::ROW_COLLAPSED;
+                                    },
+                                    'detail'    => function($model, $key, $index)
+                                    {
+                                        $return = Yii::$app->controller->renderPartial(
+                                            '/flujo/index.php', [
+                                                'dataProvider' => new \yii\data\ArrayDataProvider(
+                                                    [
+                                                        'allModels' => $model->flujos
+                                                    ]
+                                                )
+                                            ]
+                                        );
+                                        
+                                        return $return;
+                                        
+                                    }
+                                ],
+                                [
+                                    'class' => 'yii\grid\ActionColumn',
+                                    'urlCreator' => function($action, $model, $key, $index) { 
+                                            if($action == "delete")
+                                                return Url::to(["/inventario/stock/delete", 'id'=> $model->STOC_ID, 'fromInventory' => true]);
+                                            else 
+                                            {
+                                                $item = strtolower( $model->item->tipoItem->TIIT_NOMBRE );
+                                                return Url::to(["/inventario/". $item ."/". $action,'id'=>$key]);                                            
+                                            }
+                                    },
+                                ],
                             ],
-                            'periodo.PERI_FECHA',
-                            [
-                                'attribute' => 'STOC_ESCONSUMIBLE',
-                                'value'     => function($model)
-                                {
-                                    return $model->STOC_ESCONSUMIBLE ? "CONSUMIBLE" : "NO CONSUMIBLE";
-                                }
-                            ],
-                            
-                            [
-                                'class'     => 'kartik\grid\ExpandRowColumn',
-                                'value'     => function($model, $key, $index, $column){
-                                    return GridView::ROW_COLLAPSED;
-                                },
-                                'detail'    => function($model, $key, $index)
-                                {
-                                    $return = Yii::$app->controller->renderPartial(
-                                        '/flujo/index.php', [
-                                            'dataProvider' => new \yii\data\ArrayDataProvider(
-                                                [
-                                                    'allModels' => $model->flujos
-                                                ]
-                                            )
-                                        ]
-                                    );
-                                    
-                                    return $return;
-                                    
-                                }
-                            ],
-                            [
-                                'class' => 'yii\grid\ActionColumn',
-                                'urlCreator' => function($action, $model, $key, $index) { 
-                                        if($action == "delete")
-                                            return Url::to(["/inventario/stock/delete", 'id'=> $model->STOC_ID, 'fromInventory' => true]);
-                                        else 
-                                        {
-                                            $item = strtolower( $model->item->tipoItem->TIIT_NOMBRE );
-                                            return Url::to(["/inventario/". $item ."/". $action,'id'=>$key]);                                            
-                                        }
-                                },
-                            ],
-                        ],
-                    ]);?> 
-            </div>
+                        ]);?> 
+                </div>
+            <?php 
+                Pjax::end();
+            ?>
         </div>
     </div>
 </div>
@@ -167,6 +187,27 @@ function checkPeriodo($model)
         "id"=>"ajaxCrudModal",
         "footer"=>"",// always need it for jquery plugin
     ])?>
+<?php Modal::end(); ?>
+
+<?php Modal::begin([
+        "id"        =>  "add-stock",
+        "size"      => Modal::SIZE_LARGE,
+        "footer"    =>  "",// always need it for jquery plugin
+    ])?>
+    <?php 
+        $stock = new Stock([
+                "INVE_ID"   => $model->INVE_ID
+            ]);
+        
+        if(isset($model->laboratorio)) {
+            $stock->LABO_ID = $model->LABO_ID;
+        }
+
+        echo $this->render("@inventarioViews/stock/create", [ 
+            "stock"         =>  $stock
+        ])
+    ?>
+
 <?php Modal::end(); ?>
 
 <?php Modal::begin([

@@ -28,41 +28,41 @@ $this->params['breadcrumbs'][] = $this->title;
         ?>
     </p>
     <?php Pjax::begin(["id" => "pjax-stock", 'timeout' => 100000]); ?>
-    <?= GridView::widget([
-        "id"            => "stock-items-grid",
-        'dataProvider'  => $dataProvider,
-        'filterModel'   => $searchModel,
-        "filterUrl"     => ["/inventario/stock/index"],
-        "rowOptions"    => function($model, $key, $index, $grid) {
-            
-            $options = [
-                "data" => [
-                    "key" => $model->STOC_ID,      
-                ]
-            ];
+        <?= GridView::widget([
+            "id"            => "stock-items-grid",
+            'dataProvider'  => $dataProvider,
+            'filterModel'   => $searchModel,
+            "filterUrl"     => ["/inventario/stock/index"],
+            "rowOptions"    => function($model, $key, $index, $grid) {
+                
+                $options = [
+                    "data" => [
+                        "key" => $model->STOC_ID,      
+                    ]
+                ];
 
-            $options[ "data" ][ "item" ] = [
-                "min"       => $model->STOC_MIN,
-                "max"       => $model->STOC_MIN,
-                "amount"    => $model->STOC_CANTIDAD
-            ];
+                $options[ "data" ][ "item" ] = [
+                    "min"       => $model->STOC_MIN,
+                    "max"       => $model->STOC_MIN,
+                    "amount"    => $model->STOC_CANTIDAD
+                ];
 
-            return $options;
-        },
-        'columns' => [
-            [
-                'class' => 'yii\grid\CheckBoxColumn',
-                'name'  => 'select-stocks'
+                return $options;
+            },
+            'columns' => [
+                [
+                    'class' => 'yii\grid\CheckBoxColumn',
+                    'name'  => 'select-stocks'
+                ],
+                'ITEM_NOMBRE',
+                'TIIT_NOMBRE',
+                'STOC_CANTIDAD',
+                'STOC_MIN',
+                'STOC_MAX',
+                ['class' => 'yii\grid\ActionColumn'],
             ],
-            'ITEM_NOMBRE',
-            'TIIT_NOMBRE',
-            'STOC_CANTIDAD',
-            'STOC_MIN',
-            'STOC_MAX',
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-        
-    ]); ?>
+            
+        ]); ?>
     <?php Pjax::end(); ?>
 </div>
 

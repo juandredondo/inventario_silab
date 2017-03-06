@@ -21,17 +21,18 @@ use app\models\Periodo;
 
     <?= $form->field($model, 'INVE_ID') ?>
 
+    <?= $form->field($model, 'INVE_NOMBRE') ?>
+
     <?= DropDownWidget::widget([
         'form'      => $form,
         'model'     => [
             "main"  => $model,
             "ref"   => Laboratorio::className()
         ],
-        "columns"   => [ "attribute" => 'LABO_ID', "id" => "id", "text" => "nombre" ],
-        'options'   => [
-            'disabled' => $readOnly
-        ]
+        "columns"   => [ "id" => "LABO_ID", "text" => "LABO_NOMBRE" ],
     ])  ?>
+
+    <?= $form->field($model, 'INVE_ESSINGLETON')->checkbox() ?>
 
 
     <? //$form->field($model, 'INVE_CANTIDAD') ?>

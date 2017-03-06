@@ -55,7 +55,7 @@ else
                 {
                     
                 }
-                echo \yii\helpers\Json::encode($counts);
+                echo \yii\helpers\Json::encode($count);
             ?> -->
         </p>
     </div>

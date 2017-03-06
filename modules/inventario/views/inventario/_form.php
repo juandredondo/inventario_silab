@@ -12,7 +12,7 @@ use app\models\Periodo;
 /* @var $this yii\web\View */
 /* @var $model app\models\Inventario */
 /* @var $form yii\widgets\ActiveForm */
-    $readOnly = $this->params[ "labo.readonly" ];
+    $readOnly = isset($this->params[ "labo.readonly" ]) ? $this->params[ "labo.readonly" ] : false;
     // - - - - - - - - - - - - - - - - - - - - -
     if($readOnly == null) {
         $readOnly = $model->INVE_ESSINGLETON;
@@ -87,7 +87,7 @@ use app\models\Periodo;
             "main"  => $model,
             "ref"   => Laboratorio::className()
         ],
-        "columns"   => [ "attribute" => 'LABO_ID', "id" => "id", "text" => "nombre" ],
+        "columns"   => [ "attribute" => 'LABO_ID', "id" => "LABO_ID", "text" => "LABO_NOMBRE" ],
         'options'   => [
             'disabled' => $readOnly,
             'required' => !$readOnly,
@@ -142,7 +142,8 @@ use app\models\Periodo;
     <input id="labo-id" name="Inventario[LABO_ID]" type="hidden" value="<?= $model->LABO_ID ?>">
       
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'REGISTRAR' : 'ACTUALIZAR', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::resetButton( 'RESET', ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

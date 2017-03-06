@@ -80,6 +80,8 @@ $isWrapped = isset($isWrapped) ? $isWrapped : true;
 <input type="hidden" id="valid-form-items" value="<?= $this->params[ "validFormItems" ][ "id" ] ?>" data-parent='<?= $this->params[ "validFormItems" ][ "parent" ] ?>' data-value="<?= $this->params[ "validFormItems" ][ "id" ] ?>">
 <?php 
     $this->registerJs("
+        //# sourceURL = items-create.js
+
         silab.items.init();
 
         var validFormItems = $('#valid-form-items').data();

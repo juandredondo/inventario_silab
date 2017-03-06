@@ -29,7 +29,7 @@ $count = $this->params[ "count" ];
                         <% }) 
                         } %>  
                        
-                        href="<?= Url::toRoute(["/inventario/inventario/view", "id" => ""])?><%= model.id %>&partial=1">
+                        href="<?= Url::toRoute(["/inventario/inventario/view", "id" => ""])?><%= model.id %>&partial=1&laboratory=<%= model.laboratoryId%>">
                         <i class="icon-bottom material-icons">view_module</i> 
                         <%= model.name %>
                     </a>

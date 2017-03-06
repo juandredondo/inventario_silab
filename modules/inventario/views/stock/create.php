@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div data-forms>
         <div class="row">
-            <div id="item-alert-spot" class="col-md-12">
+            <div id="stock-alert-spot" class="col-md-12">
                 <?php 
                     echo AlertDimissible::widget();
                 ?>
@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-md-12">
                 <?= $this->render('_form', [
                         'stock' => $stock,
-                        'flujo' => $flujo,
+                        /*'flujo' => $flujo,*/
                 ]) ?>
             </div>
         </div>
@@ -67,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php 
     $this->registerJs( "
-        let stockForms          = $('[data-forms]');
+        var stockForms          = $('[data-forms]');
         
         $('a[data-toggle=\'collapse\']').on('click', function() {
             let me      = $(this);

@@ -19,18 +19,24 @@ DatePickerAsset::register($this);
 /* @var $this yii\web\View */
 /* @var $model app\models\Stock */
 /* @var $form yii\widgets\ActiveForm */
-$stock->INVE_ID = Yii::$app->request->get('id');
-
+    $stock->INVE_ID     = isset($stock->INVE_ID) ? $stock->INVE_ID : Yii::$app->request->get('inventory');
+    $stock->LABO_ID     = isset($stock->LABO_ID) ? $stock->LABO_ID : Yii::$app->request->get('laboratory');
 // Items validos para el inventario
-$itemValidType  = $stock->inventario->TIIT_ID;
+    $itemValidType      = isset($stock->inventario->TIIT_ID) ? $stock->inventario->TIIT_ID : InventoryModels\core\TipoItem::ALL;
 // - - - - - - - - - - - - - - - - - - - - - - 
-$items          = Items::getItemsNotInStock( true )->where( [ "TIIT_ID" => $itemValidType ] )->all();
-// - - - - - - - - - - - - - - - - - - - - - - 
-$isExpirable    = $stock->item->isExpirable;
+    $query              = Items::getItemsNotInStock($stock->INVE_ID, $stock->LABO_ID, true );
 
-$this->params[ "validFormItems" ] = InventoryModels\core\TipoItem::getTypesById( )[ 
-    isset($itemValidType) ? $itemValidType : InventoryModels\core\TipoItem::ALL  
-];
+    if( $itemValidType != InventoryModels\core\TipoItem::ALL ) {
+        $query->andWhere( [ "TIIT_ID" => $itemValidType ] );
+    }
+
+    $items              = $query->orderBy( [ "TIIT_ID" => SORT_ASC ])->all();
+// - - - - - - - - - - - - - - - - - - - - - - 
+    $isExpirable        = isset($stock->item->isExpirable) || $isExpirable = false;
+
+    $this->params[ "validFormItems" ] = InventoryModels\core\TipoItem::getTypesById( )[ 
+        $itemValidType
+    ];
 
 function generateItemsList($model, $items)
 {
@@ -73,17 +79,76 @@ function generateItemsList($model, $items)
 
 <div class="stock-form">
 
-    <?php $form = ActiveForm::begin(); ?>
-
-    <?= generateItemsList($stock, $items)  ?>
-    
-    <input type="hidden" name="is-expirable" id="is-expirable" />
- 	
-     <?= $form->field($stock, 'INVE_ID')->textInput(
- 		['type'=>'hidden','readonly' => false ])->label(false) ?>
+    <?php $form = ActiveForm::begin(["id" => "stock-form", "action" => ["stock/add-by-ajax"] ]); ?>
 
     <?php 
-        if($stock->inventario->isSingleton):
+        //generateItemsList($stock, $items)  
+        echo DropDownWidget::widget([
+            "form"  =>  $form,
+            "refData" => $items,
+            "model" =>  [
+                "main"  => $stock,
+            ],
+            "columns"   => [
+                "id"    =>  "ITEM_ID",
+                "text"  =>  "ITEM_NOMBRE"
+            ],
+            "options" => [
+                // Options for <option>
+                "id"      => "items-stock-select",
+                "class"   => "form-control select2 x-select2",
+                "options" => [
+                    "dataManager" => function($item) {
+
+                        $info = $item->traverseInfo();
+                        $optionsAttr = [
+                            "data" => [
+                                "expirable"    => $item->isExpirable ? "true" : "false",
+                                "consumible"   => $info->isConsumible ? "true" : "false", 
+                                "subClass"     => Json::encode( $info->parent ),
+                                "type"         => $item->TIIT_ID 
+                            ]
+                        ];
+                        
+                        if($info instanceof ExpirableInterface)
+                            $optionsAttr[ "data" ][ "expiration" ] = $info->expirationDate;
+
+                        return $optionsAttr;
+                    }
+                ]
+            ]
+            
+        ]);
+    ?>
+    
+    <input type="hidden" name="is-expirable" id="is-expirable" />
+ 	    
+    <?php 
+        if(!isset($stock->inventario)):
+    ?>
+        <?= DropDownWidget::widget([
+            "form"  =>  $form,
+            "model" =>  [
+                "main"  => $stock,
+                "ref"   => InventoryModels\Inventario::className()
+            ],
+            "columns"   => [
+                "id"    =>  "INVE_ID",
+                "text"  =>  "INVE_NOMBRE"
+            ]
+        ]); ?>
+
+    <?php else: ?>
+        <?= $form->field($stock, 'INVE_ID')->textInput(
+ 		['type'=>'hidden','readonly' => false ])->label(false) ?>
+    <?php endif; ?>
+
+
+    <?php 
+          $showLaboratories  = !isset($stock->laboratorio);
+          $showLaboratories  = (isset($stock->inventario) ? $stock->inventario->isSingleton : true) && $showLaboratories;
+
+          if( $showLaboratories ):
     ?>
         <?= DropDownWidget::widget([
             "form"  =>  $form,
@@ -96,7 +161,9 @@ function generateItemsList($model, $items)
                 "text"  =>  "LABO_NOMBRE"
             ]
         ]); ?>
-    <?php endIf; ?>
+    <?php else: ?>
+        <?= $form->field($stock, "LABO_ID")->textInput([ "type" => "hidden" ])->label( false ) ?>
+    <?php endif; ?>
          
     <?= $form->field($stock, 'STOC_CANTIDAD')->textInput(['type' => 'number', "required" => true]) ?>
     <div class="row" style="font-size: 18px" >
@@ -176,7 +243,11 @@ function generateItemsList($model, $items)
 
 <?php 
     $this->registerJs("
-        $(document).on('ready', main);
+        //# sourceURL=form-stock.js
+
+        silab.submitForm( $('form#stock-form'), undefined, {
+            'alert-spot' : '#stock-alert-spot'
+        });
 
         function processNewItem(data)
         {
@@ -194,7 +265,8 @@ function generateItemsList($model, $items)
                             'expirable': data.model.isExpirable,
                             'consumible': data.model.isConsumible,
                             'subClass': JSON.stringify( data.model.parent ),
-                            'expiration': data.model.FECHA_VENCIMIENTO
+                            'expiration': data.model.FECHA_VENCIMIENTO,
+                            'type': data.model.item.TIIT_ID
                             },
                         text: data.model.item.ITEM_NOMBRE,
                         value: data.model.item.ITEM_ID
@@ -207,6 +279,21 @@ function generateItemsList($model, $items)
 
         function main()
         {
+            var i = 0;
+
+            $('#items-stock-select').select2({
+                placeholder: 'Seleccione un item',
+                templateResult: function (d) { 
+                    if(d.id) {
+                        var me       = $(d.element);
+                        var type     = _.find(silab.itemsTypes, function( o ){
+                                            return o.value == me.data('type')
+                                        });
+                        var template = '<div><i class=\'' + type.icon + '\' ></i> ' + me.text() + '  - <small>' + type.text + '</small></div>';
+                        return $(template); 
+                    }
+                },
+            });
 
             // - - - Initialize Datepicker Plugin
             $('input[name*=\"STVE_FECHAVENCIMIENTO\"]').datepicker({
@@ -310,5 +397,7 @@ function generateItemsList($model, $items)
 
             window.itemFormCallback = processNewItem;
         }
+
+        main();
     ");
 ?>

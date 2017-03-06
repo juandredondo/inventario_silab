@@ -114,7 +114,9 @@ use app\modules\inventario\models\core\TipoItem;
             // - - - Initialize Select2 Plugin - - -
                 $('form[id*=\'item\'] select').select2();
 
-                silab.submitForm( $('form[id*=\'item\']') );
+                silab.submitForm( $('form[id*=\'item\']'), undefined, {
+                    'alert-spot' : '#item-alert-spot'
+                });
 
                 $('[name*=\'LABO_ID\']').change(function(e){
                     let me      = $(this).find(':selected');

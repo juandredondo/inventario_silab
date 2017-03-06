@@ -11,7 +11,6 @@ use yii\helpers\Url;
     }
     else
     {
-        
         $count = !isset($manualSize) ? 4 : $manualSize;
     }
 
@@ -20,12 +19,12 @@ use yii\helpers\Url;
 ?>
 
 
-<div class="col-md-<?=$count?> col-xs-12 col-sm-12">
+<div class="col-md-6">
     <div class="card clickable inventory-card">
         <div class="box-header with-border">
             <h3 class="box-title text-center"> 
                 <b> 
-                    <a href="<?= Url::toRoute(["/inventario/inventario/view", "id" => $model->INVE_ID]) ?>">
+                    <a href="<?= Url::toRoute(["/inventario/inventario/view", "id" => $model->INVE_ID, "laboratory" => $laboratory->id ]) ?>">
                         <i class="icon-bottom material-icons">view_module</i> 
                         <?= $model->INVE_NOMBRE ?>
                     </a>
