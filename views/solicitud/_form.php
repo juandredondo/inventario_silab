@@ -133,6 +133,9 @@ $this->registerJs("
                                 if (! $detail->isNewRecord) {
                                     echo Html::activeHiddenInput($detail, "[{$i}]id");
                                 }
+
+                                $min = isset($detail->stock->STOC_MIN) ? $detail->stock->STOC_MIN : 1;
+                                $max = isset($detail->stock->STOC_MAX) ? $detail->stock->STOC_MAX : 1;
                             ?>
                             <div class="row">
                                 <div class="col-sm-4">
@@ -167,18 +170,18 @@ $this->registerJs("
                                 </div>
                                 <div data-amount-group class="col-sm-4">
                                     <?= $form->field($detail, "[{$i}]DESO_CANTIDAD")
-                                             ->textInput([ "type" => "number", "min" => $detail->stock->STOC_MIN, "max" => $detail->stock->STOC_MAX, "data" => [ "amount" => null ] ])
+                                             ->textInput([ "type" => "number", "min" => $min, "max" => $max, "data" => [ "amount" => null ] ])
                                              ->label(false) ?>
                                     <div class="row" style="font-size: 18px" >
                                         <div class="col-md-6 col-sm-6 col-xs-6">
                                             <p>
-                                                <span class="label label-danger full-block">MIN<span class="hidden-xs hidden-sm">IMO</span> <span data-min-amount ><?=$detail->stock->STOC_MIN?></span> </span>
+                                                <span class="label label-danger full-block">MIN<span class="hidden-xs hidden-sm">IMO</span> <span data-min-amount ><?=$min?></span> </span>
                                                 <input type="hidden" name="<?= Html::getInputName( $stockModel, "[{$i}]STOC_MIN" ) ?>" data-stock-min />
                                             </p>
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-6 pull-right">
                                             <p>
-                                                <span class="label label-warning full-block">MAX<span class="hidden-xs hidden-sm">IMO</span> <span data-max-amount ><?=$detail->stock->STOC_MAX?></span></span>
+                                                <span class="label label-warning full-block">MAX<span class="hidden-xs hidden-sm">IMO</span> <span data-max-amount ><?=$max?></span></span>
                                                 <input type="hidden" name="<?= Html::getInputName( $stockModel, "[{$i}]STOC_MAX" ) ?>" data-stock-max />
                                             </p>
                                         </div>
