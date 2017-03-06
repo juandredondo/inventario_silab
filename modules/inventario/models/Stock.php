@@ -9,12 +9,12 @@ use app\modules\inventario\models as InventoryModels;
 use app\models\Periodo;
 use app\models\Laboratorio;
 /**
- * This is the model class for table "TBL_STOCK".
- *
- * @property integer $STOC_ID
- * @property integer $ITEM_ID
- * @property integer $INVE_ID
- * @property double $STOC_CANTIDAD
+* This is the model class for table "TBL_STOCK".
+*
+* @property integer $STOC_ID
+* @property integer $ITEM_ID
+* @property integer $INVE_ID
+* @property double $STOC_CANTIDAD
 * @property integer $PERI_ID 
 * @property integer $CADU_ID 
 * @property boolean $STOC_ESCONSUMIBLE 
@@ -167,7 +167,7 @@ class Stock extends \yii\db\ActiveRecord implements IdentificableInterface
            }
            
            // 3. Actualizar el monto, si es diferente del actual
-           if($amount !== $currentAmount && $amount > -1)
+           if($amount !== $this->STOC_CANTIDAD && $amount > -1)
            {
                $this->STOC_CANTIDAD = $amount;
                $this->update(true, [ "STOC_CANTIDAD" ]);

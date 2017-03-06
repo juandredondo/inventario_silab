@@ -22,10 +22,10 @@ return ArrayHelperFilter::merge(
                 $relation[ "parent" ]
             ),
             [
-                [
+                /*[
                     "attribute" => $relation[ "parent" ] . $separator . "ESNC_ID",
                     "value"     => $itemConsumible->estadoConsumible->ESCO_NOMBRE
-                ]
+                ]*/
             ]
         );
 ?>

@@ -155,6 +155,16 @@ class Inventario extends \yii\db\ActiveRecord
         return $this->hasOne(Laboratorio::className(), ['LABO_ID' => 'LABO_ID']);
     }
 
+    public function getLaboratory( $id = null ) 
+    {
+        if( $this->isSingleton ) {
+            return ( isset($id) ) ? Laboratorio::findOne( $id ) : new Laboratorio();
+        }
+        else {
+            return $this->laboratorio;
+        }
+    }
+
 
     /**
      * @return \yii\db\ActiveQuery

@@ -352,7 +352,7 @@ abstract class ItemBase extends \yii\db\ActiveRecord implements IdentificableInt
                 "item",
                 "parent",
                 "isExpirable",
-                "isConsumible"
+                "isConsumible",
             ]
         );
 
@@ -360,8 +360,5 @@ abstract class ItemBase extends \yii\db\ActiveRecord implements IdentificableInt
     }
 
 }
-
-
-
 
 ?>
