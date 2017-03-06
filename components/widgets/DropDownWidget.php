@@ -13,7 +13,7 @@ class DropDownWidget extends Widget
     public $model;
     public $columns;
     public $options = [];
-    public $refData = [];
+    public $refData = null;
 
     public function init()
     {
@@ -29,7 +29,7 @@ class DropDownWidget extends Widget
             throw new \yii\base\InvalidConfigException("la pripiedad \"columns\" debe no puede ser nula");
         
         $this->options =  ($this->options !== null) ? $this->options : [];
-        $this->refData =  ($this->refData !== null) ? $this->refData : [];
+        // $this->refData =  ($this->refData !== null) ? $this->refData : [];
 
     }
 
@@ -44,7 +44,7 @@ class DropDownWidget extends Widget
         $refData    = $this->refData;
         $label      = $this->label;
 
-        $items      = (count($refData) > 0 ) ? $refData : $model[ "ref" ]::find()->all();
+        $items      = ( isset($refData) ) ? ( !empty($refData) ? $refData : [] ) : $model[ "ref" ]::find()->all();
 
         if(isset($options))
             $options[ "prompt" ] = isset($options[ "propmt" ]) ? $options[ "prompt" ] : $prompt;
