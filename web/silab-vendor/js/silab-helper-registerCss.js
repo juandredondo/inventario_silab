@@ -107,8 +107,8 @@ silab.helpers.registerPercentagesColors = function()
     {
         var selector =  + (( ( 100 - i ) / l) * 100).toFixed(0);
         var color    = silab.helpers.getColorForPercentage( i / l );
-        silab.helpers.createCSSSelector( ".bg-hot-" + selector, "background-color:" +  + " !important" );
-        silab.helpers.createCSSSelector( ".text-hot-" + selector, "color:" + silab.helpers.getColorForPercentage( i / l ) + " !important" );
+        silab.helpers.createCSSSelector( ".bg-hot-" + selector, "background-color:" + color + " !important" );
+        silab.helpers.createCSSSelector( ".text-hot-" + selector, "color:" + color + " !important" );
     }
 }
 
