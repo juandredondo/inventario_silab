@@ -3,7 +3,7 @@
 namespace app\modules\inventario\models\core;
 
 use Yii;
-
+use app\components\core as AppCore;
 /**
  * This is the model class for table "TBL_ESTADOSCONSUMIBLE".
  *
@@ -14,7 +14,7 @@ use Yii;
  *
  * @property TBLITEMSCONSUMIBLES[] $tBLITEMSCONSUMIBLESs
  */
-class EstadoConsumible extends \yii\db\ActiveRecord
+class EstadoConsumible extends \yii\db\ActiveRecord implements AppCore\IdentificableInterface
 {
 
     const Agotado       = 1;
