@@ -120,7 +120,7 @@ class Flujo extends \yii\db\ActiveRecord
         $hasExcess      = $tempAmount < 0 ? true : false;
         
         return [
-            "amount"        => $hasExcedent ? 0 : $tempAmount,
+            "amount"        => $hasExcess ? 0 : $tempAmount,
             "excess"        => $tempAmount,
             "validAmount"   => $amount,
             "hasExcess"     => $hasExcess
