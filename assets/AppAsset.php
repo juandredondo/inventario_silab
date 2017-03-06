@@ -35,7 +35,8 @@ class AppAsset extends AssetBundle
     private function getJs()
     {
         return [
-            'silab-vendor/js/silab.app.js' . (($this->ScriptVersion != 0) ? ("?v=" .$this->ScriptVersion) : "")
+            'silab-vendor/js/silab.app.js' . (($this->ScriptVersion != 0) ? ("?v=" .$this->ScriptVersion) : ""),
+            'silab-vendor/js/silab-helper-registerCss.js'
         ];
     }
 

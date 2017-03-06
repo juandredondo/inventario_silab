@@ -30,8 +30,8 @@ class InventarioAsset extends AssetBundle
     private function getJs()
     {
         return [
-            'js/items.js' . (($version != 0) ? ("?v=" .$version) : ""),
-            'js/silab-inventory/silab.inventory.items.js' . (($version != 0) ? ("?v=" .$version) : ""),
+            'js/items.js' . ( ($this->version != 0) ? ("?v=" . $this->version) : ""),
+            'js/silab-inventory/silab.inventory.items.js' . ( ($this->version != 0) ? ("?v=" . $this->version) : "" ),
         ];
     }
 
