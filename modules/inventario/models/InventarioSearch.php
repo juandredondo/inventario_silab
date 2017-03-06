@@ -19,6 +19,8 @@ class InventarioSearch extends Inventario
     {
         return [
             [['INVE_ID', 'LABO_ID'], 'integer'],
+            [['INVE_NOMBRE'], 'string'],
+            [['INVE_ESSINGLETON'], 'boolean'],
             [['INVE_CANTIDAD'], 'number'],
         ];
     }
@@ -59,10 +61,13 @@ class InventarioSearch extends Inventario
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'INVE_ID'       => $this->INVE_ID,
-            'LABO_ID'       => $this->LABO_ID,
-            'INVE_CANTIDAD' => $this->INVE_CANTIDAD
+            'INVE_ID'           => $this->INVE_ID,
+            'INVE_ESSINGLETON'  => $this->INVE_ESSINGLETON,
+            'LABO_ID'           => $this->LABO_ID,
         ]);
+
+        if( $this->INVE_NOMBRE != "" )
+            $query->andFilterWhere([ 'like', 'INVE_NOMBRE', $this->INVE_NOMBRE ]);
 
         return $dataProvider;
     }
