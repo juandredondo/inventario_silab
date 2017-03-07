@@ -192,6 +192,9 @@ function checkPeriodo($model)
 <?php Modal::begin([
         "id"        =>  "add-stock",
         "size"      => Modal::SIZE_LARGE,
+        "options"   => [
+            "tabindex" => null
+        ],
         "footer"    =>  "",// always need it for jquery plugin
     ])?>
     <?php 
