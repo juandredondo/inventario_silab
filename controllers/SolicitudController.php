@@ -146,6 +146,9 @@ class SolicitudController extends Controller
      */
     public function actionUpdate($id)
     {
+        $searchModel    = new InventoryModels\views\StockActualSearch();
+        $dataProvider   = $searchModel->search(Yii::$app->request->queryParams);
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         $model       = $this->findModel($id);
         $detailItems = $model->detalles;
         $data        = Yii::$app->request->post();
@@ -208,7 +211,10 @@ class SolicitudController extends Controller
         return $this->render('update', [
             'model'         => $model,
             'detailItems'   => (empty($detailItems)) ? [ new Models\DetalleSolicitud() ] : $detailItems,
-            'items'         => InventoryModels\views\VStockActual::find()->all()
+            'items'         => InventoryModels\views\VStockActual::find()->all(),
+            // - - - - - - - - - - - - - - 
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
