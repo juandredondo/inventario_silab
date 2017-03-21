@@ -13,13 +13,7 @@
         "source": "https://github.com/yiisoft/yii2"
     },
     "minimum-stability": "stable",
-    "repositories":
-    [
-        {
-        "type": "composer",
-        "url": "https:\/\/www.phpclasses.org\/"
-        }
-    ],
+    
     "require": {
         "php": ">=5.4.0",
         "yiisoft/yii2": "~2.0.5",
@@ -29,7 +23,7 @@
         "johnitvn/yii2-ajaxcrud": "*",
         "machour/yii2-notifications": "@dev",
         "bdelespierre/underscore": "dev-master",
-        "phpclasses/graphml-generator": ">=0.1",
+    
         "wbraganca/yii2-dynamicform" : "*"
     },
     "require-dev": {
